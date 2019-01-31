@@ -3,6 +3,13 @@
 <img src="https://laravel-admin.org/images/logo002.png" alt="laravel-admin">
 </a>
 
+<h2 align="center">IMPORTANT</h2>
+<p>This repository is forked from "z-song/laravel-admin". This repository is customized for exceedone/exment.</p>
+
+ - Support sub directory.
+ - Enable getting child model in hasmany field.
+------------
+
 <p align="center">⛵<code>laravel-admin</code> is administrative interface builder for laravel which can help you build CRUD backends just with few lines of code.</p>
 
 <p align="center">
