@@ -32,6 +32,10 @@ class ColumnSelector extends AbstractTool
      */
     public function render()
     {
+        if (!$this->grid->showColumnSelectorBtn()) {
+            return '';
+        }
+
         $show = array_filter(explode(',', request(static::SELECT_COLUMN_NAME)));
 
         $columns = $this->getGridColumns();
