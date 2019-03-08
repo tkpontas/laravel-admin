@@ -144,8 +144,10 @@ class Actions extends AbstractDisplayer
      */
     protected function renderView()
     {
+        $uri = url($this->getResource());
+
         return <<<EOT
-<a href="{$this->getResource()}/{$this->getKey()}">
+<a href="{$uri}/{$this->getKey()}">
     <i class="fa fa-eye"></i>
 </a>
 EOT;
@@ -158,8 +160,10 @@ EOT;
      */
     protected function renderEdit()
     {
+        $uri = url($this->getResource());
+
         return <<<EOT
-<a href="{$this->getResource()}/{$this->getKey()}/edit">
+<a href="{$uri}/{$this->getKey()}/edit">
     <i class="fa fa-edit"></i>
 </a>
 EOT;
@@ -175,6 +179,7 @@ EOT;
         $deleteConfirm = trans('admin.delete_confirm');
         $confirm = trans('admin.confirm');
         $cancel = trans('admin.cancel');
+        $uri = url($this->getResource());
 
         $script = <<<SCRIPT
 
@@ -194,7 +199,7 @@ $('.{$this->grid->getGridRowName()}-delete').unbind('click').click(function() {
             return new Promise(function(resolve) {
                 $.ajax({
                     method: 'post',
-                    url: '{$this->getResource()}/' + id,
+                    url: '{$uri}/' + id,
                     data: {
                         _method:'delete',
                         _token:LA.token,
