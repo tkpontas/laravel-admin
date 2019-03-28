@@ -3,6 +3,7 @@
 namespace Encore\Admin\Grid\Displayers;
 
 use Encore\Admin\Admin;
+use Encore\Admin\Grid\Linker;
 
 class Actions extends AbstractDisplayer
 {
@@ -158,11 +159,7 @@ class Actions extends AbstractDisplayer
     {
         $uri = url($this->getResource());
 
-        return <<<EOT
-<a href="{$uri}/{$this->getKey()}">
-    <i class="fa fa-eye"></i>
-</a>
-EOT;
+        return (new Linker)->url("{$uri}/{$this->getKey()}")->icon('fa-eye')->tooltip(trans('admin.create'));
     }
 
     /**
@@ -173,12 +170,7 @@ EOT;
     protected function renderEdit()
     {
         $uri = url($this->getResource());
-
-        return <<<EOT
-<a href="{$uri}/{$this->getKey()}/edit">
-    <i class="fa fa-edit"></i>
-</a>
-EOT;
+        return (new Linker)->url("{$uri}/{$this->getKey()}/edit")->icon('fa-edit')->tooltip(trans('admin.edit'));
     }
 
     /**
@@ -240,10 +232,10 @@ SCRIPT;
 
         Admin::script($script);
 
-        return <<<EOT
-<a href="javascript:void(0);" data-id="{$this->getKey()}" class="{$this->grid->getGridRowName()}-delete">
-    <i class="fa fa-trash"></i>
-</a>
-EOT;
+        return (new Linker)
+            ->script(true)
+            ->linkattributes(['class' => "{$this->grid->getGridRowName()}-delete"])
+            ->icon('fa-trash')
+            ->tooltip(trans('admin.delete'));
     }
 }
