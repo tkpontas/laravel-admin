@@ -159,7 +159,7 @@ class Actions extends AbstractDisplayer
     {
         $uri = url($this->getResource());
 
-        return (new Linker)->url("{$uri}/{$this->getKey()}")->icon('fa-eye')->tooltip(trans('admin.create'));
+        return (new Linker)->url("{$uri}/{$this->getKey()}")->icon('fa-eye')->tooltip(trans('admin.show'));
     }
 
     /**
