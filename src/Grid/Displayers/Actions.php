@@ -234,7 +234,7 @@ SCRIPT;
 
         return (new Linker)
             ->script(true)
-            ->linkattributes(['class' => "{$this->grid->getGridRowName()}-delete"])
+            ->linkattributes(['class' => "{$this->grid->getGridRowName()}-delete", 'data-id' => $this->getKey() ])
             ->icon('fa-trash')
             ->tooltip(trans('admin.delete'));
     }
