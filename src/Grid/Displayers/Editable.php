@@ -67,6 +67,13 @@ class Editable extends AbstractDisplayer
     }
 
     /**
+     * number type editable.
+     */
+    public function number()
+    {
+    }
+
+    /**
      * Select type editable.
      *
      * @param array|\Closure $options
