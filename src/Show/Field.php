@@ -37,6 +37,16 @@ class Field implements Renderable
     protected $label;
 
     /**
+     * Width for label and field.
+     *
+     * @var array
+     */
+    protected $width = [
+        'label' => 2,
+        'field' => 8,
+    ];
+
+    /**
      * Escape field value or not.
      *
      * @var bool
@@ -436,6 +446,24 @@ HTML;
     }
 
     /**
+     * Set width for field and label.
+     *
+     * @param int $field
+     * @param int $label
+     *
+     * @return $this
+     */
+    public function setWidth($field = 8, $label = 2)
+    {
+        $this->width = [
+            'label' => $label,
+            'field' => $field,
+        ];
+
+        return $this;
+    }
+
+    /**
      * @param string $method
      * @param array  $arguments
      *
@@ -467,6 +495,7 @@ HTML;
             'escape'    => $this->escape,
             'label'     => $this->getLabel(),
             'wrapped'   => $this->wrapped,
+            'width'     => $this->width,
         ];
     }
 
