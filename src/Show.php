@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\Relation as EloquentRelation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Show implements Renderable
 {
@@ -65,7 +66,14 @@ class Show implements Renderable
     protected $panel;
 
     /**
-     * @var Closure
+     * Extended fields.
+     *
+     * @var array
+     */
+    public static $extendedFields = [];
+
+    /**
+     * @var \Closure
      */
     protected static $initCallback;
 
@@ -83,7 +91,7 @@ class Show implements Renderable
         $this->initPanel();
         $this->initContents();
 
-        if (static::$initCallback instanceof Closure) {
+        if (static::$initCallback instanceof \Closure) {
             call_user_func(static::$initCallback, $this);
         }
     }
@@ -91,11 +99,24 @@ class Show implements Renderable
     /**
      * Initialize with user pre-defined default disables, etc.
      *
-     * @param Closure $callback
+     * @param \Closure $callback
      */
-    public static function init(Closure $callback = null)
+    public static function init(\Closure $callback = null)
     {
         static::$initCallback = $callback;
+    }
+
+    /**
+     * Register custom field.
+     *
+     * @param string $abstract
+     * @param string $class
+     *
+     * @return void
+     */
+    public static function extend($abstract, $class)
+    {
+        static::$extendedFields[$abstract] = $class;
     }
 
     /**
@@ -305,7 +326,7 @@ class Show implements Renderable
     }
 
     /**
-     * Set field and label width in current form.
+     * Set field and label width in fields.
      *
      * @param int $fieldWidth
      * @param int $labelWidth
@@ -425,7 +446,7 @@ class Show implements Renderable
                 return $this->addRelation($method, $arguments[1], $arguments[0]);
             }
 
-            return $this->addField($method, array_get($arguments, 0))->setRelation(snake_case($method));
+            return $this->addField($method, Arr::get($arguments, 0))->setRelation(Str::snake($method));
         }
 
         if ($relation    instanceof HasMany

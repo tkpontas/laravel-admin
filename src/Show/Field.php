@@ -6,6 +6,7 @@ use Encore\Admin\Show;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -84,7 +85,7 @@ class Field implements Renderable
      *
      * @var bool
      */
-    public $wrapped = true;
+    public $border = true;
 
     /**
      * @var array
@@ -194,7 +195,7 @@ class Field implements Renderable
                 return $default;
             }
 
-            return array_get($values, $value, $default);
+            return Arr::get($values, $value, $default);
         });
     }
 
@@ -209,26 +210,28 @@ class Field implements Renderable
      */
     public function image($server = '', $width = 200, $height = 200)
     {
-        return $this->unescape()->as(function ($path) use ($server, $width, $height) {
-            if (empty($path)) {
-                return '';
-            }
-
-            if (url()->isValidUrl($path)) {
-                $src = $path;
-            } elseif ($server) {
-                $src = $server.$path;
-            } else {
-                $disk = config('admin.upload.disk');
-
-                if (config("filesystems.disks.{$disk}")) {
-                    $src = Storage::disk($disk)->url($path);
-                } else {
+        return $this->unescape()->as(function ($images) use ($server, $width, $height) {
+            return collect($images)->map(function ($path) use ($server, $width, $height) {
+                if (empty($path)) {
                     return '';
                 }
-            }
 
-            return "<img src='$src' style='max-width:{$width}px;max-height:{$height}px' class='img' />";
+                if (url()->isValidUrl($path)) {
+                    $src = $path;
+                } elseif ($server) {
+                    $src = $server.$path;
+                } else {
+                    $disk = config('admin.upload.disk');
+
+                    if (config("filesystems.disks.{$disk}")) {
+                        $src = Storage::disk($disk)->url($path);
+                    } else {
+                        return '';
+                    }
+                }
+
+                return "<img src='$src' style='max-width:{$width}px;max-height:{$height}px' class='img' />";
+            })->implode('&nbsp;');
         });
     }
 
@@ -247,7 +250,7 @@ class Field implements Renderable
         return $this->unescape()->as(function ($path) use ($server, $download, $field) {
             $name = basename($path);
 
-            $field->wrapped = false;
+            $field->border = false;
 
             $size = $url = '';
 
@@ -356,7 +359,7 @@ HTML;
             $content = json_decode($value, true);
 
             if (json_last_error() == 0) {
-                $field->wrapped = false;
+                $field->border = false;
 
                 return '<pre><code>'.json_encode($content, JSON_PRETTY_PRINT).'</code></pre>';
             }
@@ -464,6 +467,53 @@ HTML;
     }
 
     /**
+     * Call extended field.
+     *
+     * @param string|AbstractField|\Closure $abstract
+     * @param array                         $arguments
+     *
+     * @return Field
+     */
+    protected function callExtendedField($abstract, $arguments = [])
+    {
+        if ($abstract instanceof \Closure) {
+            return $this->as($abstract);
+        }
+
+        if (is_string($abstract) && class_exists($abstract)) {
+            /** @var AbstractField $extend */
+            $extend = new $abstract();
+        }
+
+        if ($abstract instanceof AbstractField) {
+            /** @var AbstractField $extend */
+            $extend = $abstract;
+        }
+
+        if (!isset($extend)) {
+            admin_warning("[$abstract] is not a valid Show field.");
+
+            return $this;
+        }
+
+        if (!$extend->escape) {
+            $this->unescape();
+        }
+
+        $field = $this;
+
+        return $this->as(function ($value) use ($extend, $field, $arguments) {
+            if (!$extend->border) {
+                $field->border = false;
+            }
+
+            $extend->setValue($value)->setModel($this);
+
+            return $extend->render(...$arguments);
+        });
+    }
+
+    /**
      * @param string $method
      * @param array  $arguments
      *
@@ -471,13 +521,17 @@ HTML;
      */
     public function __call($method, $arguments = [])
     {
+        if ($class = Arr::get(Show::$extendedFields, $method)) {
+            return $this->callExtendedField($class, $arguments);
+        }
+
         if (static::hasMacro($method)) {
             return $this->macroCall($method, $arguments);
         }
 
         if ($this->relation) {
             $this->name = $method;
-            $this->label = $this->formatLabel(array_get($arguments, 0));
+            $this->label = $this->formatLabel(Arr::get($arguments, 0));
         }
 
         return $this;
@@ -494,7 +548,7 @@ HTML;
             'content'   => $this->value,
             'escape'    => $this->escape,
             'label'     => $this->getLabel(),
-            'wrapped'   => $this->wrapped,
+            'wrapped'   => $this->border,
             'width'     => $this->width,
         ];
     }

@@ -58,6 +58,16 @@ class Actions extends AbstractDisplayer
     }
 
     /**
+     * Get route key name of current row.
+     *
+     * @return mixed
+     */
+    public function getRouteKey()
+    {
+        return $this->row->{$this->row->getRouteKeyName()};
+    }
+
+    /**
      * Disable view action.
      *
      * @return $this
@@ -159,7 +169,7 @@ class Actions extends AbstractDisplayer
     {
         $uri = url($this->getResource());
 
-        return (new Linker)->url("{$uri}/{$this->getKey()}")->icon('fa-eye')->tooltip(trans('admin.show'));
+        return (new Linker)->url("{$uri}/{$this->getRouteKey()}")->icon('fa-eye')->tooltip(trans('admin.show'));
     }
 
     /**
@@ -170,7 +180,7 @@ class Actions extends AbstractDisplayer
     protected function renderEdit()
     {
         $uri = url($this->getResource());
-        return (new Linker)->url("{$uri}/{$this->getKey()}/edit")->icon('fa-edit')->tooltip(trans('admin.edit'));
+        return (new Linker)->url("{$uri}/{$this->getRouteKey()}/edit")->icon('fa-edit')->tooltip(trans('admin.edit'));
     }
 
     /**
@@ -180,10 +190,23 @@ class Actions extends AbstractDisplayer
      */
     protected function renderDelete()
     {
-        $deleteConfirm = trans('admin.delete_confirm');
-        $confirm = trans('admin.confirm');
-        $cancel = trans('admin.cancel');
+        $this->setupDeleteScript();
+
+        return (new Linker)
+            ->script(true)
+            ->linkattributes(['class' => "{$this->grid->getGridRowName()}-delete", 'data-id' => $this->getKey() ])
+            ->icon('fa-trash')
+            ->tooltip(trans('admin.delete'));
+    }
+
+    protected function setupDeleteScript()
+    {
         $uri = url($this->getResource());
+        $trans = [
+            'delete_confirm' => trans('admin.delete_confirm'),
+            'confirm'        => trans('admin.confirm'),
+            'cancel'         => trans('admin.cancel'),
+        ];
 
         $script = <<<SCRIPT
 
@@ -192,13 +215,13 @@ $('.{$this->grid->getGridRowName()}-delete').unbind('click').click(function() {
     var id = $(this).data('id');
 
     swal({
-        title: "$deleteConfirm",
+        title: "{$trans['delete_confirm']}",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "$confirm",
+        confirmButtonText: "{$trans['confirm']}",
         showLoaderOnConfirm: true,
-        cancelButtonText: "$cancel",
+        cancelButtonText: "{$trans['cancel']}",
         preConfirm: function() {
             return new Promise(function(resolve) {
                 $.ajax({
@@ -231,11 +254,5 @@ $('.{$this->grid->getGridRowName()}-delete').unbind('click').click(function() {
 SCRIPT;
 
         Admin::script($script);
-
-        return (new Linker)
-            ->script(true)
-            ->linkattributes(['class' => "{$this->grid->getGridRowName()}-delete", 'data-id' => $this->getKey() ])
-            ->icon('fa-trash')
-            ->tooltip(trans('admin.delete'));
     }
 }
