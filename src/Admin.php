@@ -60,6 +60,11 @@ class Admin
     /**
      * @var []Closure
      */
+    protected static $registeredCallbacks = [];
+
+    /**
+     * @var []Closure
+     */
     protected static $bootedCallbacks = [];
 
     /**
@@ -335,6 +340,14 @@ class Admin
     /**
      * @param callable $callback
      */
+    public static function registered(callable $callback)
+    {
+        static::$registeredCallbacks[] = $callback;
+    }
+
+    /**
+     * @param callable $callback
+     */
     public static function booted(callable $callback)
     {
         static::$bootedCallbacks[] = $callback;
@@ -353,6 +366,8 @@ class Admin
 
         Grid\Filter::registerFilters();
 
+        $this->fireRegisteredCallbacks();
+
         require config('admin.bootstrap', admin_path('bootstrap.php'));
 
         $assets = Form::collectFieldAssets();
@@ -369,6 +384,16 @@ class Admin
     protected function fireBootingCallbacks()
     {
         foreach (static::$bootingCallbacks as $callable) {
+            call_user_func($callable);
+        }
+    }
+
+    /**
+     * Call the registered callbacks for the admin application.
+     */
+    protected function fireRegisteredCallbacks()
+    {
+        foreach (static::$registeredCallbacks as $callable) {
             call_user_func($callable);
         }
     }
