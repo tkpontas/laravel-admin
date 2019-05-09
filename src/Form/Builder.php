@@ -483,7 +483,7 @@ class Builder
 
         $this->addRedirectUrlField();
 
-        $attributes['action'] = $this->getAction();
+        $attributes['action'] = url($this->getAction());
         $attributes['method'] = Arr::get($options, 'method', 'post');
         $attributes['accept-charset'] = 'UTF-8';
 
