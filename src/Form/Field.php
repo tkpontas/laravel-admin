@@ -774,6 +774,16 @@ class Field implements Renderable
     }
 
     /**
+     * Get field attributes.
+     *
+     * @return string
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * Specifies a regular expression against which to validate the value of the input.
      *
      * @param string $regexp
