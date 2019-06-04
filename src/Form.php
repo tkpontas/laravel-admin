@@ -264,6 +264,23 @@ class Form implements Renderable
     }
 
     /**
+     * Generate a replicate form.
+     *
+     * @param $id
+     *
+     * @return $this
+     */
+    public function replicate($id, $ignore = [])
+    {
+        $this->builder->setMode(Builder::MODE_CREATE);
+        $this->builder->setResourceId($id);
+
+        $this->setFieldValue($id, true, $ignore);
+
+        return $this;
+    }
+
+    /**
      * Use tab to split form.
      *
      * @param string  $title
@@ -1050,7 +1067,7 @@ class Form implements Renderable
      *
      * @return void
      */
-    protected function setFieldValue($id)
+    protected function setFieldValue($id, $replicate = false, $ignore = [])
     {
         $relations = $this->getRelations();
 
@@ -1061,6 +1078,10 @@ class Form implements Renderable
         }
 
         $this->model = $builder->with($relations)->findOrFail($id);
+
+        if($replicate){
+            $this->model = $this->replicateModel($this->model, $relations, $ignore);
+        }
 
         $this->callEditing();
 
@@ -1073,6 +1094,36 @@ class Form implements Renderable
                 $field->fill($data);
             }
         });
+    }
+
+    protected function replicateModel($oldModel, $relations, $ignore = []){
+        $model = $oldModel->replicate()->setRelations([]);
+
+        foreach($ignore as $i){
+            unset($model->{$i});
+        }
+
+        foreach($relations as $relation){
+            // if set hasmany, set model as relation
+            if(!($oldModel->{$relation}() instanceof \Illuminate\Database\Eloquent\Relations\HasMany)){
+                $model->setRelation($relation, $oldModel->{$relation});
+                continue;
+            }
+
+            // set hasmany values
+            $items = [];
+            foreach($oldModel->{$relation} as $childModel){
+                $childCopyModel = $childModel->replicate()->setRelations([]);
+                // remove parent id
+                $keyName = $oldModel->{$relation}()->getForeignKeyName();
+                unset($childCopyModel->{$keyName});
+
+                $items[] = $childCopyModel;
+            }
+            $model->setRelation($relation, collect($items));
+        }
+
+        return $model;
     }
 
     /**
@@ -1112,6 +1163,13 @@ class Form implements Renderable
         }
 
         $message = $this->mergeValidationMessages($failedValidators);
+
+        // if contains function 'validatorSaving' in model, call
+        if(method_exists($this->model, 'validatorSaving')){
+            if(is_array($validateResult = $this->model->validatorSaving($input))){
+                $message = $message->merge($validateResult);
+            }
+        }
 
         return $message->any() ? $message : false;
     }

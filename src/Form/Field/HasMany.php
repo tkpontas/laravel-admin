@@ -284,9 +284,11 @@ class HasMany extends Field
      *
      * @return NestedForm
      */
-    protected function buildNestedForm($column, \Closure $builder, $model = null)
+    protected function buildNestedForm($column, \Closure $builder, $model = null, $index = null)
     {
         $form = new Form\NestedForm($column, $model);
+
+        $form->setIndex($index);
 
         $form->setForm($this->form);
 
@@ -391,12 +393,16 @@ class HasMany extends Field
                     ->fill($data);
             }
         } else {
-            foreach ($this->value as $data) {
+            foreach ($this->value as $index => $data) {
                 $key = Arr::get($data, $relation->getRelated()->getKeyName());
+
+                if(!isset($key)){
+                    $key = 'new_' . ($index + 1);
+                }
 
                 $model = $relation->getRelated()->replicate()->forceFill($data);
 
-                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model)
+                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model, $index)
                     ->fill($data);
             }
         }
@@ -429,6 +435,8 @@ class HasMany extends Field
     {
         $removeClass = NestedForm::REMOVE_FLAG_CLASS;
         $defaultKey = NestedForm::DEFAULT_KEY_NAME;
+        $count = !isset($this->value) ? 0 : count($this->value);
+        $indexName = "index_{$this->column}";
 
         /**
          * When add a new sub form, replace all element key in new sub form.
@@ -438,14 +446,14 @@ class HasMany extends Field
          * {count} is increment number of current sub form count.
          */
         $script = <<<EOT
-var index = 0;
+var $indexName = {$count};
 $('#has-many-{$this->column}').on('click', '.add', function () {
 
     var tpl = $('template.{$this->column}-tpl');
 
-    index++;
+    $indexName++;
 
-    var template = tpl.html().replace(/{$defaultKey}/g, index);
+    var template = tpl.html().replace(/{$defaultKey}/g, $indexName);
     $('.has-many-{$this->column}-forms').append(template);
     {$templateScript}
 });
@@ -471,6 +479,7 @@ EOT;
     {
         $removeClass = NestedForm::REMOVE_FLAG_CLASS;
         $defaultKey = NestedForm::DEFAULT_KEY_NAME;
+        $count = !isset($this->value) ? 0 : count($this->value);
 
         $script = <<<EOT
 
@@ -490,7 +499,7 @@ $('#has-many-{$this->column} > .nav').off('click', 'i.close-tab').on('click', 'i
     }
 });
 
-var index = 0;
+var index = {$count};
 $('#has-many-{$this->column} > .header').off('click', '.add').on('click', '.add', function(){
     index++;
     var navTabHtml = $('#has-many-{$this->column} > template.nav-tab-tpl').html().replace(/{$defaultKey}/g, index);

@@ -65,6 +65,11 @@ class NestedForm
     protected $key;
 
     /**
+     * @var int
+     */
+    protected $index;
+
+    /**
      * @var string
      */
     protected $relationName;
@@ -141,6 +146,10 @@ class NestedForm
             return $key;
         }
 
+        if (isset($this->index)) {
+            return 'new_'.($this->index + 1);
+        }
+
         return 'new_'.static::DEFAULT_KEY_NAME;
     }
 
@@ -154,6 +163,32 @@ class NestedForm
     public function setKey($key)
     {
         $this->key = $key;
+
+        return $this;
+    }
+
+    /**
+     * Get index for hasMany.
+     *
+     * @param mixed $key
+     *
+     * @return $this
+     */
+    public function getIndex()
+    {
+        return $this->index;
+    }
+
+    /**
+     * Set index for hasMany.
+     *
+     * @param mixed $key
+     *
+     * @return $this
+     */
+    public function setIndex($index)
+    {
+        $this->index = $index;
 
         return $this;
     }
