@@ -4,9 +4,12 @@ namespace Encore\Admin\Layout;
 
 use Encore\Admin\Grid;
 use Illuminate\Contracts\Support\Renderable;
+use Encore\Admin\Traits\GridWidth;
 
 class Column implements Buildable
 {
+    use GridWidth;
+    
     /**
      * grid system prefix width.
      *
@@ -33,17 +36,7 @@ class Column implements Buildable
             $this->append($content);
         }
 
-        ///// set width.
-        // if null, or $this->width is empty array, set as "md" => "12"
-        if (is_null($width) || (is_array($width) && count($width) === 0)) {
-            $this->width['md'] = 12;
-        }
-        // $this->width is number(old version), set as "md" => $width
-        elseif (is_numeric($width)) {
-            $this->width['md'] = $width;
-        } else {
-            $this->width = $width;
-        }
+        $this->setWidth($width);
     }
 
     /**
@@ -112,9 +105,7 @@ class Column implements Buildable
     protected function startColumn()
     {
         // get class name using width array
-        $classnName = collect($this->width)->map(function ($value, $key) {
-            return "col-$key-$value";
-        })->implode(' ');
+        $classnName = $this->getGridWidthClass();
 
         echo "<div class=\"{$classnName}\">";
     }
