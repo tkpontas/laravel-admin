@@ -34,8 +34,10 @@ $('{$this->getElementClass()}').on('click', function() {
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "{$trans['confirm']}",
         showLoaderOnConfirm: true,
+        allowOutsideClick: false,
         cancelButtonText: "{$trans['cancel']}",
         preConfirm: function() {
+            $('.swal2-cancel').hide();
             return new Promise(function(resolve) {
                 $.ajax({
                     method: 'post',
