@@ -32,8 +32,15 @@ if (!function_exists('admin_url')) {
         if (\Illuminate\Support\Facades\URL::isValidUrl($path)) {
             return $path;
         }
-
-        $secure = $secure ?: (config('admin.https') || config('admin.secure'));
+        
+        if(!isset($secure)){
+            if(\Request::secure() === true){
+                $secure = true;
+            }
+            else{
+                $secure = (config('admin.https') || config('admin.secure'));
+            }
+        }
 
         return url(admin_base_path($path), $parameters, $secure);
     }
