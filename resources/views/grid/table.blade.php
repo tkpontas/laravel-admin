@@ -13,9 +13,7 @@
             {!! $grid->renderCreateButton() !!}
         </div>
         @if ( $grid->showTools() )
-        <div class="pull-left">
-            {!! $grid->renderHeaderTools() !!}
-        </div>
+        @include('admin::grid.tools')
         @endif
     </div>
     @endif

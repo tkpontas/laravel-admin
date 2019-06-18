@@ -55,9 +55,9 @@ trait HasTools
      *
      * @return string
      */
-    public function renderHeaderTools()
+    public function renderHeaderTools($position = 'left')
     {
-        return $this->tools->render();
+        return $this->tools->renderPosition($position);
     }
 
     /**

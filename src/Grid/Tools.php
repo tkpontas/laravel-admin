@@ -12,6 +12,10 @@ use Illuminate\Support\Collection;
 
 class Tools implements Renderable
 {
+    protected const POSITIONS = ['left', 'right'];
+
+    public static $defaultPosition = 'left';
+
     /**
      * Parent grid.
      *
@@ -35,7 +39,10 @@ class Tools implements Renderable
     {
         $this->grid = $grid;
 
-        $this->tools = new Collection();
+        $this->tools = [
+            'left' => new Collection(),
+            'right' =>new Collection()
+        ];
 
         $this->appendDefaultTools();
     }
@@ -45,8 +52,8 @@ class Tools implements Renderable
      */
     protected function appendDefaultTools()
     {
-        $this->append(new BatchActions())
-            ->append(new FilterButton());
+        $this->append(new BatchActions(), 'left')
+            ->append(new FilterButton(), 'left');
     }
 
     /**
@@ -56,9 +63,11 @@ class Tools implements Renderable
      *
      * @return $this
      */
-    public function append($tool)
+    public function append($tool, $position = null)
     {
-        $this->tools->push($tool);
+        $position = $this->getPosition($position);
+
+        $this->tools[$position]->push($tool);
 
         return $this;
     }
@@ -70,11 +79,24 @@ class Tools implements Renderable
      *
      * @return $this
      */
-    public function prepend($tool)
+    public function prepend($tool, $position = null)
     {
-        $this->tools->prepend($tool);
+        $position = $this->getPosition($position);
+
+        $this->tools[$position]->prepend($tool);
 
         return $this;
+    }
+
+    protected function getPosition($position){
+        if(is_null($position)){
+            return static::$defaultPosition;
+        }
+
+        if(!in_array($position, static::POSITIONS)){
+            return 'left';
+        }
+        return $position;
     }
 
     /**
@@ -84,13 +106,16 @@ class Tools implements Renderable
      */
     public function disableFilterButton(bool $disable = true)
     {
-        $this->tools = $this->tools->map(function ($tool) use ($disable) {
-            if ($tool instanceof FilterButton) {
-                return $tool->disable($disable);
-            }
+        foreach(static::POSITIONS as $position){
+            $this->tools[$position] = $this->tools[$position]->map(function ($tool) use ($disable) {
+                if ($tool instanceof FilterButton) {
+                    return $tool->disable($disable);
+                }
+    
+                return $tool;
+            });
+        }
 
-            return $tool;
-        });
     }
 
     /**
@@ -112,13 +137,15 @@ class Tools implements Renderable
      */
     public function disableBatchActions(bool $disable = true)
     {
-        $this->tools = $this->tools->map(function ($tool) use ($disable) {
-            if ($tool instanceof BatchActions) {
-                return $tool->disable($disable);
-            }
+        foreach (static::POSITIONS as $position) {
+            $this->tools[$position] = $this->tools[$position]->map(function ($tool) use ($disable) {
+                if ($tool instanceof BatchActions) {
+                    return $tool->disable($disable);
+                }
 
-            return $tool;
-        });
+                return $tool;
+            });
+        }
     }
 
     /**
@@ -126,9 +153,17 @@ class Tools implements Renderable
      */
     public function batch(\Closure $closure)
     {
-        call_user_func($closure, $this->tools->first(function ($tool) {
-            return $tool instanceof BatchActions;
-        }));
+        foreach (static::POSITIONS as $position) {
+            $batch = $this->tools[$position]->first(function ($tool) {
+                return $tool instanceof BatchActions;
+            });
+            
+            if(is_null($batch)){
+                return;
+            }
+
+            call_user_func($closure, $batch);
+        }
     }
 
     /**
@@ -138,13 +173,28 @@ class Tools implements Renderable
      */
     public function render()
     {
-        return $this->tools->map(function ($tool) {
+        return view('admin.grid.tools', [
+            'left' => $this->renderPosition('left'),
+            'right' => $this->renderPosition('right'),
+        ]);
+    }
+    
+    /**
+     * Render header tools bar (select position).
+     *
+     * @return string
+     */
+    public function renderPosition($position)
+    {
+        $position = $this->getPosition($position);
+
+        return $this->tools[$position]->map(function ($tool) {
             if ($tool instanceof AbstractTool) {
                 if (!$tool->allowed()) {
                     return '';
                 }
 
-                return $tool->setGrid($this->grid)->render();
+                $tool = $tool->setGrid($this->grid)->render();
             }
 
             if ($tool instanceof Renderable) {
