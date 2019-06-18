@@ -294,7 +294,7 @@ class Content implements Renderable
     public function render()
     {
         $items = [
-            'header'      => $this->header,
+            'header'      => $this->title,
             'headericon'  => $this->headericon,
             'description' => $this->description,
             'breadcrumb'  => $this->breadcrumb,
