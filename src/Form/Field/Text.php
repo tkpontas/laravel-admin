@@ -36,13 +36,15 @@ class Text extends Field
     {
         $this->initPlainInput();
 
-        $this->prepend('<i class="fa '.$this->icon.' fa-fw"></i>')
-            ->defaultAttribute('type', 'text')
-            ->defaultAttribute('id', $this->id)
-            ->defaultAttribute('name', $this->elementName ?: $this->formatName($this->column))
-            ->defaultAttribute('value', old($this->elementName ?: $this->column, $this->value()))
-            ->defaultAttribute('class', 'form-control '.$this->getElementClassString())
-            ->defaultAttribute('placeholder', $this->getPlaceholder());
+        if(isset($this->icon)){
+            $this->prepend('<i class="fa '.$this->icon.' fa-fw"></i>');
+        }
+        $this->defaultAttribute('type', 'text')
+        ->defaultAttribute('id', $this->id)
+        ->defaultAttribute('name', $this->elementName ?: $this->formatName($this->column))
+        ->defaultAttribute('value', old($this->elementName ?: $this->column, $this->value()))
+        ->defaultAttribute('class', 'form-control '.$this->getElementClassString())
+        ->defaultAttribute('placeholder', $this->getPlaceholder());
 
         $this->addVariables([
             'prepend' => $this->prepend,
