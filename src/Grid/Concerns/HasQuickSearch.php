@@ -35,13 +35,19 @@ trait HasQuickSearch
      */
     public function quickSearch($search = null)
     {
+        $position = null;
         if (func_num_args() > 1) {
-            $this->search = func_get_args();
+            if(func_get_arg(0) instanceof \Closure){
+                $this->search = func_get_arg(0);
+                $position = func_get_arg(1);
+            }else{
+                $this->search = func_get_args();
+            }
         } else {
             $this->search = $search;
         }
 
-        $this->tools->append(new Tools\QuickSearch());
+        $this->tools->append(new Tools\QuickSearch(), $position);
 
         return $this;
     }
