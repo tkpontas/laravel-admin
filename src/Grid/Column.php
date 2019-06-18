@@ -2,7 +2,9 @@
 
 namespace Encore\Admin\Grid;
 
+use Carbon\Carbon;
 use Closure;
+use Encore\Admin\Admin;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 use Illuminate\Contracts\Support\Arrayable;
@@ -11,8 +13,34 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
+/**
+ * Class Column.
+ *
+ * @method Displayers\Editable      editable()
+ * @method Displayers\SwitchDisplay switch ($states = [])
+ * @method Displayers\SwitchGroup   switchGroup($columns = [], $states = [])
+ * @method Displayers\Select        select($options = [])
+ * @method Displayers\Image         image($server = '', $width = 200, $height = 200)
+ * @method Displayers\Label         label($style = 'success')
+ * @method Displayers\Button        button($style = null)
+ * @method Displayers\Link          link($href = '', $target = '_blank')
+ * @method Displayers\Badge         badge($style = 'red')
+ * @method Displayers\ProgressBar   progressBar($style = 'primary', $size = 'sm', $max = 100)
+ * @method Displayers\Radio         radio($options = [])
+ * @method Displayers\Checkbox      checkbox($options = [])
+ * @method Displayers\Orderable     orderable($column, $label = '')
+ * @method Displayers\Table         table($titles = [])
+ * @method Displayers\Expand        expand($callback = null)
+ * @method Displayers\Modal         modal($callback = null)
+ * @method Displayers\Carousel      carousel(int $width = 300, int $height = 200, $server = '')
+ * @method Displayers\Download      download($server = '')
+ */
 class Column
 {
+    const SELECT_COLUMN_NAME = '__row_selector__';
+
+    const ACTION_COLUMN_NAME = '__actions__';
+
     /**
      * @var Grid
      */
@@ -52,6 +80,13 @@ class Column
      * @var array
      */
     protected $sort;
+
+    /**
+     * Help message.
+     *
+     * @var string
+     */
+    protected $help = '';
 
     /**
      * Cast Name.
@@ -116,8 +151,6 @@ class Column
      * @var Model
      */
     protected static $model;
-
-    const SELECT_COLUMN_NAME = '__row_selector__';
 
     /**
      * @param string $name
@@ -217,11 +250,45 @@ class Column
      *
      * @param string $style
      *
-     * @return Column
+     * @return $this
      */
     public function style($style)
     {
         return $this->setAttributes(compact('style'));
+    }
+
+    /**
+     * Set the width of column.
+     *
+     * @param int $width
+     *
+     * @return $this
+     */
+    public function width(int $width)
+    {
+        return $this->style("width: {$width}px;");
+    }
+
+    /**
+     * Set the color of column.
+     *
+     * @param string $color
+     *
+     * @return $this
+     */
+    public function color($color)
+    {
+        return $this->style("color:$color;");
+    }
+
+    /**
+     * Get original column value.
+     *
+     * @return mixed
+     */
+    public function getOriginal()
+    {
+        return $this->original;
     }
 
     /**
@@ -243,9 +310,13 @@ class Column
      */
     protected function formatLabel($label)
     {
-        $label = $label ?: ucfirst($this->name);
+        if ($label) {
+            return $label;
+        }
 
-        return str_replace(['.', '_'], ' ', $label);
+        $label = ucfirst($this->name);
+
+        return __(str_replace(['.', '_'], ' ', $label));
     }
 
     /**
@@ -289,7 +360,7 @@ class Column
      *
      * @param bool $sort
      *
-     * @return Column
+     * @return $this
      */
     public function sort($sort)
     {
@@ -301,7 +372,7 @@ class Column
     /**
      * Mark this column as sortable.
      *
-     * @return Column
+     * @return $this
      */
     public function sortable()
     {
@@ -311,7 +382,7 @@ class Column
     /**
      * Set cast name for sortable.
      *
-     * @return Column
+     * @return $this
      */
     public function cast($cast)
     {
@@ -340,7 +411,7 @@ class Column
      * @param string $abstract
      * @param array  $arguments
      *
-     * @return Column
+     * @return $this
      */
     public function displayUsing($abstract, $arguments = [])
     {
@@ -376,6 +447,24 @@ class Column
     }
 
     /**
+     * Replace output value with giving map.
+     *
+     * @param array $replacements
+     *
+     * @return $this
+     */
+    public function replace(array $replacements)
+    {
+        return $this->display(function ($value) use ($replacements) {
+            if (isset($replacements[$value])) {
+                return $replacements[$value];
+            }
+
+            return $value;
+        });
+    }
+
+    /**
      * Render this column with the given view.
      *
      * @param string $view
@@ -392,6 +481,18 @@ class Column
     }
 
     /**
+     * Hide this column by default.
+     *
+     * @return $this
+     */
+    public function hide()
+    {
+        $this->grid->hideColumns($this->getName());
+
+        return $this;
+    }
+
+    /**
      * Add column to total-row.
      *
      * @param null $display
@@ -403,6 +504,100 @@ class Column
         $this->grid->addTotalRow($this->name, $display);
 
         return $this;
+    }
+
+    /**
+     * Convert file size to a human readable format like `100mb`.
+     *
+     * @return $this
+     */
+    public function filesize()
+    {
+        return $this->display(function ($value) {
+            return file_size($value);
+        });
+    }
+
+    /**
+     * Display the fields in the email format as gavatar.
+     *
+     * @param int $size
+     *
+     * @return $this
+     */
+    public function gravatar($size = 30)
+    {
+        return $this->display(function ($value) use ($size) {
+            $src = sprintf(
+                'https://www.gravatar.com/avatar/%s?s=%d',
+                md5(strtolower($value)),
+                $size
+            );
+
+            return "<img src='$src' class='img img-circle'/>";
+        });
+    }
+
+    /**
+     * Display field as a loading icon.
+     *
+     * @param array $values
+     * @param array $others
+     *
+     * @return $this
+     */
+    public function loading($values = [], $others = [])
+    {
+        return $this->display(function ($value) use ($values, $others) {
+            $values = (array) $values;
+
+            if (in_array($value, $values)) {
+                return '<i class="fa fa-refresh fa-spin text-primary"></i>';
+            }
+
+            return Arr::get($others, $value, $value);
+        });
+    }
+
+    /**
+     * Display column as an font-awesome icon based on it's value.
+     *
+     * @param array  $setting
+     * @param string $default
+     *
+     * @return $this
+     */
+    public function icon(array $setting, $default = '')
+    {
+        return $this->display(function ($value) use ($setting, $default) {
+            $fa = '';
+
+            if (isset($setting[$value])) {
+                $fa = $setting[$value];
+            } elseif ($default) {
+                $fa = $default;
+            }
+
+            return "<i class=\"fa fa-{$fa}\"></i>";
+        });
+    }
+
+    /**
+     * Return a human readable format time.
+     *
+     * @param null $locale
+     *
+     * @return $this
+     */
+    public function diffForHumans($locale = null)
+    {
+        if ($locale) {
+            Carbon::setLocale($locale);
+        }
+
+        return $this->display(function ($value) {
+            return Carbon::parse($value)->diffForHumans();
+        });
     }
 
     /**
@@ -599,12 +794,52 @@ class Column
     }
 
     /**
+     * Set help message for column.
+     *
+     * @param string $help
+     *
+     * @return $this|string
+     */
+    public function help($help = '')
+    {
+        if (!empty($help)) {
+            $this->help = $help;
+
+            return $this;
+        }
+
+        if (empty($this->help)) {
+            return '';
+        }
+
+        Admin::script("$('.column-help').popover();");
+
+        $data = [
+            'container' => 'body',
+            'toggle'    => 'popover',
+            'trigger'   => 'hover',
+            'placement' => 'bottom',
+            'content'   => $this->help,
+        ];
+
+        $data = collect($data)->map(function ($val, $key) {
+            return "data-{$key}=\"{$val}\"";
+        })->implode(' ');
+
+        return <<<HELP
+<a href="javascript:void(0);" class="column-help" {$data}>
+    <i class="fa fa-question-circle"></i>
+</a>
+HELP;
+    }
+
+    /**
      * Find a displayer to display column.
      *
      * @param string $abstract
      * @param array  $arguments
      *
-     * @return Column
+     * @return $this
      */
     protected function resolveDisplayer($abstract, $arguments)
     {
@@ -621,7 +856,7 @@ class Column
      * @param string $abstract
      * @param array  $arguments
      *
-     * @return Column
+     * @return $this
      */
     protected function callSupportDisplayer($abstract, $arguments)
     {
@@ -644,7 +879,7 @@ class Column
      * @param string $abstract
      * @param array  $arguments
      *
-     * @return Column
+     * @return $this
      */
     protected function callBuiltinDisplayer($abstract, $arguments)
     {
@@ -683,7 +918,7 @@ class Column
     {
         if ($this->isRelation() && !$this->relationColumn) {
             $this->name = "{$this->relation}.$method";
-            $this->label = isset($arguments[0]) ? $arguments[0] : ucfirst($method);
+            $this->label = $this->formatLabel($arguments[0] ?? null);
 
             $this->relationColumn = $method;
 

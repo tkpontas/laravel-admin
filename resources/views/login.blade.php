@@ -8,7 +8,7 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   
   @if(!is_null($favicon = Admin::favicon()))
-    <link rel="shortcut icon" href="{{$favicon}}">
+  <link rel="shortcut icon" href="{{$favicon}}">
   @endif
 
   <!-- Bootstrap 3.3.5 -->

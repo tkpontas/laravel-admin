@@ -3,6 +3,7 @@
 namespace Encore\Admin;
 
 use Closure;
+use Encore\Admin\Auth\Database\Menu;
 use Encore\Admin\Controllers\AuthController;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Traits\HasAssets;
@@ -10,7 +11,6 @@ use Encore\Admin\Widgets\Navbar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use InvalidArgumentException;
 
 /**
@@ -25,7 +25,7 @@ class Admin
      *
      * @var string
      */
-    const VERSION = '1.6.15';
+    const VERSION = '1.7.0';
 
     /**
      * @var Navbar
@@ -107,6 +107,7 @@ class Admin
      * Build a tree.
      *
      * @param $model
+     * @param Closure|null $callable
      *
      * @return \Encore\Admin\Tree
      */
@@ -171,9 +172,12 @@ class Admin
             return $this->menu;
         }
 
-        $menuModel = config('admin.database.menu_model');
+        $menuClass = config('admin.database.menu_model');
 
-        return $this->menu = (new $menuModel())->toTree();
+        /** @var Menu $menuModel */
+        $menuModel = new $menuClass();
+
+        return $this->menu = $menuModel->toTree();
     }
 
     /**
@@ -203,6 +207,8 @@ class Admin
     /**
      * Set admin title.
      *
+     * @param string $title
+     *
      * @return void
      */
     public static function setTitle($title)
@@ -213,7 +219,7 @@ class Admin
     /**
      * Get admin title.
      *
-     * @return Config
+     * @return string
      */
     public function title()
     {
@@ -222,6 +228,7 @@ class Admin
 
     /**
      * Set favicon.
+     * TODO:remove
      *
      * @return void
      */
@@ -231,13 +238,17 @@ class Admin
     }
 
     /**
-     * Get favicon.
+     * @param null|string $favicon
      *
-     * @return Config
+     * @return string|void
      */
-    public function favicon()
+    public function favicon($favicon = null)
     {
-        return self::$favicon;
+        if (is_null($favicon)) {
+            return static::$favicon;
+        }
+
+        static::$favicon = $favicon;
     }
 
     /**
@@ -281,11 +292,23 @@ class Admin
     }
 
     /**
-     * Register the auth routes.
+     * Register the laravel-admin builtin routes.
+     *
+     * @return void
+     *
+     * @deprecated Use Admin::routes() instead();
+     */
+    public function registerAuthRoutes()
+    {
+        $this->routes();
+    }
+
+    /**
+     * Register the laravel-admin builtin routes.
      *
      * @return void
      */
-    public function registerAuthRoutes()
+    public function routes()
     {
         $attributes = [
             'prefix'     => config('admin.route.prefix'),
@@ -294,8 +317,8 @@ class Admin
 
         app('router')->group($attributes, function ($router) {
 
-            /* @var \Illuminate\Routing\Router $router */
-            $router->namespace('Encore\Admin\Controllers')->group(function ($router) {
+            /* @var \Illuminate\Support\Facades\Route $router */
+            $router->namespace('\Encore\Admin\Controllers')->group(function ($router) {
 
                 /* @var \Illuminate\Routing\Router $router */
                 $router->resource('auth/users', 'UserController')->names('admin.auth.users');
@@ -303,6 +326,8 @@ class Admin
                 $router->resource('auth/permissions', 'PermissionController')->names('admin.auth.permissions');
                 $router->resource('auth/menu', 'MenuController', ['except' => ['create']])->names('admin.auth.menu');
                 $router->resource('auth/logs', 'LogController', ['only' => ['index', 'destroy']])->names('admin.auth.logs');
+
+                $router->post('_handle_form_', 'HandleController@handleForm')->name('admin.handle-form');
             });
 
             $authController = config('admin.auth.controller', AuthController::class);
