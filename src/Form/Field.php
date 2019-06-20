@@ -188,6 +188,13 @@ class Field implements Renderable
     protected $help = [];
 
     /**
+     * Help Text.
+     *
+     * @var string
+     */
+    protected $helpText = '';
+
+    /**
      * Key for errors.
      *
      * @var mixed
@@ -850,6 +857,33 @@ class Field implements Renderable
     public function help($text = '', $icon = 'fa-info-circle')
     {
         $this->help = compact('text', 'icon');
+
+        $this->helpText = $text;
+
+        return $this;
+    }
+
+    /**
+     * Get help Text
+     *
+     * @param string $text
+     * @param string $icon
+     *
+     * @return $this
+     */
+    public function getHelpText()
+    {
+        return $this->helpText;
+    }
+
+    /**
+     * forget help
+     *
+     * @return $this
+     */
+    public function forgetHelp()
+    {
+        $this->help = [];
 
         return $this;
     }
