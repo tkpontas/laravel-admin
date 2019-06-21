@@ -24,14 +24,14 @@ class MenuController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header(trans('admin.menu'))
+            ->title(trans('admin.menu'))
             ->description(trans('admin.list'))
             ->row(function (Row $row) {
                 $row->column(6, $this->treeView()->render());
 
                 $row->column(6, function (Column $column) {
                     $form = new \Encore\Admin\Widgets\Form();
-                    $form->action(admin_base_path('auth/menu'));
+                    $form->action(admin_url('auth/menu'));
 
                     $menuModel = config('admin.database.menu_model');
                     $permissionModel = config('admin.database.permissions_model');
@@ -105,7 +105,7 @@ class MenuController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header(trans('admin.menu'))
+            ->title(trans('admin.menu'))
             ->description(trans('admin.edit'))
             ->row($this->form()->edit($id));
     }

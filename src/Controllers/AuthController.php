@@ -102,7 +102,7 @@ class AuthController extends Controller
         );
 
         return $content
-            ->header(trans('admin.user_setting'))
+            ->title(trans('admin.user_setting'))
             ->body($form->edit(Admin::user()->id));
     }
 
@@ -136,7 +136,7 @@ class AuthController extends Controller
                 return $form->model()->password;
             });
 
-        $form->setAction(admin_base_path('auth/setting'));
+        $form->setAction(admin_url('auth/setting'));
 
         $form->ignore(['password_confirmation']);
 
@@ -149,7 +149,7 @@ class AuthController extends Controller
         $form->saved(function () {
             admin_toastr(trans('admin.update_succeeded'));
 
-            return redirect(admin_base_path('auth/setting'));
+            return redirect(admin_url('auth/setting'));
         });
 
         return $form;

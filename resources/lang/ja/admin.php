@@ -98,5 +98,8 @@ return [
         'filter_clear'       => '全て表示',
         'filter_placeholder' => 'フィルタ',
     ],
+    'grid_items_selected'    => '{n} 行選択',
     'menu_titles'           => [],
+    'prev'                   => '前へ',
+    'next'                   => '次へ',
 ];

@@ -169,7 +169,8 @@ class Actions extends AbstractDisplayer
     {
         $uri = url($this->getResource());
 
-        return (new Linker)->url("{$uri}/{$this->getRouteKey()}")->icon('fa-eye')->tooltip(trans('admin.show'));
+        return (new Linker)->url("{$uri}/{$this->getRouteKey()}")->icon('fa-eye')->tooltip(trans('admin.show'))
+            ->linkattributes(['class' => "{$this->grid->getGridRowName()}-view"]);
     }
 
     /**
@@ -180,7 +181,8 @@ class Actions extends AbstractDisplayer
     protected function renderEdit()
     {
         $uri = url($this->getResource());
-        return (new Linker)->url("{$uri}/{$this->getRouteKey()}/edit")->icon('fa-edit')->tooltip(trans('admin.edit'));
+        return (new Linker)->url("{$uri}/{$this->getRouteKey()}/edit")->icon('fa-edit')->tooltip(trans('admin.edit'))
+            ->linkattributes(['class' => "{$this->grid->getGridRowName()}-edit"]);
     }
 
     /**
