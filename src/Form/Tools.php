@@ -36,6 +36,13 @@ class Tools implements Renderable
     protected $prepends;
 
     /**
+     * list path Expressly
+     *
+     * @var string
+     */
+    protected $listPath;
+
+    /**
      * Create a new Tools instance.
      *
      * @param Builder $builder
@@ -124,12 +131,28 @@ class Tools implements Renderable
     }
 
     /**
+     * Set request path for resource list Expressly.
+     *
+     * @return string
+     */
+    public function setListPath($listPath)
+    {
+        $this->listPath = $listPath;
+
+        return $this;
+    }
+
+    /**
      * Get request path for resource list.
      *
      * @return string
      */
-    protected function getListPath()
+    protected function getListPath(bool $directList = false)
     {
+        if($directList && !is_null($this->listPath)){
+            return $this->listPath;
+        }
+
         return $this->form->getResource();
     }
 
@@ -177,7 +200,7 @@ class Tools implements Renderable
     protected function renderList()
     {
         $text = trans('admin.list');
-        $url = url($this->getListPath());
+        $url = url($this->getListPath(true));
 
         return <<<EOT
 <div class="btn-group pull-right" style="margin-right: 5px">
@@ -213,7 +236,7 @@ HTML;
     protected function renderDelete()
     {
         $url = url($this->getDeletePath());
-        $listUrl = url($this->getListPath());
+        $listUrl = url($this->getListPath(true));
         $trans = [
             'delete_confirm' => trans('admin.delete_confirm'),
             'confirm'        => trans('admin.confirm'),
