@@ -85,7 +85,26 @@ EOT;
 
         $this->script .= <<<SCRIPT
 
-$("{$this->getElementClassSelector()}").bootstrapDualListbox($settings);
+        const dualListBox = $("{$this->getElementClassSelector()}");
+        dualListBox.bootstrapDualListbox($settings);
+        var isRequiredField = dualListBox.attr('required');
+
+        function initDualListBox() {
+            var instance = dualListBox.data('plugin_bootstrapDualListbox');
+            var nonSelectedList = instance.elements.select1;
+            var isDualListBoxValidated = !(instance.selectedElements > 0);
+    
+            nonSelectedList.prop('required', isDualListBoxValidated);
+            instance.elements.originalSelect.prop('required', false);
+        }
+    
+        dualListBox.change(function () {
+            if (isRequiredField)
+                initDualListBox();
+        });
+    
+        if (isRequiredField)
+            initDualListBox();
 
 SCRIPT;
 
