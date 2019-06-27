@@ -74,6 +74,13 @@ trait UploadField
     protected $storagePermission;
 
     /**
+     * filetype
+     *
+     * @var string
+     */
+    protected $filetype;
+
+    /**
      * @var array
      */
     protected $fileTypes = [
@@ -96,6 +103,18 @@ trait UploadField
     protected function initStorage()
     {
         $this->disk(config('admin.upload.disk'));
+    }
+
+    /**
+     * Set filetype
+     *
+     * @return void.
+     */
+    public function filetype($filetype)
+    {
+        $this->filetype = $filetype;
+
+        return $this;
     }
 
     /**
@@ -148,14 +167,19 @@ trait UploadField
      */
     protected function guessPreviewType($file)
     {
-        $filetype = 'other';
-        $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-
-        foreach ($this->fileTypes as $type => $pattern) {
-            if (preg_match($pattern, $ext) === 1) {
-                $filetype = $type;
-                break;
-            }
+        if(!is_null($this->filetype)){
+            $filetype = $this->filetype;
+        }
+        else{
+            $filetype = 'other';
+            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+    
+            foreach ($this->fileTypes as $type => $pattern) {
+                if (preg_match($pattern, $ext) === 1) {
+                    $filetype = $type;
+                    break;
+                }
+            }    
         }
 
         $extra = ['type' => $filetype];
