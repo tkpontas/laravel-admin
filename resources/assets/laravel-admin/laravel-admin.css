@@ -79,3 +79,7 @@ a.editable-empty {
 #totop:hover {
     opacity: 1;
 }
+
+.select2-container--default span.select2-readonly {
+    background-color: #eee;
+}

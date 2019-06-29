@@ -392,6 +392,8 @@ $(document).ready(function(){
     });
 });
 EOT;
+        $this->config('containerCssClass', 'select2-readonly');
+
         Admin::script($script);
 
         return parent::readonly();
