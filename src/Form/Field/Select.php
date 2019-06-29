@@ -374,27 +374,7 @@ EOT;
      */
     public function readonly()
     {
-        //移除特定字段名称,增加MultipleSelect的修订
-        //没有特定字段名可以使多个readonly的JS代码片段被Admin::script的array_unique精简代码
-        $script = <<<'EOT'
-$("form select").on("select2:opening", function (e) {
-    if($(this).attr('readonly') || $(this).is(':hidden')){
-    e.preventDefault();
-    }
-});
-$(document).ready(function(){
-    $('select').each(function(){
-        if($(this).is('[readonly]')){
-            $(this).closest('.form-group').find('span.select2-selection__choice__remove').first().remove();
-            $(this).closest('.form-group').find('li.select2-search').first().remove();
-            $(this).closest('.form-group').find('span.select2-selection__clear').first().remove();
-        }
-    });
-});
-EOT;
         $this->config('containerCssClass', 'select2-readonly');
-
-        Admin::script($script);
 
         return parent::readonly();
     }
