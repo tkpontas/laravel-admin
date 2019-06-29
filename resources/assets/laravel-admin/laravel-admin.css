@@ -21,6 +21,10 @@ input.label {
     border-radius: inherit !important;
 }
 
+.field-header{
+    margin-left: 70px;
+}
+
 .box-show {
     border-radius: 0 !important;
     box-shadow: none !important;
@@ -97,4 +101,10 @@ select[readonly].select2-hidden-accessible + .select2-container .select2-selecti
 select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow,
 select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
   display: none;
+}
+
+@media screen and (max-width: 767px) {
+    .field-header{
+        margin-left: 0;
+    }
 }
