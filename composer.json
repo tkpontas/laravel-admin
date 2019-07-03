@@ -15,6 +15,7 @@
         "php": ">=7.0.0",
         "symfony/dom-crawler": "~3.1|~4.0",
         "laravel/framework": "~5.5",
+        "intervention/image": "~2.3",
         "doctrine/dbal": "2.*"
     },
     "require-dev": {
@@ -22,7 +23,6 @@
         "laravel/laravel": "~5.5",
         "symfony/css-selector": "~3.1",
         "fzaninotto/faker": "~1.4",
-        "intervention/image": "~2.3",
         "laravel/browser-kit-testing": "^2.0"
     },
     "autoload": {
