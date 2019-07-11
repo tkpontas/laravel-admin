@@ -166,6 +166,13 @@ class Form implements Renderable
     protected $isSoftDeletes = false;
 
     /**
+     * redirect callback to list.
+     *
+     * @var []Closure
+     */
+    protected $redirectList = true;
+
+    /**
      * Initialization closure array.
      *
      * @var []Closure
@@ -626,6 +633,8 @@ class Form implements Renderable
         } elseif (request('after-save') == 3) {
             // view resource
             $url = rtrim($resourcesPath, '/')."/{$key}";
+        } elseif($this->redirectList) {
+            $url = rtrim($resourcesPath, '/');
         } else {
             $url = request(Builder::PREVIOUS_URL_KEY) ?: $resourcesPath;
         }
@@ -1417,6 +1426,20 @@ class Form implements Renderable
     public function disableCreatingCheck(bool $disable = true)
     {
         $this->builder()->getFooter()->disableCreatingCheck($disable);
+
+        return $this;
+    }
+
+    /**
+     * Disable Redirect to List.
+     *
+     * @param bool $disable
+     *
+     * @return $this
+     */
+    public function disableRedirectList(bool $disable = true)
+    {
+        $this->redirectList = $disable;
 
         return $this;
     }

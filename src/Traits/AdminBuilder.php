@@ -25,7 +25,7 @@ trait AdminBuilder
      */
     public static function form(\Closure $callback)
     {
-        Form::registerBuiltinFields();
+        //Form::registerBuiltinFields();
 
         return new Form(new static(), $callback);
     }

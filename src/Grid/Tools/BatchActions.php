@@ -122,7 +122,7 @@ class BatchActions extends AbstractTool
         $selected = trans('admin.grid_items_selected');
 
         return <<<EOT
-
+        $.admin.grid.selects = {};
 $('.{$allName}').iCheck({checkboxClass:'icheckbox_minimal-blue'});
 
 $('.{$allName}').on('ifChanged', function(event) {

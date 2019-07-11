@@ -39,7 +39,7 @@ $('{$this->getElementClass()}').on('click', function() {
             return new Promise(function(resolve) {
                 $.ajax({
                     method: 'post',
-                    url: '{$this->resource}/' + $.admin.grid.selected().join(),
+                    url: '{$url}/' + $.admin.grid.selected().join(),
                     data: {
                         _method:'delete',
                         _token:'{$this->getToken()}'
