@@ -24,6 +24,13 @@ trait UploadField
     protected $name = null;
 
     /**
+     * callable name.
+     *
+     * @var null
+     */
+    protected $callableName = null;
+
+    /**
      * Storage instance.
      *
      * @var \Illuminate\Filesystem\Filesystem
@@ -342,6 +349,22 @@ trait UploadField
     }
 
     /**
+     * Set callable name.
+     *
+     * @param callable $name
+     *
+     * @return $this
+     */
+    public function callableName($callableName)
+    {
+        if ($callableName) {
+            $this->callableName = $callableName;
+        }
+
+        return $this;
+    }
+
+    /**
      * Use unique name for store upload file.
      *
      * @return $this
@@ -384,6 +407,10 @@ trait UploadField
 
         if ($this->name instanceof \Closure) {
             return $this->name->call($this, $file);
+        }
+
+        if ($this->callableName instanceof \Closure) {
+            return $this->callableName->call($this, $file);
         }
 
         if (is_string($this->name)) {
