@@ -179,7 +179,7 @@ $("input{$this->getElementClassSelector()}").each(function(index, element){
     if(options['initialPreviewConfig'] && options['initialPreviewConfig'].length > 0){
         options['initialPreviewConfig'][0]['caption'] = $(element).data('initial-caption');
         options['initialPreviewConfig'][0]['type'] = $(element).data('initial-type');
-        options['initialPreviewConfig'][0]['download-url'] = $(element).data('initial-download-url');
+        options['initialPreviewConfig'][0]['downloadUrl'] = $(element).data('initial-download-url');
     }
 
     $(element).fileinput(options);
