@@ -372,11 +372,13 @@ EOT;
     /**
      * {@inheritdoc}
      */
-    public function readonly()
+    public function readonly($readonly = true)
     {
-        $this->config('containerCssClass', 'select2-readonly');
+        if($readonly){
+            $this->config('containerCssClass', 'select2-readonly');
+        }
 
-        return parent::readonly();
+        return parent::readonly($readonly);
     }
 
     /**

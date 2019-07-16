@@ -1052,9 +1052,13 @@ class Field implements Renderable
      *
      * @return Field
      */
-    public function readonly()
+    public function readonly($readonly = true)
     {
-        return $this->attribute('readonly', true);
+        if($readonly){
+            $this->attribute('readonly', true);
+        }
+
+        return $this;
     }
 
     /**
@@ -1062,9 +1066,13 @@ class Field implements Renderable
      *
      * @return Field
      */
-    public function disable()
+    public function disable($disable = true)
     {
-        return $this->attribute('disabled', true);
+        if($disable){
+            $this->attribute('disabled', true);
+        }
+
+        return $this;
     }
 
     /**

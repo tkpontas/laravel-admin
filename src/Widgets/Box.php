@@ -156,6 +156,18 @@ SCRIPT;
     }
 
     /**
+     * Set box tools.
+     *
+     * @return $this
+     */
+    public function tools($html)
+    {
+        $this->tools[] = $html;
+
+        return $this;
+    }
+
+    /**
      * Set box style.
      *
      * @param string $styles
