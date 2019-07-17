@@ -174,7 +174,16 @@ class File extends Field
     protected function setupScripts($options)
     {
         $this->script = <<<EOT
-$("input{$this->getElementClassSelector()}").fileinput({$options});
+$("input{$this->getElementClassSelector()}").each(function(index, element){
+    var options = {$options};
+    if(options['initialPreviewConfig'] && options['initialPreviewConfig'].length > 0){
+        options['initialPreviewConfig'][0]['caption'] = $(element).data('initial-caption');
+        options['initialPreviewConfig'][0]['type'] = $(element).data('initial-type');
+        options['initialPreviewConfig'][0]['downloadUrl'] = $(element).data('initial-download-url');
+    }
+
+    $(element).fileinput(options);
+});
 EOT;
 
         if ($this->fileActionSettings['showRemove']) {
@@ -227,6 +236,10 @@ EOT;
             $this->attribute('data-initial-caption', $this->initialCaption($this->value));
 
             $this->setupPreviewOptions();
+
+            $previewType = $this->guessPreviewType($this->value);
+            $this->attribute('data-initial-type', array_get($previewType, 'type'));
+            $this->attribute('data-initial-download-url', array_get($previewType, 'downloadUrl'));
             /*
              * If has original value, means the form is in edit mode,
              * then remove required rule from rules.

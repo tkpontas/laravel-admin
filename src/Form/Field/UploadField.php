@@ -24,6 +24,13 @@ trait UploadField
     protected $name = null;
 
     /**
+     * callable name.
+     *
+     * @var null
+     */
+    protected $callableName = null;
+
+    /**
      * Storage instance.
      *
      * @var \Illuminate\Filesystem\Filesystem
@@ -88,7 +95,7 @@ trait UploadField
         'html'   => '/^(htm|html)$/i',
         'office' => '/^(docx?|xlsx?|pptx?|pps|potx?)$/i',
         'gdocs'  => '/^(docx?|xlsx?|pptx?|pps|potx?|rtf|ods|odt|pages|ai|dxf|ttf|tiff?|wmf|e?ps)$/i',
-        'text'   => '/^(txt|md|csv|nfo|ini|json|php|js|css|ts|sql)$/i',
+        //'text'   => '/^(txt|md|csv|nfo|ini|json|php|js|css|ts|sql)$/i',
         'video'  => '/^(og?|mp4|webm|mp?g|mov|3gp)$/i',
         'audio'  => '/^(og?|mp3|mp?g|wav)$/i',
         'pdf'    => '/^(pdf)$/i',
@@ -342,6 +349,22 @@ trait UploadField
     }
 
     /**
+     * Set callable name.
+     *
+     * @param callable $name
+     *
+     * @return $this
+     */
+    public function callableName($callableName)
+    {
+        if ($callableName) {
+            $this->callableName = $callableName;
+        }
+
+        return $this;
+    }
+
+    /**
      * Use unique name for store upload file.
      *
      * @return $this
@@ -384,6 +407,10 @@ trait UploadField
 
         if ($this->name instanceof \Closure) {
             return $this->name->call($this, $file);
+        }
+
+        if ($this->callableName instanceof \Closure) {
+            return $this->callableName->call($this, $file);
         }
 
         if (is_string($this->name)) {
