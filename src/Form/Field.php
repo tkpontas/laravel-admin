@@ -1052,13 +1052,25 @@ class Field implements Renderable
      *
      * @return Field
      */
-    public function readonly($readonly = true)
+    public function setReadonly($readonly)
     {
         if($readonly){
-            $this->attribute('readonly', true);
+            return $this->attribute('readonly', true);
+        }else{
+            array_forget($this->attribute, 'readonly');
         }
 
         return $this;
+    }
+
+    /**
+     * Set the field as readonly mode.
+     *
+     * @return Field
+     */
+    public function readonly()
+    {
+        return $this->setReadonly(true);
     }
 
     /**
