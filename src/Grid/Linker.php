@@ -62,6 +62,10 @@ class Linker
     {
     }
 
+    public static function make(){
+        return new Linker();
+    }
+
     public function icon($icon =  null){
         if (!func_num_args()) {
             return $this->icon;

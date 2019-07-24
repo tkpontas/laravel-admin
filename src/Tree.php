@@ -10,6 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 class Tree implements Renderable
 {
     /**
+     * @var string
+     */
+    protected $title;
+
+    /**
      * @var array
      */
     protected $items = [];
@@ -52,6 +57,11 @@ class Tree implements Renderable
     /**
      * @var bool
      */
+    public $useExpandCollapse = true;
+
+    /**
+     * @var bool
+     */
     public $useCreate = true;
 
     /**
@@ -63,6 +73,16 @@ class Tree implements Renderable
      * @var bool
      */
     public $useRefresh = true;
+
+    /**
+     * @var bool
+     */
+    public $useAction = true;
+
+    /**
+     * @var bool
+     */
+    public $useNestable = true;
 
     /**
      * @var array
@@ -149,6 +169,16 @@ class Tree implements Renderable
     }
 
     /**
+     * Set title
+     *
+     * @return void
+     */
+    public function title($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
      * Set nestable options.
      *
      * @param array $options
@@ -160,6 +190,16 @@ class Tree implements Renderable
         $this->nestableOptions = array_merge($this->nestableOptions, $options);
 
         return $this;
+    }
+
+    /**
+     * Disable ExpandCollapse.
+     *
+     * @return void
+     */
+    public function disableExpandCollapse()
+    {
+        $this->useExpandCollapse = false;
     }
 
     /**
@@ -190,6 +230,26 @@ class Tree implements Renderable
     public function disableRefresh()
     {
         $this->useRefresh = false;
+    }
+
+    /**
+     * Disable refresh.
+     *
+     * @return void
+     */
+    public function disableAction()
+    {
+        $this->useAction = false;
+    }
+
+    /**
+     * Disable Nestable event.
+     *
+     * @return void
+     */
+    public function disableNestable()
+    {
+        $this->useNestable = false;
     }
 
     /**
@@ -230,9 +290,12 @@ class Tree implements Renderable
 
         $nestableOptions = json_encode($this->nestableOptions);
 
+        $useNestable = $this->useNestable ? 'true' : 'false';
         return <<<SCRIPT
 
-        $('#{$this->elementId}').nestable($nestableOptions);
+        if({$useNestable}){
+            $('#{$this->elementId}').nestable($nestableOptions);
+        }
 
         $('.tree_branch_delete').click(function() {
             var id = $(this).data('id');
@@ -336,11 +399,14 @@ SCRIPT;
     {
         return [
             'id'         => $this->elementId,
+            'title'      => $this->title,
             'tools'      => $this->tools->render(),
             'items'      => $this->getItems(),
             'useCreate'  => $this->useCreate,
             'useSave'    => $this->useSave,
             'useRefresh' => $this->useRefresh,
+            'useAction' => $this->useAction,
+            'useExpandCollapse' => $this->useExpandCollapse,
         ];
     }
 
@@ -370,6 +436,7 @@ SCRIPT;
             'keyName'        => $this->model->getKeyName(),
             'branchView'     => $this->view['branch'],
             'branchCallback' => $this->branchCallback,
+            'useAction' => $this->useAction,
         ]);
 
         return view($this->view['tree'], $this->variables())->render();

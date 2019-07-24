@@ -1,7 +1,11 @@
 <div class="box">
 
     <div class="box-header">
+        @if($title)
+        <h3 class="box-title">{{$title}}</h3>
+        @endif
 
+        @if($useExpandCollapse)
         <div class="btn-group">
             <a class="btn btn-primary btn-sm {{ $id }}-tree-tools" data-action="expand" title="{{ trans('admin.expand') }}">
                 <i class="fa fa-plus-square-o"></i>&nbsp;{{ trans('admin.expand') }}
@@ -10,6 +14,7 @@
                 <i class="fa fa-minus-square-o"></i>&nbsp;{{ trans('admin.collapse') }}
             </a>
         </div>
+        @endif
 
         @if($useSave)
         <div class="btn-group">

@@ -1052,9 +1052,25 @@ class Field implements Renderable
      *
      * @return Field
      */
+    public function setReadonly($readonly)
+    {
+        if($readonly){
+            return $this->attribute('readonly', true);
+        }else{
+            array_forget($this->attribute, 'readonly');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the field as readonly mode.
+     *
+     * @return Field
+     */
     public function readonly()
     {
-        return $this->attribute('readonly', true);
+        return $this->setReadonly(true);
     }
 
     /**
@@ -1062,9 +1078,13 @@ class Field implements Renderable
      *
      * @return Field
      */
-    public function disable()
+    public function disable($disable = true)
     {
-        return $this->attribute('disabled', true);
+        if($disable){
+            $this->attribute('disabled', true);
+        }
+
+        return $this;
     }
 
     /**

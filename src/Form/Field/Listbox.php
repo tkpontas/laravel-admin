@@ -85,7 +85,7 @@ EOT;
 
         $this->script .= <<<SCRIPT
 
-        const dualListBox = $("{$this->getElementClassSelector()}");
+        var dualListBox = $("{$this->getElementClassSelector()}");
         dualListBox.bootstrapDualListbox($settings);
         var isRequiredField = dualListBox.attr('required');
 

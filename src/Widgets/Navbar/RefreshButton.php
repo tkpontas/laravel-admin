@@ -22,7 +22,7 @@ SCRIPT;
 
         return <<<'EOT'
 <li>
-    <a href="javascript:void(0);" class="container-refresh">
+    <a href="javascript:void(0);" class="container-refresh hidden-xs">
       <i class="fa fa-refresh"></i>
     </a>
 </li>
