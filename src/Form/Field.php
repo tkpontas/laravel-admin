@@ -974,6 +974,10 @@ class Field implements Renderable
     {
         if ($this instanceof Field\MultipleSelect) {
             $value = Arr::get($input, $column);
+            if(is_null($value)){
+                $value = [];
+            }
+            
             Arr::set($input, $column, array_filter($value));
         }
 

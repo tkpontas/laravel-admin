@@ -303,6 +303,10 @@ EOT;
      */
     public function ajax($url, $idField = 'id', $textField = 'text')
     {
+        if(empty($url)){
+            return;
+        }
+
         $configs = array_merge([
             'allowClear'         => true,
             'placeholder'        => $this->label,
@@ -322,7 +326,8 @@ $("{$this->getElementClassSelector()}").select2({
     data: function (params) {
       return {
         q: params.term,
-        page: params.page
+        page: params.page,
+        selectajax: true
       };
     },
     processResults: function (data, params) {
@@ -386,6 +391,7 @@ EOT;
     {
         $configs = array_merge([
             'allowClear'  => true,
+            'language' =>  \App::getLocale(),
             'placeholder' => [
                 'id'   => '',
                 'text' => $this->label,
@@ -417,4 +423,20 @@ EOT;
 
         return parent::render();
     }
+
+    public static function getAssets()
+    {
+        $assets = [
+            'css' => static::$css,
+            'js'  => static::$js,
+        ];
+
+        // add select2 lang file
+        if(in_array(get_called_class(), [Select::class, MultipleSelect::class])){
+            $assets['js'][] = '/vendor/laravel-admin/AdminLTE/plugins/select2/i18n/' . \App::getLocale() . '.js';
+        }
+
+        return $assets;
+    }
+
 }
