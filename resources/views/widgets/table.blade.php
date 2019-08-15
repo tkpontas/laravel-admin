@@ -10,7 +10,7 @@
     @foreach($rows as $row)
     <tr>
         @foreach($row as $item)
-        <td>{!! $item !!}</td>
+        <td {!! count($columnStyle) > $loop->index ? 'style="' . $columnStyle[$loop->index] . '";' : '' !!}>{!! $item !!}</td>
         @endforeach
     </tr>
     @endforeach

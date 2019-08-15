@@ -28,6 +28,11 @@ class Table extends Widget implements Renderable
     protected $style = [];
 
     /**
+     * @var array
+     */
+    protected $columnStyle = [];
+
+    /**
      * Table constructor.
      *
      * @param array $headers
@@ -94,6 +99,20 @@ class Table extends Widget implements Renderable
     }
 
     /**
+     * Set table column style.
+     *
+     * @param array $style
+     *
+     * @return $this
+     */
+    public function setColumnStyle($style = [])
+    {
+        $this->columnStyle = $style;
+
+        return $this;
+    }
+
+    /**
      * Render the table.
      *
      * @return string
@@ -101,10 +120,11 @@ class Table extends Widget implements Renderable
     public function render()
     {
         $vars = [
-            'headers'    => $this->headers,
-            'rows'       => $this->rows,
-            'style'      => $this->style,
-            'attributes' => $this->formatAttributes(),
+            'headers'      => $this->headers,
+            'rows'         => $this->rows,
+            'style'        => $this->style,
+            'columnStyle'  => $this->columnStyle,
+            'attributes'   => $this->formatAttributes(),
         ];
 
         return view($this->view, $vars)->render();

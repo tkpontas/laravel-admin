@@ -264,9 +264,41 @@ class Column
      *
      * @return $this
      */
-    public function width(int $width)
+    public function width($width)
     {
         return $this->style("width: {$width}px;");
+    }
+
+    /**
+     * Set the min-width of column.
+     *
+     * @param int $width
+     *
+     * @return $this
+     */
+    public function minWidth($width)
+    {
+        if(!isset($width)){
+            return $this;
+        }
+
+        return $this->style("min-width: {$width}px;");
+    }
+
+    /**
+     * Set the max-width of column.
+     *
+     * @param int $width
+     *
+     * @return $this
+     */
+    public function maxWidth($width)
+    {
+        if(!isset($width)){
+            return $this;
+        }
+
+        return $this->style("max-width: {$width}px;");
     }
 
     /**

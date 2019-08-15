@@ -327,7 +327,6 @@ $("{$this->getElementClassSelector()}").select2({
       return {
         q: params.term,
         page: params.page,
-        selectajax: true
       };
     },
     processResults: function (data, params) {
