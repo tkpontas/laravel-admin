@@ -166,7 +166,11 @@ class Content implements Renderable
             $row = new Row();
             call_user_func($content, $row);
             $this->addRow($row);
-        } else {
+        }
+        elseif ($content instanceof Row) {
+            $this->addRow($content);
+        }
+        else {
             $this->addRow(new Row($content));
         }
 
