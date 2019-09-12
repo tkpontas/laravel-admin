@@ -1061,7 +1061,7 @@ class Field implements Renderable
         if($readonly){
             return $this->attribute('readonly', true);
         }else{
-            array_forget($this->attribute, 'readonly');
+            Arr::forget($this->attributes, 'readonly');
         }
 
         return $this;
