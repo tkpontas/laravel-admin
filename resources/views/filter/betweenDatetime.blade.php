@@ -1,6 +1,6 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">{{$label}}</label>
-    <div class="col-sm-8" style="width: 390px">
+    <div class="col-sm-8">
         <div class="input-group input-group-sm">
             <div class="input-group-addon">
                 <i class="fa fa-calendar"></i>
@@ -10,4 +10,9 @@
             <input type="text" class="form-control" id="{{$id['end']}}" placeholder="{{$label}}" name="{{$name['end']}}" value="{{ request($name['end'], \Illuminate\Support\Arr::get($value, 'end')) }}">
         </div>
     </div>
+    @if ($nullcheck)
+    <div class="col-sm-2" style="padding-top:3px;">
+        <input type="checkbox" class="isnull-{{$column}}" name="isnull-{{$column}}" value="1" class="minimal"  {{$isnull}} />&nbsp;{{ trans('admin.empty') }}&nbsp;&nbsp;
+    </div>
+    @endif
 </div>

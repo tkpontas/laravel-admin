@@ -322,7 +322,7 @@ class Filter implements Renderable
             if (in_array($column = $filter->getColumn(), $this->layoutOnlyFilterColumns)) {
                 $filter->default(Arr::get($params, $column));
             } else {
-                $conditions[] = $filter->condition($params);
+                $conditions[] = $filter->getCondition($params);
             }
         }
 
@@ -557,6 +557,10 @@ class Filter implements Renderable
         /** @var Collection $columns */
         $columns = collect($this->filters)->map->getColumn()->flatten();
 
+        $isnull_columns = $columns->map(function ($value) {
+            return 'isnull-' . $value;
+        });
+
         $pageKey = 'page';
 
         if ($gridName = $this->model->getGrid()->getName()) {
@@ -572,7 +576,7 @@ class Filter implements Renderable
         });
 
         return $this->fullUrlWithoutQuery(
-            $columns->merge($groupNames)
+            $columns->merge($groupNames)->merge($isnull_columns)
         );
     }
 

@@ -102,4 +102,5 @@ return [
     'menu_titles'           => [],
     'prev'                   => '前へ',
     'next'                   => '次へ',
+    'empty'                  => '空',
 ];

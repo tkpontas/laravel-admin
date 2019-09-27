@@ -978,6 +978,10 @@ class Field implements Renderable
                 $value = [];
             }
             
+            if(is_string($value)){
+                $value = explode(',', $value);
+            }
+
             Arr::set($input, $column, array_filter($value));
         }
 

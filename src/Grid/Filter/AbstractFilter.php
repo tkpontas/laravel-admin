@@ -2,6 +2,7 @@
 
 namespace Encore\Admin\Grid\Filter;
 
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Grid\Filter;
 use Encore\Admin\Grid\Filter\Presenter\Checkbox;
 use Encore\Admin\Grid\Filter\Presenter\DateTime;
@@ -48,6 +49,16 @@ abstract class AbstractFilter
      * @var array|string
      */
     protected $value;
+
+    /**
+     * @var bool
+     */
+    protected $isnull = false;
+
+    /**
+     * @var bool
+     */
+    protected $nullcheck = false;
 
     /**
      * @var array|string
@@ -223,6 +234,26 @@ abstract class AbstractFilter
      *
      * @return array|mixed|null
      */
+    public function getCondition($inputs)
+    {
+        $isnull = Arr::get($inputs, 'isnull-'. $this->column);
+
+        if (isset($isnull)) {
+            $this->isnull = true;
+            $this->query = 'whereNull';
+            return $this->buildCondition($this->column);
+        }
+
+        return $this->condition($inputs);
+    }
+
+    /**
+     * Get query condition from filter.
+     *
+     * @param array $inputs
+     *
+     * @return array|mixed|null
+     */
     public function condition($inputs)
     {
         $value = Arr::get($inputs, $this->column);
@@ -338,6 +369,17 @@ abstract class AbstractFilter
     public function year()
     {
         return $this->datetime(['format' => 'YYYY']);
+    }
+
+    /**
+     * show isnull condition.
+     *
+     * @return bool
+     */
+    public function showNullCheck()
+    {
+        $this->nullcheck = true;
+        return $this;
     }
 
     /**
@@ -468,8 +510,11 @@ abstract class AbstractFilter
         return array_merge([
             'id'        => $this->id,
             'name'      => $this->formatName($this->column),
+            'column'    => $this->column,
             'label'     => $this->label,
             'value'     => $this->value ?: $this->defaultValue,
+            'nullcheck' => $this->nullcheck,
+            'isnull'    => $this->isnull? 'checked': '',
             'presenter' => $this->presenter(),
         ], $this->presenter()->variables());
     }
@@ -481,6 +526,9 @@ abstract class AbstractFilter
      */
     public function render()
     {
+        $script = "$('.isnull-{$this->column}').iCheck({checkboxClass:'icheckbox_minimal-blue'});";
+        Admin::script($script);
+
         return view($this->view, $this->variables());
     }
 
