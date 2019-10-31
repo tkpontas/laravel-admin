@@ -31,6 +31,13 @@ class HasMany extends Field
     protected $builder = null;
 
     /**
+     * relatedValue.
+     *
+     * @var array
+     */
+    protected $relatedValue = null;
+
+    /**
      * Form data.
      *
      * @var array
@@ -196,6 +203,12 @@ class HasMany extends Field
         return $attributes;
     }
 
+    public function setRelatedValue($relatedValue){
+        $this->relatedValue = $relatedValue;
+
+        return $this;
+    }
+
     /**
      * Reset input key for validation.
      *
@@ -293,7 +306,9 @@ class HasMany extends Field
 
         call_user_func($builder, $form);
 
-        $form->hidden($this->getKeyName());
+        if(!is_null($key = $this->getKeyName())){
+            $form->hidden($key);
+        }
 
         $form->hidden(NestedForm::REMOVE_FLAG_NAME)->default(0)->addElementClass(NestedForm::REMOVE_FLAG_CLASS);
 
@@ -359,8 +374,17 @@ class HasMany extends Field
      */
     protected function buildRelatedForms()
     {
+        $forms = [];
+
+        if(!is_null($this->relatedValue)){
+            foreach ($this->relatedValue as $index => $data) {
+                $forms[$index] = $this->buildNestedForm($this->column, $this->builder)
+                    ->fill($data, $index);
+            }
+        }
+
         if (is_null($this->form)) {
-            return [];
+            return $forms;
         }
 
         $model = $this->form->model();
@@ -371,8 +395,6 @@ class HasMany extends Field
             throw new \Exception('hasMany field must be a HasMany or MorphMany relation.');
         }
 
-        $forms = [];
-
         /*
          * If redirect from `exception` or `validation error` page.
          *
@@ -381,15 +403,22 @@ class HasMany extends Field
          * Else get data from database.
          */
         if ($values = old($this->column)) {
+            $index = 0;
             foreach ($values as $key => $data) {
                 if ($data[NestedForm::REMOVE_FLAG_NAME] == 1) {
                     continue;
                 }
 
+                // If has value, reset forms
+                if($index === 0){
+                    $forms = [];
+                }
+                
                 $model = $relation->getRelated()->replicate()->forceFill($data);
 
-                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model)
-                    ->fill($data);
+                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model, $index)
+                    ->fill($data, $index);
+                    $index++;
             }
         } else {
             foreach ($this->value as $index => $data) {
@@ -399,10 +428,15 @@ class HasMany extends Field
                     $key = 'new_' . ($index + 1);
                 }
 
+                // If has value, reset forms
+                if($index === 0){
+                    $forms = [];
+                }
+                
                 $model = $relation->getRelated()->replicate()->forceFill($data);
 
                 $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model, $index)
-                    ->fill($data);
+                    ->fill($data, $index);
             }
         }
 
@@ -420,7 +454,7 @@ class HasMany extends Field
     {
         $method = 'setupScriptFor'.ucfirst($this->viewMode).'View';
 
-        call_user_func([$this, $method], $script);
+        return call_user_func([$this, $method], $script);
     }
 
     /**

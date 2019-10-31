@@ -304,7 +304,7 @@ EOT;
     public function ajax($url, $idField = 'id', $textField = 'text')
     {
         if(empty($url)){
-            return;
+            return $this;
         }
 
         $configs = array_merge([

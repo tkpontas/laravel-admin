@@ -10,6 +10,16 @@ abstract class Presenter
      * @var AbstractFilter
      */
     protected $filter;
+    
+    /**
+     * Get filter.
+     *
+     * @param AbstractFilter $filter
+     */
+    public function getFilter()
+    {
+        return $this->filter;
+    }
 
     /**
      * Set parent filter.

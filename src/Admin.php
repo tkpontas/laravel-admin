@@ -393,7 +393,11 @@ class Admin
 
         $this->fireRegisteredCallbacks();
 
-        require config('admin.bootstrap', admin_path('bootstrap.php'));
+        
+        $file = config('admin.bootstrap', admin_path('bootstrap.php'));
+        if (\File::exists($file)) {
+            require_once $file;
+        }
 
         $assets = Form::collectFieldAssets();
 

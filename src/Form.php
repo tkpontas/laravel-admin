@@ -605,6 +605,125 @@ class Form implements Renderable
     }
 
     /**
+     * Handle validation update.
+     *
+     * @param int  $id
+     * @param null $data
+     *
+     * @return bool|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|mixed|null|Response
+     */
+    public function validationUpdate($id, $data = null)
+    {
+        $data = ($data) ?: request()->all();
+
+        $isEditable = $this->isEditable($data);
+
+        if (($data = $this->handleColumnUpdates($id, $data)) instanceof Response) {
+            return $data;
+        }
+
+        /* @var Model $this->model */
+        $builder = $this->model();
+
+        if ($this->isSoftDeletes) {
+            $builder = $builder->withTrashed();
+        }
+
+        $this->model = $builder->with($this->getRelations())->findOrFail($id);
+
+        $this->setFieldOriginalValue();
+
+        // Handle validation errors.
+        if ($validationMessages = $this->validationMessages($data)) {
+            if (!$isEditable) {
+                return back()->withInput()->withErrors($validationMessages);
+            }
+
+            return response()->json(['errors' => Arr::dot($validationMessages->getMessages())], 422);
+        }
+
+        if (($response = $this->prepare($data)) instanceof Response) {
+            return $response;
+        }
+
+        DB::transaction(function () {
+            $updates = $this->prepareUpdate($this->updates);
+
+            foreach ($updates as $column => $value) {
+                /* @var Model $this->model */
+                $this->model->setAttribute($column, $value);
+            }
+
+            $this->model->save();
+
+            $this->updateRelation($this->relations);
+            
+            try{
+                if (($response = $this->callSavedInTransaction()) instanceof Response) {
+                    return $response;
+                }    
+            }catch(\Exception $ex){
+                DB::rollback();
+                throw $ex;
+            }
+        });
+
+        if (($result = $this->callSaved()) instanceof Response) {
+            return $result;
+        }
+
+        if ($response = $this->ajaxResponse(trans('admin.update_succeeded'))) {
+            return $response;
+        }
+
+        return $this->redirectAfterUpdate($id);
+    }
+
+    /**
+     * Handle update before validation.
+     *
+     * @param int  $id
+     * @param null $data
+     *
+     * @return bool|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|mixed|null|Response
+     */
+    public function setupUpdate($id, $data = null)
+    {
+        $data = ($data) ?: request()->all();
+
+        $isEditable = $this->isEditable($data);
+
+        if (($data = $this->handleColumnUpdates($id, $data)) instanceof Response) {
+            return $data;
+        }
+
+        /* @var Model $this->model */
+        $builder = $this->model();
+
+        if ($this->isSoftDeletes) {
+            $builder = $builder->withTrashed();
+        }
+
+        $this->model = $builder->with($this->getRelations())->findOrFail($id);
+
+        $this->setFieldOriginalValue();
+
+        // Handle validation errors.
+        if ($validationMessages = $this->validationMessages($data)) {
+            return [
+                'validationMessages' => $validationMessages,
+                'result' => false,
+            ];
+        }
+
+        return [
+            'builder' => $builder,
+            'data' => $data,
+            'result' => true,
+        ];
+    }
+
+    /**
      * Get RedirectResponse after store.
      *
      * @return \Illuminate\Http\RedirectResponse

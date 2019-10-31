@@ -310,6 +310,10 @@ class NestedForm
                 $value = $field->prepare($value);
             }
 
+            if (method_exists($field, 'prepareRecord')) {
+                $value = $field->prepareRecord($value, $record);
+            }
+
             if (($field instanceof \Encore\Admin\Form\Field\Hidden) || $value != $field->original()) {
                 if (is_array($columns)) {
                     foreach ($columns as $name => $column) {
@@ -382,10 +386,11 @@ class NestedForm
      *
      * @return $this
      */
-    public function fill(array $data)
+    public function fill(array $data, $index)
     {
         /* @var Field $field */
         foreach ($this->fields() as $field) {
+            $field->setIndex($index);
             $field->fill($data);
         }
 

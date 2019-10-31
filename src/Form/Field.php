@@ -71,6 +71,13 @@ class Field implements Renderable
     protected $column = '';
 
     /**
+     * HasMany index.
+     *
+     * @var int
+     */
+    protected $index;
+
+    /**
      * Form element name.
      *
      * @var string
@@ -383,6 +390,17 @@ class Field implements Renderable
         $this->elementName = $name;
 
         return $this;
+    }
+
+    /**
+     * Get form element name.
+     *
+     * @return string
+     *
+     */
+    public function getElementName()
+    {
+        return $this->elementName ?: $this->formatName($this->column);
     }
 
     /**
@@ -1377,6 +1395,28 @@ class Field implements Renderable
     }
 
     /**
+     * @return int
+     */
+    public function getIndex()
+    : ?int
+    {
+        return $this->index;
+    }
+
+    /**
+     * @param int $index
+     *
+     * @return self
+     */
+    public function setIndex(?int $index)
+    : self
+    {
+        $this->index = $index;
+
+        return $this;
+    }
+
+    /**
      * Get the view variables of this field.
      *
      * @return array
@@ -1385,7 +1425,7 @@ class Field implements Renderable
     {
         return array_merge($this->variables, [
             'id'          => $this->id,
-            'name'        => $this->elementName ?: $this->formatName($this->column),
+            'name'        => $this->getElementName(),
             'help'        => $this->help,
             'class'       => $this->getElementClassString(),
             'value'       => $this->value(),

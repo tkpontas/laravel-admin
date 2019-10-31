@@ -377,6 +377,7 @@ class Show implements Renderable
     public function __call($method, $arguments = [])
     {
         $label = isset($arguments[0]) ? $arguments[0] : ucfirst($method);
+        $column_no = isset($arguments[1]) ? $arguments[1] : null;
 
         if ($field = $this->handleGetMutatorField($method, $label)) {
             return $field;
@@ -386,7 +387,7 @@ class Show implements Renderable
             return $field;
         }
 
-        return $this->addField($method, $label);
+        return $this->addField($method, $label, $column_no);
     }
 
     /**
