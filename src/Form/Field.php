@@ -252,6 +252,11 @@ class Field implements Renderable
     /**
      * @var array
      */
+    protected $fieldClass = [];
+
+    /**
+     * @var array
+     */
     protected $groupClass = [];
 
     /**
@@ -1183,12 +1188,12 @@ class Field implements Renderable
         if ($this->horizontal) {
             return [
                 'label'      => "col-sm-{$this->width['label']} {$this->getLabelClass()}",
-                'field'      => "col-sm-{$this->width['field']}",
+                'field'      => "col-sm-{$this->width['field']} {$this->getFieldClass()}",
                 'form-group' => $this->getGroupClass(true),
             ];
         }
 
-        return ['label' => "{$this->getLabelClass()}", 'field' => '', 'form-group' => ''];
+        return ['label' => "{$this->getLabelClass()}", 'field' => "{$this->getFieldClass()}", 'form-group' => ''];
     }
 
     /**
@@ -1390,6 +1395,30 @@ class Field implements Renderable
     : self
     {
         $this->labelClass = $labelClass;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFieldClass()
+    : string
+    {
+        return implode(' ', $this->fieldClass);
+    }
+
+    /**
+     * @param array $fieldClass
+     *
+     * @return self
+     */
+    public function setFieldClass($fieldClass)
+    : self
+    {
+        $this->fieldClass = array_merge($this->fieldClass, (array) $fieldClass);
+
+        $this->fieldClass = array_unique($this->fieldClass);
 
         return $this;
     }
