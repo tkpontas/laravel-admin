@@ -304,7 +304,7 @@ class HasMany extends Field
 
         $form->setForm($this->form);
 
-        call_user_func($builder, $form);
+        call_user_func_array($builder, [$form, $model]);
 
         if(!is_null($key = $this->getKeyName())){
             $form->hidden($key);
@@ -378,7 +378,7 @@ class HasMany extends Field
 
         if(!is_null($this->relatedValue)){
             foreach ($this->relatedValue as $index => $data) {
-                $forms[$index] = $this->buildNestedForm($this->column, $this->builder)
+                $forms[$index] = $this->buildNestedForm($this->column, $this->builder, null, $index)
                     ->fill($data, $index);
             }
         }
