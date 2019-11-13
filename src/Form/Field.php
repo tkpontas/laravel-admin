@@ -296,6 +296,21 @@ class Field implements Renderable
     }
 
     /**
+     * Get form dotted name.
+     *
+     * @return string
+     *
+     */
+    public static function getDotName($keyname)
+    {
+        $keyname = str_replace('[]', '.', $keyname);
+        $keyname = str_replace('[', '.', $keyname);
+        $keyname = str_replace(']', '', $keyname);
+
+        return $keyname;
+    }
+
+    /**
      * Format the field column name.
      *
      * @param string $column
@@ -1143,6 +1158,47 @@ class Field implements Renderable
     }
 
     /**
+     * Get old function result. Contains value.
+     *
+     * @return string
+     */
+    public function getOld()
+    {
+        $value = $this->value();
+
+        if(is_array($this->column)){    
+            $olds = [];
+            foreach($this->column as $key => $c){
+                $elementNames = $this->getElementName();
+                $elementName = is_array($elementNames) ? array_get($elementNames, $key) : $elementNames;
+
+                $keyname = static::getDotName($elementName);
+                $v = array_get((is_null($value) ? [] : (array)$value), $key);
+
+                if(!is_null($old = old($c, $v))){
+                    $olds[$key] = $old;
+                }
+        
+                // replace element name
+                $olds[$key] = old("$keyname.$key", $v);
+            }
+
+            return $olds;
+        }else{
+            $keyname = static::getDotName($this->getElementName());
+    
+            $v = $value;
+
+            if(!is_null($old = old($this->column, $v))){
+                return $old;
+            }
+    
+            // replace element name
+            return old($keyname, $v);
+        }
+    }
+
+    /**
      * Prepare for a field value before update or insert.
      *
      * @param $value
@@ -1464,6 +1520,7 @@ class Field implements Renderable
             'errorKey'    => $this->getErrorKey(),
             'attributes'  => $this->formatAttributes(),
             'placeholder' => $this->getPlaceholder(),
+            'old' => $this->getOld(),
         ]);
     }
 
