@@ -22,7 +22,17 @@ trait HasAssets
     /**
      * @var array
      */
+    public static $csslast = [];
+
+    /**
+     * @var array
+     */
     public static $js = [];
+
+    /**
+     * @var array
+     */
+    public static $jslast = [];
 
     /**
      * @var array
@@ -106,6 +116,8 @@ trait HasAssets
             $css = array_merge(static::$css, static::baseCss());
         }
 
+        $css = array_merge($css, static::$csslast);
+
         $css = array_filter(array_unique($css));
 
         return view('admin::partials.css', compact('css'));
@@ -146,6 +158,8 @@ trait HasAssets
             $js = array_merge(static::baseJs(), static::$js);
         }
 
+        $js = array_merge($js, static::$jslast);
+
         $js = array_filter(array_unique($js));
 
         return view('admin::partials.js', compact('js'));
@@ -179,6 +193,30 @@ trait HasAssets
         }
 
         return static::$baseJs;
+    }
+
+    /**
+     * Add css at end of array.
+     *
+     * @param null $css
+     *
+     * @return array|String
+     */
+    public static function csslast($css)
+    {
+        return self::$csslast = array_merge(self::$csslast, (array) $css);
+    }
+
+    /**
+     * Add js at end of array.
+     *
+     * @param null $js
+     *
+     * @return array|String
+     */
+    public static function jslast($js)
+    {
+        return self::$jslast = array_merge(self::$jslast, (array) $js);
     }
 
     /**
