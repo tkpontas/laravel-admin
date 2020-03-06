@@ -35,6 +35,11 @@ trait ModelTree
     protected $queryCallback;
 
     /**
+     * @var \Closure
+     */
+    protected $getCallback;
+
+    /**
      * Get children of current node.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -127,6 +132,20 @@ trait ModelTree
     }
 
     /**
+     * Set get callback to model.
+     *
+     * @param \Closure|null $query
+     *
+     * @return $this
+     */
+    public function getCallback(\Closure $get = null)
+    {
+        $this->getCallback = $get;
+
+        return $this;
+    }
+
+    /**
      * Format data to tree like array.
      *
      * @return array
@@ -183,7 +202,13 @@ trait ModelTree
             $self = call_user_func($this->queryCallback, $self);
         }
 
-        return $self->orderByRaw($byOrder)->get()->toArray();
+        $items = $self->orderByRaw($byOrder)->get();
+        
+        if ($this->getCallback instanceof \Closure) {
+            $items = call_user_func($this->getCallback, $items);
+        }
+
+        return $items->toArray();
     }
 
     /**

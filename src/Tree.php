@@ -35,6 +35,11 @@ class Tree implements Renderable
     protected $queryCallback;
 
     /**
+     * @var \Closure
+     */
+    protected $getCallback;
+
+    /**
      * View of tree to render.
      *
      * @var string
@@ -164,6 +169,20 @@ class Tree implements Renderable
     public function query(\Closure $callback)
     {
         $this->queryCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Set get callback to model.
+     *
+     * @param \Closure|null $query
+     *
+     * @return $this
+     */
+    public function getCallback(\Closure $get = null)
+    {
+        $this->getCallback = $get;
 
         return $this;
     }
@@ -387,7 +406,10 @@ SCRIPT;
      */
     public function getItems()
     {
-        return $this->model->withQuery($this->queryCallback)->toTree();
+        return $this->model
+            ->withQuery($this->queryCallback)
+            ->getCallback($this->getCallback)
+            ->toTree();
     }
 
     /**
