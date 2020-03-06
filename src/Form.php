@@ -360,6 +360,7 @@ class Form implements Renderable
                 'message' => trans('admin.delete_succeeded'),
             ];
         } catch (\Exception $exception) {
+            \Log::error($exception);
             $response = [
                 'status'  => false,
                 'message' => $exception->getMessage() ?: trans('admin.delete_failed'),
@@ -427,6 +428,7 @@ class Form implements Renderable
                     return $response;
                 }    
             }catch(\Exception $ex){
+                \Log::error($ex);
                 DB::rollback();
                 throw $ex;
             }
@@ -1617,6 +1619,7 @@ class Form implements Renderable
         try {
             return $this->builder->render();
         } catch (\Exception $e) {
+            \Log::error($e);
             return Handler::renderException($e);
         }
     }
