@@ -129,6 +129,11 @@ class Column
     protected $displayCallbacks = [];
 
     /**
+     * @var []Closure
+     */
+    protected $displayEscapeCallbacks = [];
+
+    /**
      * Displayers for grid column.
      *
      * @var array
@@ -425,6 +430,7 @@ class Column
 
     /**
      * Add a display callback.
+     * *PLEASE CALL ONLY SHOWING AS HTML.
      *
      * @param Closure $callback
      *
@@ -433,6 +439,20 @@ class Column
     public function display(Closure $callback)
     {
         $this->displayCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Add a display callback. Execute escape.
+     *
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function displayEscape(Closure $callback)
+    {
+        $this->displayEscapeCallbacks[] = $callback;
 
         return $this;
     }
@@ -643,6 +663,16 @@ class Column
     }
 
     /**
+     * If has display callbacks.
+     *
+     * @return bool
+     */
+    protected function hasDisplayEscapeCallbacks()
+    {
+        return !empty($this->displayEscapeCallbacks);
+    }
+
+    /**
      * Call all of the "display" callbacks column.
      *
      * @param mixed $value
@@ -667,6 +697,33 @@ class Column
         }
 
         return $value;
+    }
+
+    /**
+     * Call all of the "display" callbacks column.
+     *
+     * @param mixed $value
+     * @param int   $key
+     *
+     * @return mixed
+     */
+    protected function callDisplayEscapeCallbacks($value, $key)
+    {
+        foreach ($this->displayEscapeCallbacks as $callback) {
+            $previous = $value;
+
+            $callback = $this->bindOriginalRowModel($callback, $key);
+            $value = call_user_func_array($callback, [$value, $this]);
+
+            if (($value instanceof static) &&
+                ($last = array_pop($this->displayCallbacks))
+            ) {
+                $last = $this->bindOriginalRowModel($last, $key);
+                $value = call_user_func($last, $previous);
+            }
+        }
+
+        return htmlentities($value);
     }
 
     /**
@@ -706,6 +763,10 @@ class Column
 
             if ($this->hasDisplayCallbacks()) {
                 $value = $this->callDisplayCallbacks($this->original, $key);
+                Arr::set($row, $this->name, $value);
+            }
+            if ($this->hasDisplayEscapeCallbacks()) {
+                $value = $this->callDisplayEscapeCallbacks($this->original, $key);
                 Arr::set($row, $this->name, $value);
             }
         }
