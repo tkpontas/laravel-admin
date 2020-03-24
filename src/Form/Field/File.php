@@ -5,6 +5,7 @@ namespace Encore\Admin\Form\Field;
 use Encore\Admin\Form\Field;
 use Illuminate\Support\Arr;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Closure;
 
 class File extends Field
 {
@@ -28,6 +29,13 @@ class File extends Field
         '/vendor/laravel-admin/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js',
         '/vendor/laravel-admin/bootstrap-fileinput/js/fileinput.min.js?v=4.5.2',
     ];
+
+    /**
+     * Caption.
+     *
+     * @var \Closure
+     */
+    protected $caption = null;
 
     /**
      * Create a new File instance.
@@ -145,6 +153,20 @@ class File extends Field
     }
 
     /**
+     * set caption.
+     *
+     * @param \Closure $caption
+     *
+     * @return $this
+     */
+    public function caption($caption)
+    {
+        $this->caption = $caption;
+
+        return $this;
+    }
+
+    /**
      * Initialize the caption.
      *
      * @param string $caption
@@ -153,6 +175,9 @@ class File extends Field
      */
     protected function initialCaption($caption)
     {
+        if($this->caption instanceof Closure){
+            return $this->caption->call($this, $caption);
+        }
         return basename($caption);
     }
 
