@@ -9,7 +9,7 @@
 
         @if(in_array('submit', $buttons))
         <div class="btn-group pull-right">
-            <button type="submit" class="btn btn-primary">{{ trans('admin.submit') }}</button>
+            <button id="admin-submit" type="submit" class="btn btn-primary">{{ trans('admin.submit') }}</button>
         </div>
 
         @if(in_array('continue_editing', $checkboxes))
