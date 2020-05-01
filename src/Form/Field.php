@@ -265,6 +265,11 @@ class Field implements Renderable
     protected $callback;
 
     /**
+     * @var \Closure
+     */
+    protected $callbackValue;
+
+    /**
      * @var bool
      */
     public $isJsonType = false;
@@ -766,7 +771,7 @@ class Field implements Renderable
      *
      * @return void
      */
-    protected function removeRule($rule)
+    public function removeRule($rule)
     {
         if (is_array($this->rules)) {
             array_delete($this->rules, $rule);
@@ -1619,6 +1624,18 @@ class Field implements Renderable
     }
 
     /**
+     * @param \Closure $callback
+     *
+     * @return \Encore\Admin\Form\Field
+     */
+    public function callbackValue(Closure $callback)
+    {
+        $this->callbackValue = $callback;
+
+        return $this;
+    }
+
+    /**
      * Render this filed.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
@@ -1627,6 +1644,10 @@ class Field implements Renderable
     {
         if (!$this->shouldRender()) {
             return '';
+        }
+
+        if ($this->callbackValue instanceof Closure) {
+            $this->value = $this->callbackValue->call($this, $this->value);
         }
 
         if ($this->callback instanceof Closure) {

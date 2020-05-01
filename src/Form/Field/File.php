@@ -256,6 +256,10 @@ EOT;
 
         $this->setupDefaultOptions();
 
+        if ($this->callbackValue instanceof Closure) {
+            $this->value = $this->callbackValue->call($this, $this->value);
+        }
+
         if (!empty($this->value)) {
             $this->attribute('data-initial-preview', $this->preview());
             $this->attribute('data-initial-caption', $this->initialCaption($this->value));
