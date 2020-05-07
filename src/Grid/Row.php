@@ -80,6 +80,27 @@ class Row
         return '';
     }
 
+
+    /**
+     * Get column classes.
+     *
+     * @param string $column name
+     *
+     * @return string
+     */
+    public function getColumnClasses($column)
+    {
+        $classes = Column::getClasses($column) ?? [];
+        if(is_string($classes))
+            $classes = [$classes];
+        
+        $classes[] = "column-$column";
+        
+        return collect($classes)->unique()->map(function($class){
+            return e($class);
+        })->implode(' ');
+    }
+
     /**
      * Format attributes to html.
      *
@@ -91,7 +112,7 @@ class Row
     {
         $attrArr = [];
         foreach ($attributes as $name => $val) {
-            $attrArr[] = "$name=\"$val\"";
+            $attrArr[] = $name.'="'.e($val).'"';
         }
 
         return implode(' ', $attrArr);

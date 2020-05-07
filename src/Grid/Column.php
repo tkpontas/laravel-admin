@@ -153,6 +153,11 @@ class Column
     protected static $htmlAttributes = [];
 
     /**
+     * @var array
+     */
+    protected static $classes = [];
+
+    /**
      * @var Model
      */
     protected static $model;
@@ -248,6 +253,32 @@ class Column
     public static function getAttributes($name)
     {
         return Arr::get(static::$htmlAttributes, $name, '');
+    }
+
+    /**
+     * Set column classes.
+     *
+     * @param array $classes
+     *
+     * @return $this
+     */
+    public function setClasses($classes = [])
+    {
+        static::$classes[$this->name] = $classes;
+
+        return $this;
+    }
+
+    /**
+     * Get column classes.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public static function getClasses($name)
+    {
+        return Arr::get(static::$classes, $name, []);
     }
 
     /**

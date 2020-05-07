@@ -2,7 +2,9 @@
     <thead>
     <tr>
         @foreach($headers as $header)
-            <th>{{ $header }}</th>
+            <th
+                {!! count($columnClasses) > $loop->index ? 'class="' . $columnClasses[$loop->index] . '"' : '' !!}
+            >{{ $header }}</th>
         @endforeach
     </tr>
     </thead>
@@ -10,7 +12,10 @@
     @foreach($rows as $row)
     <tr>
         @foreach($row as $item)
-        <td {!! count($columnStyle) > $loop->index ? 'style="' . $columnStyle[$loop->index] . '";' : '' !!}>{!! $item !!}</td>
+        <td 
+            {!! count($columnStyle) > $loop->index ? 'style="' . $columnStyle[$loop->index] . '"' : '' !!}
+            {!! count($columnClasses) > $loop->index ? 'class="' . $columnClasses[$loop->index] . '"' : '' !!}
+        >{!! $item !!}</td>
         @endforeach
     </tr>
     @endforeach

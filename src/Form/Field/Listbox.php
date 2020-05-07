@@ -12,11 +12,11 @@ class Listbox extends MultipleSelect
     protected $settings = [];
 
     protected static $css = [
-        '/vendor/laravel-admin/bootstrap-duallistbox/dist/bootstrap-duallistbox.min.css',
+        '/vendor/laravel-admin/bootstrap-duallistbox/dist/bootstrap-duallistbox.min.css?v=3.0.9',
     ];
 
     protected static $js = [
-        '/vendor/laravel-admin/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.min.js',
+        '/vendor/laravel-admin/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.min.js?v=3.0.9',
     ];
 
     public function settings(array $settings)
@@ -79,6 +79,8 @@ EOT;
             'infoTextFiltered'  => trans('admin.listbox.filtered'),
             'filterTextClear'   => trans('admin.listbox.filter_clear'),
             'filterPlaceHolder' => trans('admin.listbox.filter_placeholder'),
+            // Sometimes, click not working, so double click is false
+            'moveOnDoubleClick' => false,
         ]);
 
         $settings = json_encode($settings);
