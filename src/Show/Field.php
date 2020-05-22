@@ -619,7 +619,8 @@ HTML;
             $this->showAs->each(function ($callable) {
                 $this->value = $callable->call(
                     $this->parent->getModel(),
-                    $this->value
+                    $this->value,
+                    $this->parent->getModel()
                 );
             });
         }

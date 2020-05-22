@@ -351,6 +351,19 @@ class Form implements Renderable
     }
 
     /**
+     * Get form's script
+     *
+     * @return void
+     */
+    public function getScript()
+    {
+        return collect($this->fields)->map(function ($field) {
+            /* @var Field $field  */
+            return $field->getScript();
+        })->filter()->values()->toArray();
+    }
+
+    /**
      * Get variables for render form.
      *
      * @return array
