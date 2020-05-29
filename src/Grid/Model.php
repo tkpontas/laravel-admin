@@ -665,10 +665,24 @@ class Model
      */
     public function __call($method, $arguments)
     {
-        $this->queries->push([
-            'method'    => $method,
-            'arguments' => $arguments,
-        ]);
+        $match = false;
+
+        // if matched method name, update
+        $this->queries = $this->queries->map(function($query) use($method, $arguments, &$match){
+            if($query['method'] == $method){
+                $query['arguments'] = $arguments;
+                $match = true;
+            }
+
+            return $query;
+        });
+
+        if(!$match){
+            $this->queries->push([
+                'method'    => $method,
+                'arguments' => $arguments,
+            ]);
+        }
 
         return $this;
     }
