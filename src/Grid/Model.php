@@ -669,7 +669,10 @@ class Model
 
         // if matched method name, update
         $this->queries = $this->queries->map(function($query) use($method, $arguments, &$match){
-            if($query['method'] == $method){
+            // rewrite value target methods
+            $rewriteTargets = ['paginate'];
+            
+            if(is_string($method) && $query['method'] == $method && in_array($method, $rewriteTargets)){
                 $query['arguments'] = $arguments;
                 $match = true;
             }
