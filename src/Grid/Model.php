@@ -665,10 +665,27 @@ class Model
      */
     public function __call($method, $arguments)
     {
-        $this->queries->push([
-            'method'    => $method,
-            'arguments' => $arguments,
-        ]);
+        $match = false;
+
+        // if matched method name, update
+        $this->queries = $this->queries->map(function($query) use($method, $arguments, &$match){
+            // rewrite value target methods
+            $rewriteTargets = ['paginate'];
+            
+            if(is_string($method) && $query['method'] == $method && in_array($method, $rewriteTargets)){
+                $query['arguments'] = $arguments;
+                $match = true;
+            }
+
+            return $query;
+        });
+
+        if(!$match){
+            $this->queries->push([
+                'method'    => $method,
+                'arguments' => $arguments,
+            ]);
+        }
 
         return $this;
     }
