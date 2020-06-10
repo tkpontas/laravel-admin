@@ -183,10 +183,12 @@ class EmbeddedForm
     protected function setFieldOriginalValue($key)
     {
         if (array_key_exists($key, $this->original)) {
-            $values = $this->original[$key];
-
-            $this->fields->each(function (Field $field) use ($values) {
-                $field->setOriginal($values);
+            
+            $this->fields->each(function (Field $field) use ($key) {
+                if($field->column() === $key){
+                    $field->setOriginal($this->original);
+                    return false;
+                }
             });
         }
     }
