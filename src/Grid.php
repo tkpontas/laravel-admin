@@ -176,6 +176,13 @@ class Grid
     protected static $initCallbacks = [];
 
     /**
+     * Value after getting from database.
+     *
+     * @var
+     */
+    protected $originalCollection;
+
+    /**
      * Create a new grid instance.
      *
      * @param Eloquent $model
@@ -298,6 +305,15 @@ class Grid
     public function getKeyName()
     {
         return $this->keyName ?: 'id';
+    }
+
+    /**
+     * Get original Collection
+     *
+     * @return Collection|null
+     */
+    public function getOriginalCollection(){
+        return $this->originalCollection;
     }
 
     /**
@@ -591,6 +607,7 @@ class Grid
 
         Column::setOriginalGridModels($collection);
 
+        $this->originalCollection = $collection;
         $data = $collection->toArray();
 
         $this->columns->map(function (Column $column) use (&$data) {
