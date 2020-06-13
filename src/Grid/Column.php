@@ -717,7 +717,7 @@ class Column
             $previous = $value;
 
             $callback = $this->bindOriginalRowModel($callback, $key);
-            $value = call_user_func_array($callback, [$value, $this]);
+            $value = call_user_func_array($callback, [$value, $this, $this->getRowModel($key)]);
 
             if (($value instanceof static) &&
                 ($last = array_pop($this->displayCallbacks))
@@ -744,7 +744,7 @@ class Column
             $previous = $value;
 
             $callback = $this->bindOriginalRowModel($callback, $key);
-            $value = call_user_func_array($callback, [$value, $this]);
+            $value = call_user_func_array($callback, [$value, $this, $this->getRowModel($key)]);
 
             if (($value instanceof static) &&
                 ($last = array_pop($this->displayCallbacks))
@@ -767,9 +767,19 @@ class Column
      */
     protected function bindOriginalRowModel(Closure $callback, $key)
     {
-        $rowModel = static::$originalGridModels[$key];
+        $rowModel = $this->getRowModel($key);
 
         return $callback->bindTo($rowModel);
+    }
+
+    /**
+     * Get row model
+     *
+     * @param string $key
+     * @return ?Model
+     */
+    protected function getRowModel($key){
+        return static::$originalGridModels[$key];
     }
 
     /**

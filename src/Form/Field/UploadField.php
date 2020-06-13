@@ -406,11 +406,11 @@ trait UploadField
         }
 
         if ($this->name instanceof \Closure) {
-            return $this->name->call($this, $file);
+            return $this->name->call($this, $file, $this);
         }
 
         if ($this->callableName instanceof \Closure) {
-            return $this->callableName->call($this, $file);
+            return $this->callableName->call($this, $file, $this);
         }
 
         if (is_string($this->name)) {

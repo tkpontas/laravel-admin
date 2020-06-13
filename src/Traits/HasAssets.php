@@ -234,6 +234,16 @@ trait HasAssets
     }
 
     /**
+     * get script. Pure script, ignore $(function), and script tag 
+     *
+     * @return \Illuminate\View\View
+     */
+    public static function purescript()
+    {
+        return view('admin::partials.purescript', ['script' => array_unique(self::$script)]);
+    }
+
+    /**
      * @param string $style
      *
      * @return array|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
