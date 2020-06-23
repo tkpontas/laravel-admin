@@ -34,5 +34,6 @@
             </div>
         </div>
 
+        <input type="hidden" name="execute_filter" value="1" />
     </form>
 </div>

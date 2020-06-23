@@ -44,14 +44,42 @@ class FilterButton extends AbstractTool
     protected function setUpScripts()
     {
         $id = $this->filter()->getFilterID();
+        $filterAjax = $this->filter()->getFilterAjax();
 
         $script = <<<SCRIPT
-$('.{$this->getElementClassName()}').unbind('click');
-$('.{$this->getElementClassName()}').click(function (e) {
+        let target = $('.{$this->getElementClassName()}');
+        target.unbind('click');
+        target.click(function (e) {
     if ($('#{$id}').is(':visible')) {
         $('#{$id}').addClass('hide');
     } else {
-        $('#{$id}').removeClass('hide');
+        if('$filterAjax'.length > 0){
+            if(target.attr('disabled')){
+                return;
+            }
+            if(target.hasClass('loaded')){
+                $('#{$id}').removeClass('hide');
+                return;
+            }
+            
+            var spinner = target.attr('disabled', true).data('loading-text');
+            target.append(spinner);
+            $.ajax({
+                url:'$filterAjax',
+                type: "GET",
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    $('#{$id}').html($(data.html).children('form'));
+                    eval(data.script);
+
+                    target.attr('disabled', false).addClass('loaded');
+                    target.find('.fa-spinner').remove();
+                    $('#{$id}').removeClass('hide');
+                }
+            });
+        }else{
+            $('#{$id}').removeClass('hide');
+        }
     }
 });
 SCRIPT;

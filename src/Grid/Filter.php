@@ -106,6 +106,11 @@ class Filter implements Renderable
     /**
      * @var string
      */
+    protected $filterAjax;
+
+    /**
+     * @var string
+     */
     protected $name = '';
 
     /**
@@ -242,6 +247,27 @@ class Filter implements Renderable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get filter Ajax url.
+     *
+     * @return string
+     */
+    public function getFilterAjax(){
+        return $this->filterAjax;
+    }
+
+    /**
+     * Set filter Ajax url.
+     *
+     * @param string $filterAjax
+     * @return $this
+     */
+    public function setFilterAjax($filterAjax){
+        $this->filterAjax = $filterAjax;
+
+        return $this;
     }
 
     /**
@@ -536,7 +562,7 @@ class Filter implements Renderable
     {
         $this->removeIDFilterIfNeeded();
 
-        if (empty($this->filters)) {
+        if (!isset($this->filterAjax) && empty($this->filters)) {
             return '';
         }
 

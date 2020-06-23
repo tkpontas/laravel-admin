@@ -176,6 +176,13 @@ class Grid
     protected static $initCallbacks = [];
 
     /**
+     * Get data closure array.
+     *
+     * @var []Closure
+     */
+    protected static $getDataCallbacks = [];
+
+    /**
      * Value after getting from database.
      *
      * @var
@@ -237,6 +244,30 @@ class Grid
         foreach (static::$initCallbacks as $callback) {
             call_user_func($callback, $this);
         }
+    }
+
+    /**
+     * Call the get data closure array in sequence.
+     */
+    protected function callGetDataCallbacks()
+    {
+        if (empty(static::$getDataCallbacks)) {
+            return;
+        }
+
+        foreach (static::$getDataCallbacks as $callback) {
+            call_user_func($callback, $this);
+        }
+    }
+
+    /**
+     * Set getdata callback
+     *
+     * @param Closure $callback
+     */
+    public static function getDataCallback(Closure $callback = null)
+    {
+        static::$getDataCallbacks[] = $callback;
     }
 
     /**
@@ -609,6 +640,8 @@ class Grid
 
         $this->originalCollection = $collection;
         $data = $collection->toArray();
+
+        $this->callGetDataCallbacks();
 
         $this->columns->map(function (Column $column) use (&$data) {
             $data = $column->fill($data);
