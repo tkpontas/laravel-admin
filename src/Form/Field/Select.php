@@ -318,7 +318,7 @@ EOT;
 
         $this->script = <<<EOT
 
-$("{$this->getElementClassSelector()}").select2({
+$("{$this->getElementClassSelector()}").not('.admin-added-select2').select2({
   ajax: {
     url: "$url",
     dataType: 'json',
@@ -349,7 +349,7 @@ $("{$this->getElementClassSelector()}").select2({
   escapeMarkup: function (markup) {
       return markup;
   }
-});
+}).addClass('admin-added-select2');
 
 EOT;
 
@@ -400,7 +400,7 @@ EOT;
         $configs = json_encode($configs);
 
         if (empty($this->script)) {
-            $this->script = "$(\"{$this->getElementClassSelector()}\").select2($configs);";
+            $this->script = "$(\"{$this->getElementClassSelector()}\").not('.admin-added-select2').select2($configs).addClass('admin-added-select2');";
         }
 
         if ($this->options instanceof \Closure) {
