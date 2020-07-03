@@ -83,11 +83,25 @@ class Form implements Renderable
     protected $attributes = [];
 
     /**
+     * Submit label.
+     *
+     * @var string
+     */
+    protected $submitLabel;
+
+    /**
      * Available buttons.
      *
      * @var array
      */
     protected $buttons = ['reset', 'submit'];
+
+    /**
+     * Default Submit label.
+     *
+     * @var string
+     */
+    public static $defaultSubmitLabel;
 
     /**
      * Width for label and submit field.
@@ -255,6 +269,30 @@ class Form implements Renderable
     }
 
     /**
+     * Set submit label.
+     *
+     * @return $this
+     */
+    public function submitLabel(string $submitLabel)
+    {
+        $this->submitLabel = $submitLabel;
+
+        return $this;
+    }
+
+    /**
+     * Set submit label as save.
+     *
+     * @return $this
+     */
+    public function submitLabelSave()
+    {
+        $this->submitLabel = trans('admin.save');
+
+        return $this;
+    }
+
+    /**
      * Disable Pjax.
      *
      * @return $this
@@ -375,11 +413,12 @@ class Form implements Renderable
         }
 
         return [
-            'fields'     => $this->fields,
-            'attributes' => $this->formatAttribute(),
-            'method'     => $this->attributes['method'],
-            'buttons'    => $this->buttons,
-            'width'      => $this->width,
+            'fields'      => $this->fields,
+            'attributes'  => $this->formatAttribute(),
+            'method'      => $this->attributes['method'],
+            'buttons'     => $this->buttons,
+            'width'       => $this->width,
+            'submitLabel' => $this->submitLabel ?? static::$defaultSubmitLabel ?? trans('admin.submit'),
         ];
     }
 

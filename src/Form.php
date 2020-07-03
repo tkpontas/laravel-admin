@@ -765,10 +765,10 @@ class Form implements Renderable
     {
         if (request('after-save') == 1) {
             // continue editing
-            $url = rtrim($resourcesPath, '/')."/{$key}/edit";
+            $url = rtrim($resourcesPath, '/')."/{$key}/edit?after-save=1";
         } elseif (request('after-save') == 2) {
             // continue creating
-            $url = rtrim($resourcesPath, '/').'/create';
+            $url = rtrim($resourcesPath, '/').'/create?after-save=2';
         } elseif (request('after-save') == 3) {
             // view resource
             $url = rtrim($resourcesPath, '/')."/{$key}";
@@ -1493,6 +1493,30 @@ class Form implements Renderable
         }
 
         $callback->call($this, $this->builder->getTools());
+    }
+
+    /**
+     * Set submit label.
+     *
+     * @return $this
+     */
+    public function submitLabel(string $submitLabel)
+    {
+        $this->builder()->getFooter()->submitLabel($submitLabel);
+
+        return $this;
+    }
+
+    /**
+     * Set submit label as save.
+     *
+     * @return $this
+     */
+    public function submitLabelSave()
+    {
+        $this->builder()->getFooter()->submitLabelSave();
+
+        return $this;
     }
 
     /**

@@ -29,6 +29,20 @@ class Footer implements Renderable
     protected $buttons = ['reset', 'submit'];
 
     /**
+     * Default Submit label.
+     *
+     * @var string
+     */
+    public static $defaultSubmitLabel;
+
+    /**
+     * Submit label.
+     *
+     * @var string
+     */
+    protected $submitLabel;
+
+    /**
      * Available checkboxes.
      *
      * @var array
@@ -43,6 +57,30 @@ class Footer implements Renderable
     public function __construct(Builder $builder)
     {
         $this->builder = $builder;
+    }
+
+    /**
+     * Set submit label.
+     *
+     * @return $this
+     */
+    public function submitLabel(string $submitLabel)
+    {
+        $this->submitLabel = $submitLabel;
+
+        return $this;
+    }
+
+    /**
+     * Set submit label as save.
+     *
+     * @return $this
+     */
+    public function submitLabelSave()
+    {
+        $this->submitLabel = trans('admin.save');
+
+        return $this;
     }
 
     /**
@@ -148,10 +186,19 @@ EOT;
     {
         $this->setupScript();
 
+        $submitRedirects = [
+            1 => 'continue_editing',
+            2 => 'continue_creating',
+            3 => 'view',
+        ];
+
         $data = [
             'buttons'      => $this->buttons,
             'checkboxes'   => $this->checkboxes,
             'width'        => $this->builder->getWidth(),
+            'submitLabel'  => $this->submitLabel ?? static::$defaultSubmitLabel ?? trans('admin.submit'),
+            'submit_redirects' => $submitRedirects,
+            'default_check'    => old('after-save', request()->get('after-save')),
         ];
 
         return view($this->view, $data)->render();

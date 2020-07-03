@@ -25,7 +25,7 @@
 
             @if(in_array('submit', $buttons))
             <div class="btn-group pull-right">
-                <button type="submit" class="btn btn-info pull-right">{{ trans('admin.submit') }}</button>
+                <button type="submit" class="btn btn-primary pull-right">{{ $submitLabel ?? trans('admin.submit') }}</button>
             </div>
             @endif
         </div>

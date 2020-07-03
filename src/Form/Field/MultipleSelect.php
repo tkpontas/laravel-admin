@@ -84,6 +84,7 @@ class MultipleSelect extends Select
         }
 
         if (!is_array($relations)) {
+            $this->original = null;
             return;
         }
 
