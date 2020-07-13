@@ -33,6 +33,11 @@ class Select extends Field
     /**
      * @var array
      */
+    protected $buttons = [];
+
+    /**
+     * @var array
+     */
     protected $config = [];
 
     /**
@@ -92,6 +97,43 @@ class Select extends Field
     public function groups(array $groups)
     {
         $this->groups = $groups;
+
+        return $this;
+    }
+
+
+    /**
+     * Set option buttons.
+     *
+     * eg: $buttons = [
+     *        [
+     *        'label' => 'xxxx',
+     *        'btn_class' => 'xxxx',
+     *        'icon' => 'xxxx',
+     *        'attributes' => [
+     *           'xxx' => 'yyyy',
+     *         ],
+     *            ...
+     *        ],
+     *        ...
+     *     ]
+     *
+     * @param array $groups
+     *
+     * @return $this
+     */
+    public function buttons(array $buttons)
+    {
+        $this->buttons = collect($buttons)->map(function($button){
+            $attributes = array_get($button, 'attributes', []);
+            $html = [];
+            
+            foreach ($attributes as $name => $value) {
+                $html[] = $name.'="'.e($value).'"';
+            }
+            $button['attribute'] = implode(' ', $html);
+            return $button;
+        })->toArray();
 
         return $this;
     }
@@ -416,6 +458,7 @@ EOT;
         $this->addVariables([
             'options' => $this->options,
             'groups'  => $this->groups,
+            'buttons'  => $this->buttons,
         ]);
 
         $this->attribute('data-value', implode(',', (array) $this->value()));

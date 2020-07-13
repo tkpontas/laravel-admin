@@ -53,7 +53,7 @@
 
     {!! $grid->renderFooter() !!}
 
-    <div class="box-footer clearfix">
+    <div class="box-footer table-footer clearfix">
         {!! $grid->paginator() !!}
     </div>
     <!-- /.box-body -->
