@@ -241,7 +241,17 @@ $("input{$this->getElementClassSelector()}").on('filebeforedelete', function() {
         });
     });
 });
+
 EOT;
+
+            if(isset($this->options['deletedEvent'])){
+                $deletedEvent = $this->options['deletedEvent'];
+                $this->script .= <<<EOT
+                $("input{$this->getElementClassSelector()}").on('filedeleted', function(event, key, jqXHR, data) {
+                    {$deletedEvent};
+                });
+EOT;
+            }
         }
     }
 
