@@ -1194,7 +1194,8 @@ class Field implements Renderable
     
             $v = $value;
 
-            if(!is_null($old = old($this->column, $v))){
+            $old = old($this->column, $v);
+            if(!is_null($old) && !empty($old)){
                 return $old;
             }
     
