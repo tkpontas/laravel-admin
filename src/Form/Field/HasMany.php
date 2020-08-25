@@ -448,7 +448,7 @@ class HasMany extends Field
      *
      * @param string $script
      *
-     * @return void
+     * @return mixed
      */
     protected function setupScript($script)
     {

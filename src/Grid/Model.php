@@ -56,6 +56,20 @@ class Model
      */
     protected $perPage = 20;
 
+    /*
+     * per page arguments.
+     *
+     * @var array
+     */
+    protected $perPageArguments = [];
+
+    /*
+     * handleInvalidPage. if false, disable call handleInvalidPage.
+     *
+     * @var boolean
+     */
+    protected $handleInvalidPage = true;
+
     /**
      * If the model use pagination.
      *
@@ -206,6 +220,32 @@ class Model
         $this->perPage = $perPage;
 
         $this->__call('paginate', [$perPage]);
+
+        return $this;
+    }
+
+    /**
+     * Set per-page arguments.
+     *
+     * @param array $arg arguments
+     *
+     * @return $this
+     */
+    public function setPerPageArguments($arguments)
+    {
+        $this->perPageArguments = $arguments;
+
+        return $this;
+    }
+
+    /**
+     * disable handleInvalidPage
+     *
+     * @return $this
+     */
+    public function disableHandleInvalidPage()
+    {
+        $this->handleInvalidPage = false;
 
         return $this;
     }
@@ -410,7 +450,9 @@ class Model
         }
 
         if ($this->model instanceof LengthAwarePaginator) {
-            $this->handleInvalidPage($this->model);
+            if($this->handleInvalidPage){
+                $this->handleInvalidPage($this->model);
+            }
 
             return $this->model->getCollection();
         }
@@ -503,6 +545,13 @@ class Model
             }
 
             $this->perPage = (int) $perPage;
+        }
+
+        if(!empty($this->perPageArguments)){
+            if(!isset($this->perPageArguments[0])){
+                $this->perPageArguments[0] = $this->perPage;
+            }
+            return $this->perPageArguments;
         }
 
         if (isset($paginate['arguments'][0])) {
