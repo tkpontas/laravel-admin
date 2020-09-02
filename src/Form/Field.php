@@ -1025,6 +1025,10 @@ class Field implements Renderable
                 $value = explode(',', $value);
             }
 
+            if($value instanceof \Illuminate\Support\Collection){
+                $value = $value->toArray();
+            }
+
             Arr::set($input, $column, array_filter($value));
         }
 
