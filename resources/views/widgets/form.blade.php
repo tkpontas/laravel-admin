@@ -27,6 +27,13 @@
             <div class="btn-group pull-right">
                 <button type="submit" class="btn btn-primary pull-right">{{ $submitLabel ?? trans('admin.submit') }}</button>
             </div>
+                
+            @foreach($submitRedirects as $redirect)
+                <label class="pull-right" style="margin: 5px 10px 0 0;">
+                    <input type="checkbox" class="after-submit" name="after-save" value="{{ array_get($redirect, 'value') }}" {{ boolval(array_get($redirect, 'default')) ? 'checked' : '' }}> {{ array_get($redirect, 'label') }}
+                </label>
+            @endforeach
+
             @endif
         </div>
     </div>

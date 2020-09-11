@@ -4,6 +4,7 @@ namespace Encore\Admin\Form;
 
 use Encore\Admin\Admin;
 use Illuminate\Contracts\Support\Renderable;
+use Encore\Admin\Form\Builder;
 
 class Footer implements Renderable
 {
@@ -47,7 +48,29 @@ class Footer implements Renderable
      *
      * @var array
      */
-    protected $checkboxes = ['view', 'continue_editing', 'continue_creating'];
+    protected $checkboxes = [
+        1 => 'continue_editing',
+        2 => 'continue_creating',
+        3 => 'view',
+    ];
+
+    /**
+     * Available footer checks.
+     * 
+     * $submitRedirects : [
+     *     [
+     *         'value': 'foo', // this check value name
+     *         'label': 'FOO', // this check label
+     *     ],
+     *     [
+     *         'value': 'bar', // this check value name
+     *         'label': 'BAR', // this check label
+     *     ],
+     * ]
+     *
+     * @var array
+     */
+    protected $submitRedirects = [];
 
     /**
      * Footer constructor.
@@ -57,6 +80,11 @@ class Footer implements Renderable
     public function __construct(Builder $builder)
     {
         $this->builder = $builder;
+
+        // set default submitRedirects
+        foreach($this->checkboxes as $value => $key){
+            $this->enableCheck($key, $value);
+        }
     }
 
     /**
@@ -122,13 +150,7 @@ class Footer implements Renderable
      */
     public function disableViewCheck(bool $disable = true)
     {
-        if ($disable) {
-            array_delete($this->checkboxes, 'view');
-        } elseif (!in_array('view', $this->checkboxes)) {
-            array_push($this->checkboxes, 'view');
-        }
-
-        return $this;
+        return $disable ? $this->disableCheck('view') : $this->enableCheck('view', 3);
     }
 
     /**
@@ -138,13 +160,7 @@ class Footer implements Renderable
      */
     public function disableEditingCheck(bool $disable = true)
     {
-        if ($disable) {
-            array_delete($this->checkboxes, 'continue_editing');
-        } elseif (!in_array('continue_editing', $this->checkboxes)) {
-            array_push($this->checkboxes, 'continue_editing');
-        }
-
-        return $this;
+        return $disable ? $this->disableCheck('continue_editing') : $this->enableCheck('continue_editing', 1);
     }
 
     /**
@@ -154,13 +170,99 @@ class Footer implements Renderable
      */
     public function disableCreatingCheck(bool $disable = true)
     {
-        if ($disable) {
-            array_delete($this->checkboxes, 'continue_creating');
-        } elseif (!in_array('continue_creating', $this->checkboxes)) {
-            array_push($this->checkboxes, 'continue_creating');
-        }
+        return $disable ? $this->disableCheck('continue_creating') : $this->enableCheck('continue_creating', 2);
+    }
+
+    /**
+     * enable Checkbox.
+     *
+     * @return $this
+     */
+    protected function enableCheck($key, $value)
+    {
+        $this->submitRedirects[] = [
+            'key' => $key,
+            'value' => $value,
+            'label' => trans("admin.{$key}"),
+        ];
 
         return $this;
+    }
+    /**
+     * Disable Checkbox.
+     *
+     * @return $this
+     */
+    protected function disableCheck($key)
+    {
+        $this->submitRedirects = array_filter($this->submitRedirects, function($submitRedirect) use($key){
+            return array_get($submitRedirect, 'key') == $key;
+        });
+
+        return $this;
+    }
+
+    /**
+     * add footer check item.
+     *
+     * $footerCheck : 
+     *     [
+     *         'value': 'foo', // this check value name
+     *         'label': 'FOO', // this check label
+     *         'redirect': \Closure, //set callback. Please redirect.
+     *     ]
+     *
+     * @return $this
+     */
+    public function submitRedirect(array $submitRedirect)
+    {
+        $this->submitRedirects[] = $submitRedirect;
+
+        return $this;
+    }
+
+
+    /**
+     * Get RedirectResponse after data saving.
+     *
+     * @param string $resourcesPath
+     * @param string $key
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|string|null
+     */
+    public function getRedirect($resourcesPath, $key, $afterSaveValue){
+        // set submitRedirects
+        foreach($this->submitRedirects as $submitRedirect){
+            if(array_get($submitRedirect, 'value') == $afterSaveValue){
+                $url = array_get($submitRedirect, 'redirect');
+                break;
+            }
+        }
+
+        if(!isset($url)){
+            if ($afterSaveValue == 1) {
+                // continue editing
+                $url = rtrim($resourcesPath, '/')."/{$key}/edit?after-save=1";
+            } elseif ($afterSaveValue == 2) {
+                // continue creating
+                $url = rtrim($resourcesPath, '/').'/create?after-save=2';
+            } elseif ($afterSaveValue == 3) {
+                // view resource
+                $url = rtrim($resourcesPath, '/')."/{$key}";
+            }         
+        }
+
+        
+        if(!isset($url)){
+            return null;
+        }
+        if(is_string($url)){
+            return redirect($url);
+        }
+        elseif($url instanceof \Closure){
+            return $url($resourcesPath, $key);
+        }
+        return $url;
     }
 
     /**
@@ -186,18 +288,12 @@ EOT;
     {
         $this->setupScript();
 
-        $submitRedirects = [
-            1 => 'continue_editing',
-            2 => 'continue_creating',
-            3 => 'view',
-        ];
-
         $data = [
             'buttons'      => $this->buttons,
             'checkboxes'   => $this->checkboxes,
             'width'        => $this->builder->getWidth(),
             'submitLabel'  => $this->submitLabel ?? static::$defaultSubmitLabel ?? trans('admin.submit'),
-            'submit_redirects' => $submitRedirects,
+            'submitRedirects'=> $this->submitRedirects,
             'default_check'    => old('after-save', request()->get('after-save')),
         ];
 

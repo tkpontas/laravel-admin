@@ -97,6 +97,24 @@ class Form implements Renderable
     protected $buttons = ['reset', 'submit'];
 
     /**
+     * Available footer checks.
+     * 
+     * $submitRedirects : [
+     *     [
+     *         'value': 'foo', // this check value name
+     *         'label': 'FOO', // this check label
+     *     ],
+     *     [
+     *         'value': 'bar', // this check value name
+     *         'label': 'BAR', // this check label
+     *     ],
+     * ]
+     *
+     * @var array
+     */
+    protected $submitRedirects = [];
+
+    /**
      * Default Submit label.
      *
      * @var string
@@ -329,6 +347,25 @@ class Form implements Renderable
     }
 
     /**
+     * add footer check item.
+     *
+     * $footerCheck : 
+     *     [
+     *         'value': 'foo', // this check value name
+     *         'label': 'FOO', // this check label
+     *         'redirect': \Closure, //set callback. Please redirect.
+     *     ]
+     *
+     * @return $this
+     */
+    public function submitRedirect(array $submitRedirect)
+    {
+        $this->submitRedirects[] = $submitRedirect;
+
+        return $this;
+    }
+
+    /**
      * Set field and label width in current form.
      *
      * @param int $fieldWidth
@@ -417,6 +454,7 @@ class Form implements Renderable
             'attributes'  => $this->formatAttribute(),
             'method'      => $this->attributes['method'],
             'buttons'     => $this->buttons,
+            'submitRedirects'=> $this->submitRedirects,
             'width'       => $this->width,
             'submitLabel' => $this->submitLabel ?? static::$defaultSubmitLabel ?? trans('admin.submit'),
         ];
@@ -532,6 +570,20 @@ class Form implements Renderable
     }
 
     /**
+     * Setup scripts.
+     */
+    protected function setupScript()
+    {
+        $script = <<<'EOT'
+$('.after-submit').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChecked', function () {
+    $('.after-submit').not(this).iCheck('uncheck');
+});
+EOT;
+
+        \Admin::script($script);
+    }
+
+    /**
      * Render the form.
      *
      * @return string
@@ -541,6 +593,8 @@ class Form implements Renderable
         $this->prepareForm();
 
         $this->prepareHandle();
+
+        $this->setupScript();
 
         $form = view('admin::widgets.form', $this->getVariables())->render();
 

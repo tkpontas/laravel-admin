@@ -763,23 +763,19 @@ class Form implements Renderable
      */
     protected function redirectAfterSaving($resourcesPath, $key)
     {
-        if (request('after-save') == 1) {
-            // continue editing
-            $url = rtrim($resourcesPath, '/')."/{$key}/edit?after-save=1";
-        } elseif (request('after-save') == 2) {
-            // continue creating
-            $url = rtrim($resourcesPath, '/').'/create?after-save=2';
-        } elseif (request('after-save') == 3) {
-            // view resource
-            $url = rtrim($resourcesPath, '/')."/{$key}";
-        } elseif($this->redirectList) {
+        $redirect = $this->builder()->getFooter()->getRedirect($resourcesPath, $key, request('after-save'));
+
+        admin_toastr(trans('admin.save_succeeded'));
+        
+        if(isset($redirect)){
+            return $redirect;
+        }
+
+        if($this->redirectList) {
             $url = rtrim($resourcesPath, '/');
         } else {
             $url = request(Builder::PREVIOUS_URL_KEY) ?: $resourcesPath;
         }
-
-        admin_toastr(trans('admin.save_succeeded'));
-
         return redirect($url);
     }
 
@@ -1603,6 +1599,25 @@ class Form implements Renderable
     public function disableRedirectList(bool $disable = true)
     {
         $this->redirectList = $disable;
+
+        return $this;
+    }
+
+    /**
+     * add footer check item.
+     *
+     * $footerCheck : 
+     *     [
+     *         'value': 'foo', // this check value name
+     *         'label': 'FOO', // this check label
+     *         'redirect': \Closure, //set callback. Please redirect.
+     *     ]
+     *
+     * @return $this
+     */
+    public function submitRedirect(array $submitRedirect)
+    {
+        $this->builder()->getFooter()->submitRedirect($submitRedirect);
 
         return $this;
     }

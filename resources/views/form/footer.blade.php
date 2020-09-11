@@ -12,12 +12,10 @@
             <button id="admin-submit" type="submit" class="btn btn-primary">{{ $submitLabel ?? trans('admin.submit') }}</button>
         </div>
 
-        @foreach($submit_redirects as $value => $redirect)
-            @if(in_array($redirect, $checkboxes))
+        @foreach($submitRedirects as $redirect)
             <label class="pull-right" style="margin: 5px 10px 0 0;">
-                <input type="checkbox" class="after-submit" name="after-save" value="{{ $value }}" {{ ($default_check == $value) ? 'checked' : '' }}> {{ trans("admin.{$redirect}") }}
+                <input type="checkbox" class="after-submit" name="after-save" value="{{ array_get($redirect, 'value') }}" {{ ($default_check == array_get($redirect, 'value')) || boolval(array_get($redirect, 'default')) ? 'checked' : '' }}> {{ array_get($redirect, 'label') }}
             </label>
-            @endif
         @endforeach
 
         @endif
