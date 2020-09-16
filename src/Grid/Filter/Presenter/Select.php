@@ -195,6 +195,10 @@ EOT;
      */
     public function ajax($resourceUrl, $idField = 'id', $textField = 'text')
     {
+        if(empty($resourceUrl)){
+            return;
+        }
+        
         $configs = array_merge([
             'allowClear'         => true,
             'placeholder'        => trans('admin.choose'),
