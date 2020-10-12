@@ -1,4 +1,5 @@
 
+@if($enableHeader ?? true)
 <div class="row">
     <div class="col-sm-12">
         <h4 class="field-header">{{ $label }}</h4>
@@ -6,8 +7,9 @@
 </div>
 
 <hr style="margin-top: 0px;">
+@endif
 
-<div id="has-many-{{$column}}" class="has-many-{{$column}}">
+<div id="has-many-{{$column}}" class="has-many-{{$column}}" {!! $attributes !!} >
 
     <div class="has-many-{{$column}}-forms">
 

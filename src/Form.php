@@ -95,6 +95,20 @@ class Form implements Renderable
     protected $validator;
 
     /**
+     * Initialization closure array.
+     *
+     * @var Closure
+     */
+    protected $validatorSavingCallback;
+
+    /**
+     * prepare callback
+     *
+     * @var Closure
+     */
+    protected $prepareCallback;
+
+    /**
      * @var Builder
      */
     protected $builder;
@@ -482,6 +496,11 @@ class Form implements Renderable
 
         $this->inputs = array_merge($this->removeIgnoredFields($data), $this->inputs);
 
+        if($this->prepareCallback){
+            $func = $this->prepareCallback;
+            $this->inputs = $func($this->inputs);
+        }
+
         if (($response = $this->callSaving()) instanceof Response) {
             return $response;
         }
@@ -605,6 +624,33 @@ class Form implements Renderable
 
         return $this->redirectAfterUpdate($id);
     }
+
+    
+    /**
+     * validatorSavingCallback
+     *
+     * @param Closure $callback
+     * @return $this
+     */
+    public function validatorSavingCallback(Closure $callback){
+        $this->validatorSavingCallback = $callback;
+
+        return $this;
+    }
+    
+
+    /**
+     * prepareCallback. Please return inputs array
+     *
+     * @param Closure $callback
+     * @return $this
+     */
+    public function prepareCallback(Closure $callback){
+        $this->prepareCallback = $callback;
+
+        return $this;
+    }
+
 
     /**
      * Handle validation update.
@@ -1330,6 +1376,10 @@ class Form implements Renderable
 
         $message = $this->mergeValidationMessages($failedValidators);
 
+        if($this->validatorSavingCallback){
+            $func = $this->validatorSavingCallback;
+            $func($input, $message, $this);
+        }
         // if contains function 'validatorSaving' in model, call
         if(method_exists($this->model, 'validatorSaving')){
             if(is_array($validateResult = $this->model->validatorSaving($input))){
@@ -1339,6 +1389,7 @@ class Form implements Renderable
 
         return $message->any() ? $message : false;
     }
+
 
     /**
      * Merge validation messages from input validators.

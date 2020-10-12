@@ -45,6 +45,8 @@ class MultipleSelect extends Select
      */
     public function fill($data)
     {
+        $this->data = $data;
+        
         $relations = Arr::get($data, $this->column);
 
         if (is_string($relations)) {

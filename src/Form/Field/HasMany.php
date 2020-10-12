@@ -74,6 +74,8 @@ class HasMany extends Field
         'allowDelete' => true,
     ];
 
+    protected $enableHeader = true;
+
     /**
      * Create a new HasMany field instance.
      *
@@ -287,6 +289,13 @@ class HasMany extends Field
         return $form->setOriginal($this->original, $this->getKeyName())->prepare($input);
     }
 
+    public function disableHeader()
+    {
+        $this->enableHeader = false;
+
+        return $this;
+    }
+    
     /**
      * Build a Nested form.
      *
@@ -327,6 +336,16 @@ class HasMany extends Field
         }
 
         return $this->form->model()->{$this->relationName}()->getRelated()->getKeyName();
+    }
+
+    /**
+     * Get relation name.
+     *
+     * @return string
+     */
+    public function getRelationName()
+    {
+        return $this->relationName;
     }
 
     /**
@@ -406,6 +425,7 @@ class HasMany extends Field
             $index = 0;
             foreach ($values as $key => $data) {
                 if ($data[NestedForm::REMOVE_FLAG_NAME] == 1) {
+                    $index++;
                     continue;
                 }
 
@@ -416,8 +436,13 @@ class HasMany extends Field
                 
                 $model = $relation->getRelated()->replicate()->forceFill($data);
 
-                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model, $index)
-                    ->fill($data, $index);
+                $formIndex = $index;
+                // if new_ key, 
+                if(strpos($key, 'new_') !== false){
+                    $formIndex = str_replace('new_', '', $key);
+                }
+                $forms[$key] = $this->buildNestedForm($this->column, $this->builder, $model, $formIndex)
+                    ->fill($data, $formIndex);
                     $index++;
             }
         } else {
@@ -480,7 +505,7 @@ class HasMany extends Field
          */
         $script = <<<EOT
 var index = 0;
-$('#has-many-{$this->column}').off('click', '.add').on('click', '.add', function () {
+$('#has-many-{$this->column}').off('click.admin_add', '.add').on('click.admin_add', '.add', function () {
 
     var tpl = $('template.{$this->column}-tpl');
 
@@ -492,7 +517,7 @@ $('#has-many-{$this->column}').off('click', '.add').on('click', '.add', function
     return false;
 });
 
-$('#has-many-{$this->column}').off('click', '.remove').on('click', '.remove', function () {
+$('#has-many-{$this->column}').off('click.admin_remove', '.remove').on('click.admin_remove', '.remove', function () {
     $(this).closest('.has-many-{$this->column}-form').hide();
     $(this).closest('.has-many-{$this->column}-form').find('.$removeClass').val(1);
     return false;
@@ -580,7 +605,7 @@ EOT;
          */
         $script = <<<EOT
 var index = 0;
-$('#has-many-{$this->column}').on('click', '.add', function () {
+$('#has-many-{$this->column}').off('click.admin_add').on('click.admin_add', '.add', function () {
 
     var tpl = $('template.{$this->column}-tpl');
 
@@ -592,7 +617,7 @@ $('#has-many-{$this->column}').on('click', '.add', function () {
     return false;
 });
 
-$('#has-many-{$this->column}').on('click', '.remove', function () {
+$('#has-many-{$this->column}').off('click.admin_remove').on('click.admin_remove', '.remove', function () {
     $(this).closest('.has-many-{$this->column}-form').hide();
     $(this).closest('.has-many-{$this->column}-form').find('.$removeClass').val(1);
     return false;
@@ -711,6 +736,7 @@ EOT;
             'template'     => $template,
             'relationName' => $this->relationName,
             'options'      => $this->options,
+            'enableHeader' => $this->enableHeader,
         ]);
     }
 }

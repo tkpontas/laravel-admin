@@ -188,18 +188,18 @@ class Field implements Renderable
     protected $view = '';
 
     /**
-     * Help block.
+     * Help Icon.
      *
-     * @var array
+     * @var string
      */
-    protected $help = [];
+    protected $helpIcon;
 
     /**
      * Help Text.
      *
      * @var string
      */
-    protected $helpText = '';
+    protected $helpText;
 
     /**
      * Key for errors.
@@ -899,9 +899,25 @@ class Field implements Renderable
      */
     public function help($text = '', $icon = 'fa-info-circle')
     {
-        $this->help = compact('text', 'icon');
-
         $this->helpText = $text;
+        $this->helpIcon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * append help text.
+     *
+     * @param string $text
+     *
+     * @return $this
+     */
+    public function appendHelp($text = '')
+    {
+        $this->helpText .= $text;
+        if(empty($this->helpIcon)){
+            $this->helpIcon = 'fa-info-circle';
+        }
 
         return $this;
     }
@@ -926,9 +942,27 @@ class Field implements Renderable
      */
     public function forgetHelp()
     {
-        $this->help = [];
+        $this->helpIcon = null;
+        $this->helpText = null;
 
         return $this;
+    }
+
+    /**
+     * forget help
+     *
+     * @return array
+     */
+    protected function getHelpArray() : array
+    {
+        $help = [];
+        if(isset($this->helpIcon)){
+            $help['icon'] = $this->helpIcon;
+        }
+        if(isset($this->helpText)){
+            $help['text'] = $this->helpText;
+        }
+        return $help;
     }
 
     /**
@@ -1021,7 +1055,7 @@ class Field implements Renderable
                 $value = [];
             }
             
-            if(is_string($value)){
+            if(is_string($value) || is_int($value)){
                 $value = explode(',', $value);
             }
 
@@ -1196,15 +1230,13 @@ class Field implements Renderable
         }else{
             $keyname = static::getDotName($this->getElementName());
     
-            $v = $value;
+            return old($keyname, $value);
 
-            $old = old($this->column, $v);
-            if(!is_null($old) && !empty($old)){
-                return $old;
-            }
-    
-            // replace element name
-            return old($keyname, $v);
+            // $old = old($this->column, $value);
+            // if(!is_null($old) && !empty($old)){
+            //     return $old;
+            // }
+            // return old($keyname, $value);
         }
     }
 
@@ -1521,7 +1553,7 @@ class Field implements Renderable
         return array_merge($this->variables, [
             'id'          => $this->id,
             'name'        => $this->getElementName(),
-            'help'        => $this->help,
+            'help'        => $this->getHelpArray(),
             'class'       => $this->getElementClassString(),
             'value'       => $this->value(),
             'label'       => $this->label,

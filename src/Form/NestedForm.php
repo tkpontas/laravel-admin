@@ -147,7 +147,7 @@ class NestedForm
         }
 
         if (isset($this->index)) {
-            return 'new_'.($this->index + 1);
+            return 'new_'.($this->index);
         }
 
         return 'new_'.static::DEFAULT_KEY_NAME;
@@ -215,6 +215,16 @@ class NestedForm
     public function getForm()
     {
         return $this->form;
+    }
+
+    /**
+     * Get relation name.
+     *
+     * @return string
+     */
+    public function getRelationName()
+    {
+        return $this->relationName;
     }
 
     /**
