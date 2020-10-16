@@ -112,6 +112,11 @@ class AdminServiceProvider extends ServiceProvider
     protected function loadAdminAuthConfig()
     {
         config(Arr::dot(config('admin.auth', []), 'auth.'));
+        
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/admin.php',
+            'admin'
+        );
     }
 
     /**

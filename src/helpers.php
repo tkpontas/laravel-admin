@@ -42,6 +42,13 @@ if (!function_exists('admin_url')) {
             }
         }
 
+        if(boolval($secure)){
+            \URL::forceScheme('https');
+        }
+        if(boolval(config('admin.use_app_url', false))){
+            \URL::forceRootUrl(config('app.url'));
+        }
+
         return url(admin_base_path($path), $parameters, $secure);
     }
 }

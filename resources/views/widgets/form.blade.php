@@ -13,7 +13,7 @@
     
     <!-- /.box-body -->
     @if(count($buttons) > 0)
-    <div class="box-footer">
+    <div class="box-footer" style="background-color: inherit;">
         <div class="col-md-{{$width['label']}}"></div>
 
         <div class="col-md-{{$width['field']}}">
