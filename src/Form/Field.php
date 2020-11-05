@@ -340,7 +340,7 @@ class Field implements Renderable
      *
      * @return string|array
      */
-    protected function formatId($column)
+    public function formatId($column)
     {
         return str_replace('.', '_', $column);
     }
@@ -368,7 +368,7 @@ class Field implements Renderable
      *
      * @return array|mixed|string
      */
-    protected function formatName($column)
+    public function formatName($column)
     {
         if (is_string($column)) {
             if (Str::contains($column, '->')) {

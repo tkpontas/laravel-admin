@@ -9,13 +9,13 @@
 <hr style="margin-top: 0px;">
 @endif
 
-<div id="has-many-{{$column}}" class="has-many-{{$column}}" {!! $attributes !!} >
+<div id="has-many-{{$column}}" class="hasmanyblock-{{$column}} has-many-{{$column}}" {!! $attributes !!} >
 
     <div class="has-many-{{$column}}-forms">
 
         @foreach($forms as $pk => $form)
 
-            <div class="has-many-{{$column}}-form fields-group">
+            <div class="has-many-{{$column}}-form has-many-form fields-group">
 
                 @foreach($form->fields() as $field)
                     {!! $field->render() !!}
@@ -37,7 +37,7 @@
     
 
     <template class="{{$column}}-tpl">
-        <div class="has-many-{{$column}}-form fields-group">
+        <div class="has-many-{{$column}}-form has-many-form fields-group">
 
             {!! $template !!}
 
