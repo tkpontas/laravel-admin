@@ -2,6 +2,7 @@
 
 namespace Encore\Admin\Form\Field;
 
+use Encore\Admin\Validator\HasOptionRule;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form\Field;
 use Illuminate\Contracts\Support\Arrayable;
@@ -39,6 +40,39 @@ class Select extends Field
      * @var array
      */
     protected $config = [];
+
+    /**
+     * Field constructor.
+     *
+     * @param       $column
+     * @param array $arguments
+     */
+    public function __construct($column = '', $arguments = [])
+    {
+        parent::__construct($column, $arguments);
+
+        $this->rules([new HasOptionRule($this)]);
+    }
+
+    /**
+     * Get options.
+     * *Not set $this->options*
+     *
+     * @return array
+     */
+    public function getOptions() : array
+    {
+        $options = $this->options;
+        if ($options instanceof \Closure) {
+            $options = call_user_func($options, $this->value, $this, isset($this->form) ? $this->form->model() : null);
+        }
+
+        if($options instanceof \Illuminate\Support\Collection){
+            $options = $options->toArray();
+        }
+
+        return array_filter($options, 'strlen');
+    }
 
     /**
      * Set options.

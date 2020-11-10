@@ -103,4 +103,8 @@ return [
     'menu_titles'            => [],
     'prev'                   => 'Prev',
     'next'                   => 'Next',
+
+    'validation' => [
+        'not_in_option' => 'A value that is not included in the choices is selected.',
+    ],
 ];

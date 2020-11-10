@@ -691,6 +691,50 @@ class Field implements Renderable
     }
 
     /**
+     * Remove validation rule
+     *
+     * @param array|callable|string $rules
+     * @param array                 $messages
+     *
+     * @return $this
+     */
+    public function removeRules($rules)
+    {
+        if(empty($rules)){
+            return $this;
+        }
+
+        if (is_string($rules)) {
+            $rules = array_filter(explode('|', $rules));
+        }
+
+        $newRules = [];
+        
+        foreach($this->rules as $r){
+            $isAdd = true;
+            foreach($rules as $removeRule){
+                if(is_object($r) && $r instanceof $removeRule){
+                    $isAdd = false;
+                    break;
+                }
+                elseif(is_string($r)){
+                    $rSplit = explode(':', $r);
+                    if($removeRule === $rSplit[0]){
+                        $isAdd = false;
+                        break;
+                    }
+                }         
+            }
+            if($isAdd){
+                $newRules = $r;
+            }
+        }
+        $this->rules = $newRules;
+
+        return $this;
+    }
+
+    /**
      * Set validation messages for column.
      *
      * @param string $key
@@ -1122,6 +1166,9 @@ class Field implements Renderable
         if ($isLabelAsterisked) {
             $this->setLabelClass(['asterisk']);
         }
+
+        //ToDo: if supported dynamic required
+        //$this->rules('required');
 
         return $this->attribute('required', true);
     }

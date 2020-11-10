@@ -95,7 +95,7 @@ class Form implements Renderable
     protected $validator;
 
     /**
-     * Initialization closure array.
+     * Validation closure.
      *
      * @var Closure
      */
@@ -1351,6 +1351,23 @@ class Form implements Renderable
 
         $class::$snakeAttributes = false;
     }
+
+    /**
+     * Validate this form fields, and return redirect if has errors
+     *
+     * @param array $input
+     *
+     * @return \Illuminate\Http\RedirectResponse|true
+     */
+    public function validateRedirect($input)
+    {
+        $message = $this->validationMessages($input);
+        if($message !== false){
+            return back()->withInput()->withErrors($message);
+        }
+        return true;
+    }
+    
 
     /**
      * Get validation messages.

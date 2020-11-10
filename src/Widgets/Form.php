@@ -137,6 +137,13 @@ class Form implements Renderable
     public $inbox = true;
 
     /**
+     * Validation closure.
+     *
+     * @var Closure
+     */
+    protected $validatorSavingCallback;
+
+    /**
      * Form constructor.
      *
      * @param array $data
@@ -476,6 +483,35 @@ class Form implements Renderable
         return false;
     }
 
+    
+    /**
+     * validatorSavingCallback
+     *
+     * @param Closure $callback
+     * @return $this
+     */
+    public function validatorSavingCallback(Closure $callback){
+        $this->validatorSavingCallback = $callback;
+
+        return $this;
+    }
+    
+    /**
+     * Validate this form fields, and return redirect if has errors
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|true
+     */
+    public function validateRedirect(Request $request)
+    {
+        $message = $this->validate($request);
+        if($message !== false){
+            return back()->withInput()->withErrors($message);
+        }
+        return true;
+    }
+    
     /**
      * Validate this form fields.
      *
@@ -503,6 +539,11 @@ class Form implements Renderable
         }
 
         $message = $this->mergeValidationMessages($failedValidators);
+
+        if($this->validatorSavingCallback){
+            $func = $this->validatorSavingCallback;
+            $func($input, $message, $this);
+        }
 
         return $message->any() ? $message : false;
     }

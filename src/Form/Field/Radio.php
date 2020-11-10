@@ -4,6 +4,7 @@ namespace Encore\Admin\Form\Field;
 
 use Encore\Admin\Form\Field;
 use Illuminate\Contracts\Support\Arrayable;
+use Encore\Admin\Validator\HasOptionRule;
 
 class Radio extends Field
 {
@@ -17,6 +18,19 @@ class Radio extends Field
         '/vendor/laravel-admin/AdminLTE/plugins/iCheck/icheck.min.js',
     ];
 
+    /**
+     * Field constructor.
+     *
+     * @param       $column
+     * @param array $arguments
+     */
+    public function __construct($column = '', $arguments = [])
+    {
+        parent::__construct($column, $arguments);
+
+        $this->rules([new HasOptionRule($this)]);
+    }
+    
     /**
      * Set options.
      *
@@ -33,6 +47,10 @@ class Radio extends Field
         $this->options = (array) $options;
 
         return $this;
+    }
+
+    public function getOptions(){
+        return $this->options;
     }
 
     /**

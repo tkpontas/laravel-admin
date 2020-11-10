@@ -3,6 +3,7 @@
 namespace Encore\Admin\Form\Field;
 
 use Encore\Admin\Form\Field;
+use Encore\Admin\Validator\HasOptionRule;
 use Illuminate\Support\Arr;
 
 class SwitchField extends Field
@@ -21,6 +22,25 @@ class SwitchField extends Field
     ];
 
     protected $size = 'small';
+
+    /**
+     * Field constructor.
+     *
+     * @param       $column
+     * @param array $arguments
+     */
+    public function __construct($column = '', $arguments = [])
+    {
+        parent::__construct($column, $arguments);
+
+        $this->rules([new HasOptionRule($this)]);
+    }
+    
+    public function getOptions(){
+        return collect($this->states)->mapWithKeys(function($state){
+            return [Arr::get($state, 'value') => Arr::get($state, 'text')];
+        })->toArray();
+    }
 
     public function setSize($size)
     {

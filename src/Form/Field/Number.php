@@ -2,6 +2,10 @@
 
 namespace Encore\Admin\Form\Field;
 
+use Encore\Admin\Validator\DigitBetweenRule;
+use Encore\Admin\Validator\DigitMinRule;
+use Encore\Admin\Validator\DigitMaxRule;
+
 class Number extends Text
 {
     protected static $js = [
@@ -40,6 +44,8 @@ EOT;
     {
         $this->attribute('min', $value);
 
+        $this->rules([new DigitMinRule($value)]);
+
         return $this;
     }
 
@@ -54,6 +60,31 @@ EOT;
     {
         $this->attribute('max', $value);
 
+        $this->rules([new DigitMaxRule($value)]);
+
         return $this;
     }
+
+    
+
+    /**
+     * Set min and max value of number field. 
+     * *And set validation.*
+     *
+     * @param int $min
+     * @param int $max
+     *
+     * @return $this
+     */
+    public function between($min, $max)
+    {
+        $this->attribute('min', $min);
+        $this->attribute('max', $max);
+
+        $this->rules([new DigitBetweenRule($min,$max)]);
+
+        return $this;
+    }
+
+    
 }

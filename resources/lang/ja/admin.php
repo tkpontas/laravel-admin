@@ -103,4 +103,8 @@ return [
     'prev'                   => '前へ',
     'next'                   => '次へ',
     'empty'                  => '空',
+
+    'validation' => [
+        'not_in_option' => '選択肢に含まれない値が選択されています。',
+    ],
 ];
