@@ -521,6 +521,19 @@ class Form implements Renderable
      */
     public function validate(Request $request)
     {
+        return $this->validationMessages($request->all());
+    }
+    
+
+    /**
+     * Get validation messages.
+     *
+     * @param array $input
+     *
+     * @return MessageBag|bool
+     */
+    public function validationMessages(array $input)
+    {
         if (method_exists($this, 'form')) {
             $this->form();
         }
@@ -529,7 +542,7 @@ class Form implements Renderable
 
         /** @var Field $field */
         foreach ($this->fields() as $field) {
-            if (!$validator = $field->getValidator($request->all())) {
+            if (!$validator = $field->getValidator($input)) {
                 continue;
             }
 
@@ -547,6 +560,7 @@ class Form implements Renderable
 
         return $message->any() ? $message : false;
     }
+
 
     /**
      * Merge validation messages from input validators.

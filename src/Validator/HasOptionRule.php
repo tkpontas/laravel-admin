@@ -43,7 +43,7 @@ class HasOptionRule implements Rule
         }
 
         foreach($value as $val){
-            if(!array_key_exists($val, $options)){
+            if(!array_key_exists(strval($val), $options)){
                 return false;
             }
         }
