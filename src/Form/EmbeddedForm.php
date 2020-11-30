@@ -149,6 +149,14 @@ class EmbeddedForm
             $input[$key] = $this->prepareValue($key, $record);
         }
 
+        // remove non exists column's values.
+        $keys = collect($this->fields)->map(function(Field $field){
+            return $field->column();
+        });
+        $input = array_filter($input, function($i, $k) use($keys){
+            return $keys->contains($k);
+        }, ARRAY_FILTER_USE_BOTH);
+
         return $input;
     }
 
