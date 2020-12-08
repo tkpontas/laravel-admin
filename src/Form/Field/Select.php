@@ -60,15 +60,19 @@ class Select extends Field
      *
      * @return array
      */
-    public function getOptions() : array
+    public function getOptions($value = null) : array
     {
         $options = $this->options;
         if ($options instanceof \Closure) {
-            $options = call_user_func($options, $this->value, $this, isset($this->form) ? $this->form->model() : null);
+            $options = call_user_func($options, ($value ?? $this->value), $this, isset($this->form) ? $this->form->model() : null);
         }
 
         if($options instanceof \Illuminate\Support\Collection){
             $options = $options->toArray();
+        }
+
+        if(is_null($options)){
+            return [];
         }
 
         return array_filter($options, 'strlen');

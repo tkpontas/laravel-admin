@@ -36,7 +36,7 @@ class HasOptionRule implements Rule
             return true;
         }
 
-        $options = $this->field->getOptions();
+        $options = $this->field->getOptions($value);
 
         if(!is_array($value)){
             $value = (array)$value;
