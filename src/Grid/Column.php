@@ -82,6 +82,13 @@ class Column
     protected $sort;
 
     /**
+     * Sort column name.
+     *
+     * @var string
+     */
+    protected $sortName;
+
+    /**
      * Help message.
      *
      * @var string
@@ -433,6 +440,20 @@ class Column
     public function sort($sort)
     {
         $this->sortable = $sort;
+
+        return $this;
+    }
+
+    /**
+     * Set sort coolumn name.
+     *
+     * @param string $sortName
+     *
+     * @return $this
+     */
+    public function sortName($sortName)
+    {
+        $this->sortName = $sortName;
 
         return $this;
     }
@@ -898,7 +919,7 @@ class Column
         }
 
         // set sort value
-        $sort = ['column' => $this->name, 'type' => $type];
+        $sort = ['column' => ($this->sortName ?? $this->name), 'type' => $type];
         if (isset($this->cast)) {
             $sort['cast'] = $this->cast;
         }
@@ -924,7 +945,15 @@ class Column
             return false;
         }
 
-        return isset($this->sort['column']) && $this->sort['column'] == $this->name;
+        if(isset($this->sort['column']) && $this->sort['column'] == $this->name){
+            return true;
+        };
+
+        if(isset($this->sort['column']) && $this->sort['column'] == $this->sortName){
+            return true;
+        };
+
+        return false;
     }
 
     /**
