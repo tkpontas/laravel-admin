@@ -59,12 +59,16 @@ class Footer implements Renderable
      * 
      * $submitRedirects : [
      *     [
+     *         'key': 'list', // this check key name. Use default check etc
      *         'value': 'foo', // this check value name
      *         'label': 'FOO', // this check label
+     *         'default': true, // if this flow is checked, set true
      *     ],
      *     [
+     *         'key': 'edit', // this check key name. Use default check etc
      *         'value': 'bar', // this check value name
      *         'label': 'BAR', // this check label
+     *         'default': false, // if this flow is checked, set true
      *     ],
      * ]
      *
@@ -188,6 +192,7 @@ class Footer implements Renderable
 
         return $this;
     }
+    
     /**
      * Disable Checkbox.
      *
@@ -203,10 +208,27 @@ class Footer implements Renderable
     }
 
     /**
+     * Set default Checkbox.
+     *
+     * @return $this
+     */
+    public function defaultCheck($key)
+    {
+        foreach($this->submitRedirects as &$submitRedirect){
+            if(array_get($submitRedirect, 'key') == $key){
+                $submitRedirect['default'] = true;
+            }
+        }
+        
+        return $this;
+    }
+
+    /**
      * add footer check item.
      *
      * $footerCheck : 
      *     [
+     *         'key': 'list', // this check key name. Use default check etc
      *         'value': 'foo', // this check value name
      *         'label': 'FOO', // this check label
      *         'redirect': \Closure, //set callback. Please redirect.
@@ -294,9 +316,32 @@ EOT;
             'width'        => $this->builder->getWidth(),
             'submitLabel'  => $this->submitLabel ?? static::$defaultSubmitLabel ?? trans('admin.submit'),
             'submitRedirects'=> $this->submitRedirects,
-            'default_check'    => old('after-save', request()->get('after-save')),
+            'default_check'    => $this->getDefaultCheck(),
         ];
 
         return view($this->view, $data)->render();
+    }
+
+
+    /**
+     * Get default check value
+     *
+     * @return ?string
+     */
+    protected function getDefaultCheck(){
+        if(!is_null($result = old('after-save'))){
+            return $result;
+        }
+        if(!is_null($result = request()->get('after-save'))){
+            return $result;
+        }
+
+        foreach ($this->submitRedirects as $submitRedirect) {
+            if(boolval(array_get($submitRedirect, 'default'))){
+                return array_get($submitRedirect, 'value');
+            }
+        }
+
+        return null;
     }
 }

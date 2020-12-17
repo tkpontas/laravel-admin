@@ -20,7 +20,7 @@ return [
     'edit'                  => '編集',
     'view'                  => '表示',
     'continue_editing'      => '編集を続ける',
-    'continue_creating'     => '作成を続行する',
+    'continue_creating'     => '新規作成する',
     'detail'                => '詳細',
     'browse'                => '参照',
     'reset'                 => 'リセット',
