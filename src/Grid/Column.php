@@ -919,7 +919,13 @@ class Column
         }
 
         // set sort value
-        $sort = ['column' => ($this->sortName ?? $this->name), 'type' => $type];
+        if(isset($this->sortName)){
+            $sort = ['column' => $this->sortName, 'type' => $type, 'direct' => true];
+        }
+        else{
+            $sort = ['column' => $this->name, 'type' => $type];
+        }
+        
         if (isset($this->cast)) {
             $sort['cast'] = $this->cast;
         }

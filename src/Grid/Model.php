@@ -599,14 +599,23 @@ class Model
             return;
         }
 
-        if (Str::contains($this->sort['column'], '.')) {
+        $relationSort = false;
+        if(boolval(array_get($this->sort, 'direct'))){
+        }
+        elseif (Str::contains($this->sort['column'], '.')) {
+            $relationSort = true;
+        }
+        
+        if($relationSort){
             $this->setRelationSort($this->sort['column']);
-        } else {
+        }
+        else {
             $this->resetOrderBy();
 
             // get column. if contains "cast", set set column as cast
             if (!empty($this->sort['cast'])) {
-                $column = "CAST({$this->sort['column']} AS {$this->sort['cast']}) {$this->sort['type']}";
+                $columnName = \DB::getQueryGrammar()->wrap($this->sort['column']);
+                $column = "CAST({$columnName} AS {$this->sort['cast']}) {$this->sort['type']}";
                 $method = 'orderByRaw';
                 $arguments = [$column];
             } else {
