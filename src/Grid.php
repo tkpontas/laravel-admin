@@ -16,7 +16,7 @@ use Encore\Admin\Traits;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Jenssegers\Mongodb\Eloquent\Model as MongodbModel;
@@ -712,7 +712,7 @@ class Grid
      */
     public function getExportUrl($scope = 1, $args = null)
     {
-        $input = array_merge(Input::all(), Exporter::formatExportQuery($scope, $args));
+        $input = array_merge(Request::all(), Exporter::formatExportQuery($scope, $args));
 
         if ($constraints = $this->model()->getConstraints()) {
             $input = array_merge($input, $constraints);

@@ -28,7 +28,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 
 /**
@@ -323,7 +323,7 @@ class Filter implements Renderable
      */
     public function conditions()
     {
-        $inputs = Arr::dot(Input::all());
+        $inputs = Arr::dot(Request::all());
 
         $inputs = array_filter($inputs, function ($input) {
             return $input !== '' && !is_null($input);
