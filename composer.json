@@ -1,5 +1,5 @@
 {
-    "name": "kajitoritest/laravel-admin",
+    "name": "exceedone/laravel-admin",
     "description": "laravel admin",
     "type": "library",
     "keywords": ["laravel", "admin", "grid", "form"],
