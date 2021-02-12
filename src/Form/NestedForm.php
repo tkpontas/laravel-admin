@@ -324,7 +324,16 @@ class NestedForm
                 $value = $field->prepareRecord($value, $record);
             }
 
+            $isSet = false;
             if (($field instanceof \Encore\Admin\Form\Field\Hidden) || $value != $field->original()) {
+                $isSet = true;
+            }
+            // 0($value) != null($field->original()) is false, so if value is 0, especially check.
+            elseif($value === 0 && $value !== $field->original()){
+                $isSet = true;
+            }
+
+            if ($isSet) {
                 if (is_array($columns)) {
                     foreach ($columns as $name => $column) {
                         Arr::set($prepared, $column, $value[$name]);
