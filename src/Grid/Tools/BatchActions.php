@@ -8,6 +8,14 @@ use Illuminate\Support\Collection;
 class BatchActions extends AbstractTool
 {
     /**
+     * deleteBatchClassName
+     *
+     * @var string
+     */
+    public static $deleteBatchClassName = \Encore\Admin\Grid\Tools\BatchDelete::class;
+
+
+    /**
      * @var Collection
      */
     protected $actions;
@@ -39,7 +47,7 @@ class BatchActions extends AbstractTool
      */
     protected function appendDefaultAction()
     {
-        $this->add(new BatchDelete(trans('admin.batch_delete')));
+        $this->add(new static::$deleteBatchClassName(trans('admin.batch_delete')));
     }
 
     /**
