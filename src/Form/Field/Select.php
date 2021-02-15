@@ -321,6 +321,10 @@ EOT;
         return $this;
     }
 
+    public function disableClear(){
+        return $this->config('allowClear', false);
+    }
+
     /**
      * Load options from remote.
      *

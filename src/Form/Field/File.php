@@ -125,8 +125,12 @@ class File extends Field
      *
      * @return mixed
      */
-    protected function uploadAndDeleteOriginal(UploadedFile $file)
+    protected function uploadAndDeleteOriginal(?UploadedFile $file)
     {
+        if(is_null($file)){
+            return null;
+        }
+        
         $this->renameIfExists($file);
 
         $path = null;

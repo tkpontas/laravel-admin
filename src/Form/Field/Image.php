@@ -21,7 +21,7 @@ class Image extends File
     protected $rules = 'image';
 
     /**
-     * @param array|UploadedFile $image
+     * @param array|UploadedFile|null $image
      *
      * @return string
      */
@@ -29,6 +29,10 @@ class Image extends File
     {
         if (request()->has(static::FILE_DELETE_FLAG)) {
             return $this->destroy();
+        }
+
+        if(is_null($image)){
+            return null;
         }
 
         $this->name = $this->getStoreName($image);

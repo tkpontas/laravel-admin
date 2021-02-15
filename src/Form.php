@@ -1268,7 +1268,11 @@ class Form implements Renderable
             $builder = $builder->withTrashed();
         }
 
-        $this->model = $builder->with($relations)->findOrFail($id);
+        if($id instanceof \Illuminate\Database\Eloquent\Model){
+            $this->model = $id;
+        }else{
+            $this->model = $builder->with($relations)->findOrFail($id);
+        }
 
         if($replicate){
             $this->model = $this->replicateModel($this->model, $relations, $ignore);
@@ -1286,6 +1290,30 @@ class Form implements Renderable
             }
         });
     }
+
+    /**
+     * Get model by inputs
+     *
+     * @return Model
+     */
+    public function getModelByInputs()
+    {
+        $data = \request()->all();
+
+        if (($response = $this->prepare($data)) instanceof Response) {
+            return $response;
+        }
+
+        $inserts = $this->prepareInsert($this->updates);
+
+        foreach ($inserts as $column => $value) {
+            $this->model->setAttribute($column, $value);
+        }
+
+        return $this->model;
+
+    }
+
 
     protected function replicateModel($oldModel, $relations, $ignore = []){
         $model = $oldModel->replicate()->setRelations([]);
@@ -1579,6 +1607,18 @@ class Form implements Renderable
     public function submitLabelSave()
     {
         $this->builder()->getFooter()->submitLabelSave();
+
+        return $this;
+    }
+
+    /**
+     * Disable Pjax.
+     *
+     * @return $this
+     */
+    public function disablePjax()
+    {
+        $this->builder()->disablePjax();
 
         return $this;
     }

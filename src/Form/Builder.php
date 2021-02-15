@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
  */
 class Builder
 {
+    public static $footerClassName = \Encore\Admin\Form\Footer::class;
+
     /**
      *  Previous url key.
      */
@@ -98,6 +100,13 @@ class Builder
     protected $title;
 
     /**
+     * Whether disable pjax
+     *
+     * @var disable pjax
+     */
+    protected $disablePjax = false;
+
+    /**
      * Builder constructor.
      *
      * @param Form $form
@@ -117,7 +126,7 @@ class Builder
     public function init()
     {
         $this->tools = new Tools($this);
-        $this->footer = new Footer($this);
+        $this->footer = new static::$footerClassName($this);
     }
 
     /**
@@ -201,7 +210,13 @@ class Builder
      */
     public function setResourceId($id)
     {
-        $this->id = $id;
+        if($id instanceof \Illuminate\Database\Eloquent\Model){
+            $this->id = $id->id;
+        }else{
+            $this->id = $id;
+        }
+
+        return $this;
     }
 
     /**
@@ -227,6 +242,19 @@ class Builder
         }
 
         return $this->form->resource();
+    }
+
+    /**
+     * Disable Pjax.
+     *
+     * @return $this
+     */
+    public function disablePjax()
+    {
+        $this->disablePjax = true;
+        \Admin::disablePjax();
+
+        return $this;
     }
 
     /**
@@ -498,7 +526,7 @@ class Builder
             $html[] = "$name=\"$value\"";
         }
 
-        return '<form '.implode(' ', $html).' pjax-container>';
+        return '<form '.implode(' ', $html).' ' . ($this->disablePjax ? '' : 'pjax-container') . '>';
     }
 
     /**

@@ -64,6 +64,20 @@ class Field implements Renderable
     protected $label = '';
 
     /**
+     * Whether disable label.
+     *
+     * @var bool
+     */
+    protected $disableLabel = false;
+
+    /**
+     * Whether disable display.
+     *
+     * @var bool
+     */
+    protected $disableDisplayRequired = false;
+
+    /**
      * Column name.
      *
      * @var string|array
@@ -346,6 +360,18 @@ class Field implements Renderable
     }
 
     /**
+     * disable label.
+     *
+     * @return $this
+     */
+    public function disableLabel()
+    {
+        $this->disableLabel = true;
+
+        return $this;
+    }
+
+    /**
      * Format the label value.
      *
      * @param array $arguments
@@ -580,6 +606,10 @@ class Field implements Renderable
 
         if ($this instanceof Form\Field\MultipleFile
             || $this instanceof Form\Field\File) {
+            return;
+        }
+
+        if($this->disableDisplayRequired){
             return;
         }
 
@@ -1174,6 +1204,26 @@ class Field implements Renderable
     }
 
     /**
+     * set the input filed required for tab.
+     * *Not set "required" attribute because cannot save js error.*
+     *
+     * @param bool $isLabelAsterisked
+     *
+     * @return Field
+     */
+    public function tabRequired($isLabelAsterisked = true)
+    {
+        if ($isLabelAsterisked) {
+            $this->setLabelClass(['asterisk']);
+        }
+
+        $this->rules('required');
+        $this->disableDisplayRequired = true;
+        
+        return $this;
+    }
+
+    /**
      * Set the field automatically get focus.
      *
      * @return Field
@@ -1318,6 +1368,14 @@ class Field implements Renderable
     /**
      * @return $this
      */
+    public function getHorizontal()
+    {
+        return $this->horizontal;
+    }
+
+    /**
+     * @return $this
+     */
     public function disableHorizontal()
     {
         $this->horizontal = false;
@@ -1338,7 +1396,7 @@ class Field implements Renderable
             ];
         }
 
-        return ['label' => "{$this->getLabelClass()}", 'field' => "{$this->getFieldClass()}", 'form-group' => ''];
+        return ['label' => "{$this->getLabelClass()}", 'field' => "{$this->getFieldClass()}", 'form-group' => 'form-group-vertical'];
     }
 
     /**
@@ -1528,6 +1586,10 @@ class Field implements Renderable
     public function getLabelClass()
     : string
     {
+        if($this->disableLabel && in_array('asterisk', $this->labelClass)){
+            $this->labelClass = array_diff($this->labelClass, ['asterisk']);
+            $this->labelClass = array_values($this->labelClass);
+        }
         return implode(' ', $this->labelClass);
     }
 
@@ -1603,7 +1665,7 @@ class Field implements Renderable
             'help'        => $this->getHelpArray(),
             'class'       => $this->getElementClassString(),
             'value'       => $this->value(),
-            'label'       => $this->label,
+            'label'       => $this->disableLabel ? '' : $this->label,
             'viewClass'   => $this->getViewElementClasses(),
             'column'      => $this->column,
             'errorKey'    => $this->getErrorKey(),

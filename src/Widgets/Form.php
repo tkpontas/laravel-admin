@@ -148,6 +148,13 @@ class Form implements Renderable
     protected $validatorSavingCallback;
 
     /**
+     * Whether only render fields.
+     *
+     * @var bool
+     */
+    protected $onlyRenderFields = false;
+
+    /**
      * Form constructor.
      *
      * @param array $data
@@ -452,6 +459,12 @@ class Form implements Renderable
         return $this->fields;
     }
 
+
+    public function onlyRenderFields(){
+        $this->onlyRenderFields = true;
+        return $this;
+    }
+
     /**
      * Get form's script
      *
@@ -696,7 +709,7 @@ EOT;
 
         $this->setupScript();
 
-        $form = view('admin::widgets.form', $this->getVariables())->render();
+        $form = view(($this->onlyRenderFields ? 'admin::widgets.fields' : 'admin::widgets.form'), $this->getVariables())->render();
 
         if (!($title = $this->title()) || !$this->inbox) {
             return $form;
