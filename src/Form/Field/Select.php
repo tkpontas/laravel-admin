@@ -42,6 +42,11 @@ class Select extends Field
     protected $config = [];
 
     /**
+     * @var mixed options for validation.
+     */
+    protected $validationOptions;
+
+    /**
      * Field constructor.
      *
      * @param       $column
@@ -62,7 +67,13 @@ class Select extends Field
      */
     public function getOptions($value = null) : array
     {
-        $options = $this->options;
+        if($this->validationOptions){
+            $options = $this->validationOptions;
+        }
+        else{
+            $options = $this->options;
+        }
+
         if ($options instanceof \Closure) {
             $options = call_user_func($options, ($value ?? $this->value), $this, isset($this->form) ? $this->form->model() : null);
         }
@@ -106,6 +117,20 @@ class Select extends Field
         } else {
             $this->options = (array) $options;
         }
+
+        return $this;
+    }
+
+    /**
+     * Set options for validation.
+     *
+     * @param array|callable|string $options
+     *
+     * @return $this
+     */
+    public function validationOptions($options)
+    {
+        $this->validationOptions = $options;
 
         return $this;
     }
@@ -319,6 +344,10 @@ EOT;
         };
 
         return $this;
+    }
+
+    public function disableClear(){
+        return $this->config('allowClear', false);
     }
 
     /**
