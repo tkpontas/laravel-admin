@@ -502,7 +502,7 @@ EOT;
             'language' =>  \App::getLocale(),
             'placeholder' => [
                 'id'   => '',
-                'text' => $this->label,
+                'text' => $this->getPlaceholder(),
             ],
         ], $this->config);
 

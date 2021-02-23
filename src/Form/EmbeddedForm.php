@@ -154,7 +154,7 @@ class EmbeddedForm
             return $field->column();
         });
         $input = array_filter($input, function($i, $k) use($keys){
-            return $keys->contains($k);
+            return $keys->flatten()->contains($k);
         }, ARRAY_FILTER_USE_BOTH);
 
         return $input;

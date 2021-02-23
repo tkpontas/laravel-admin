@@ -88,11 +88,15 @@ class Permission
         if(empty($message)){
             $message = trans('admin.deny');
         }
-        $response = response(Admin::content()->withError($message));
+        
+        // move to after ajax
+        //$response = response(Admin::content()->withError($message));
 
         if (!request()->pjax() && request()->ajax()) {
             abort(403, $message);
         }
+
+        $response = response(Admin::content()->withError($message));
 
         Pjax::respond($response);
     }

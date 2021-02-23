@@ -395,8 +395,12 @@ trait UploadField
      *
      * @return string
      */
-    protected function getStoreName(UploadedFile $file)
+    protected function getStoreName(?UploadedFile $file)
     {
+        if(is_null($file)){
+            return null;
+        }
+        
         if ($this->useUniqueName) {
             return $this->generateUniqueName($file);
         }

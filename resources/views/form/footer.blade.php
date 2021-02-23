@@ -1,4 +1,4 @@
-<div class="box-footer">
+<div class="box-footer" style="background-color: inherit;">
 
     {{ csrf_field() }}
 

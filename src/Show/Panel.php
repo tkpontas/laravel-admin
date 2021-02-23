@@ -156,6 +156,6 @@ class Panel implements Renderable
      */
     public function render()
     {
-        return view($this->view, $this->data)->render();
+        return view($this->view, $this->data);
     }
 }
