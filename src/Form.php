@@ -1295,10 +1295,11 @@ class Form implements Renderable
 
     /**
      * Get model by inputs
-     *
+     * 
+     * @param Model|null $model if set base model, set args
      * @return Model
      */
-    public function getModelByInputs()
+    public function getModelByInputs(?Model $model = null)
     {
         $data = \request()->all();
 
@@ -1307,6 +1308,10 @@ class Form implements Renderable
         }
 
         $inserts = $this->prepareInsert($this->updates);
+
+        if($model){
+            $this->model = $model;
+        }
 
         foreach ($inserts as $column => $value) {
             $this->model->setAttribute($column, $value);
@@ -1626,6 +1631,18 @@ class Form implements Renderable
     }
 
     /**
+     * Disable Validate.
+     *
+     * @return $this
+     */
+    public function disableValidate()
+    {
+        $this->builder()->disableValidate();
+
+        return $this;
+    }
+
+    /**
      * Disable form submit.
      *
      * @param bool $disable
@@ -1744,6 +1761,16 @@ class Form implements Renderable
         }
 
         call_user_func($callback, $this->builder()->getFooter());
+    }
+
+    /**
+     * Get unique class name for class selector
+     *
+     * @return  string
+     */ 
+    public function getUniqueName()
+    {
+        return $this->builder()->getUniqueName();
     }
 
     /**

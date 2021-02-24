@@ -203,7 +203,7 @@ class File extends Field
     protected function setupScripts($options)
     {
         $this->script = <<<EOT
-$("input{$this->getElementClassSelector()}").each(function(index, element){
+$("{$this->getElementClassSelector()}").each(function(index, element){
     var options = {$options};
     if(options['initialPreviewConfig'] && options['initialPreviewConfig'].length > 0){
         options['initialPreviewConfig'][0]['caption'] = $(element).data('initial-caption');
@@ -223,7 +223,7 @@ EOT;
             ];
 
             $this->script .= <<<EOT
-$("input{$this->getElementClassSelector()}").on('filebeforedelete', function() {
+$("{$this->getElementClassSelector()}").on('filebeforedelete', function() {
     
     return new Promise(function(resolve, reject) {
     
@@ -251,7 +251,7 @@ EOT;
             if(isset($this->options['deletedEvent'])){
                 $deletedEvent = $this->options['deletedEvent'];
                 $this->script .= <<<EOT
-                $("input{$this->getElementClassSelector()}").on('filedeleted', function(event, key, jqXHR, data) {
+                $("{$this->getElementClassSelector()}").on('filedeleted', function(event, key, jqXHR, data) {
                     {$deletedEvent};
                 });
 EOT;

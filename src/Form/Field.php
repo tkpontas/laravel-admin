@@ -5,6 +5,7 @@ namespace Encore\Admin\Form;
 use Closure;
 use Encore\Admin\Admin;
 use Encore\Admin\Form;
+use Encore\Admin\Widgets\Form as WidgetForm;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
@@ -523,11 +524,11 @@ class Field implements Renderable
     }
 
     /**
-     * @param Form $form
+     * @param Form|WidgetForm $form
      *
      * @return $this
      */
-    public function setForm(Form $form = null)
+    public function setForm($form = null)
     {
         $this->form = $form;
 
@@ -1203,23 +1204,20 @@ class Field implements Renderable
         return $this->attribute('required', true);
     }
 
+
     /**
-     * set the input filed required for tab.
-     * *Not set "required" attribute because cannot save js error.*
+     * set the input filed required rule.
+     * Set asterisk, set validation browser, and set rule
      *
      * @param bool $isLabelAsterisked
      *
      * @return Field
      */
-    public function tabRequired($isLabelAsterisked = true)
+    public function requiredRule()
     {
-        if ($isLabelAsterisked) {
-            $this->setLabelClass(['asterisk']);
-        }
-
+        $this->required();
         $this->rules('required');
-        $this->disableDisplayRequired = true;
-        
+
         return $this;
     }
 
@@ -1473,7 +1471,12 @@ class Field implements Renderable
             return $classes;
         }
 
-        return '.'.implode('.', $elementClass);
+        // Append form class name for filtering class name in form
+        $class = '';
+        if(!is_null($this->getFormUniqueName())){
+            $class .= '.' . $this->getFormUniqueName() . ' ';
+        }
+        return $class . '.'.implode('.', $elementClass);
     }
 
     /**
@@ -1629,6 +1632,16 @@ class Field implements Renderable
         $this->fieldClass = array_unique($this->fieldClass);
 
         return $this;
+    }
+
+    /**
+     * Get form unique class name for class selector
+     *
+     * @return  string
+     */ 
+    public function getFormUniqueName()
+    {
+        return $this->form ? $this->form->getUniqueName() : null;
     }
 
     /**

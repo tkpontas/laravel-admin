@@ -246,7 +246,7 @@ class MultipleFile extends Field
     protected function setupScripts($options)
     {
         $this->script = <<<EOT
-$("input{$this->getElementClassSelector()}").fileinput({$options});
+$("{$this->getElementClassSelector()}").fileinput({$options});
 EOT;
 
         if ($this->fileActionSettings['showRemove']) {
@@ -257,7 +257,7 @@ EOT;
             ];
 
             $this->script .= <<<EOT
-$("input{$this->getElementClassSelector()}").on('filebeforedelete', function() {
+$("{$this->getElementClassSelector()}").on('filebeforedelete', function() {
     
     return new Promise(function(resolve, reject) {
     
@@ -289,7 +289,7 @@ EOT;
             ]);
 
             $this->script .= <<<EOT
-$("input{$this->getElementClassSelector()}").on('filesorted', function(event, params) {
+$("{$this->getElementClassSelector()}").on('filesorted', function(event, params) {
     
     var order = [];
     
@@ -297,7 +297,7 @@ $("input{$this->getElementClassSelector()}").on('filesorted', function(event, pa
         order.push(item.key);
     });
     
-    $("input{$this->getElementClassSelector()}_sort").val(order);
+    $("{$this->getElementClassSelector()}_sort").val(order);
 });
 EOT;
         }

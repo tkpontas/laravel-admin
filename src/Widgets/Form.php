@@ -126,6 +126,13 @@ class Form implements Renderable
     public static $defaultSubmitLabel;
 
     /**
+     * unique class name for class selector
+     * 
+     * @var string
+     */
+    protected $uniqueName;
+
+    /**
      * Width for label and submit field.
      *
      * @var array
@@ -162,6 +169,8 @@ class Form implements Renderable
     public function __construct($data = [])
     {
         $this->fill($data);
+
+        $this->uniqueName = 'form-' . mb_substr(md5(uniqid()), 0, 32);
 
         $this->initFormAttributes();
     }
@@ -224,7 +233,7 @@ class Form implements Renderable
         $this->attributes = [
             'method'         => 'POST',
             'action'         => '',
-            'class'          => 'form-horizontal',
+            'class'          => 'form-horizontal ' . $this->uniqueName,
             'accept-charset' => 'UTF-8',
             'pjax-container' => true,
         ];
@@ -444,6 +453,8 @@ class Form implements Renderable
      */
     public function pushField(Field &$field)
     {
+        $field->setForm($this);
+
         array_push($this->fields, $field);
 
         return $this;
@@ -547,7 +558,6 @@ class Form implements Renderable
     }
     
 
-
     /**
      * Get default check value
      *
@@ -570,6 +580,16 @@ class Form implements Renderable
         return null;
     }
     
+    /**
+     * Get unique class name for class selector
+     *
+     * @return  string
+     */ 
+    public function getUniqueName()
+    {
+        return $this->uniqueName;
+    }
+
     /**
      * Validate this form fields.
      *
@@ -709,7 +729,15 @@ EOT;
 
         $this->setupScript();
 
-        $form = view(($this->onlyRenderFields ? 'admin::widgets.fields' : 'admin::widgets.form'), $this->getVariables())->render();
+        // if only render fields, set view, and set unique name
+        if($this->onlyRenderFields){
+            $valiables = $this->getVariables();
+            $valiables['uniqueName'] = $this->getUniqueName();
+            $form = view('admin::widgets.fields', $valiables);
+        }
+        else{
+            $form = view('admin::widgets.form', $this->getVariables())->render();
+        }
 
         if (!($title = $this->title()) || !$this->inbox) {
             return $form;

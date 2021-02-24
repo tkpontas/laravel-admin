@@ -132,6 +132,22 @@ class Embeds extends Field
     }
 
     /**
+     * Determine if form fields has files.
+     *
+     * @return bool
+     */
+    public function hasFile()
+    {
+        foreach ($this->fields() as $field) {
+            if ($field instanceof Field\File) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Format validation attributes.
      *
      * @param array  $input

@@ -43,6 +43,13 @@ class Builder
     protected $fields;
 
     /**
+     * unique class name for class selector
+     * 
+     * @var string
+     */
+    protected $uniqueName;
+
+    /**
      * @var array
      */
     protected $options = [];
@@ -107,6 +114,13 @@ class Builder
     protected $disablePjax = false;
 
     /**
+     * Whether disable validate
+     *
+     * @var bool
+     */
+    protected $disableValidate = false;
+
+    /**
      * Builder constructor.
      *
      * @param Form $form
@@ -127,6 +141,8 @@ class Builder
     {
         $this->tools = new Tools($this);
         $this->footer = new static::$footerClassName($this);
+
+        $this->uniqueName = 'form-' . mb_substr(md5(uniqid()), 0, 32);
     }
 
     /**
@@ -255,6 +271,28 @@ class Builder
         \Admin::disablePjax();
 
         return $this;
+    }
+
+    /**
+     * Disable Validate.
+     *
+     * @return $this
+     */
+    public function disableValidate()
+    {
+        $this->disableValidate = true;
+
+        return $this;
+    }
+
+    /**
+     * Get unique class name for class selector
+     *
+     * @return  string
+     */ 
+    public function getUniqueName()
+    {
+        return $this->uniqueName;
     }
 
     /**
@@ -468,7 +506,12 @@ class Builder
     public function hasFile()
     {
         foreach ($this->fields() as $field) {
-            if ($field instanceof Field\File) {
+            if(method_exists($field, 'hasFile')){
+                if($field->hasFile()){
+                    return true;
+                }
+            }
+            elseif ($field instanceof Field\File) {
                 return true;
             }
         }
@@ -515,7 +558,13 @@ class Builder
         $attributes['method'] = Arr::get($options, 'method', 'post');
         $attributes['accept-charset'] = 'UTF-8';
 
-        $attributes['class'] = Arr::get($options, 'class');
+        if($this->disableValidate){
+            $attributes['novalidate'] = 1;
+        }
+
+        $class = Arr::get($options, 'class');
+        $class .= " $this->uniqueName";
+        $attributes['class'] = $class;
 
         if ($this->hasFile()) {
             $attributes['enctype'] = 'multipart/form-data';

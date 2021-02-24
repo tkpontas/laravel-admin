@@ -264,6 +264,9 @@ class EmbeddedForm
     {
         $field = $this->formatField($field);
 
+        // set $parent form to $field
+        $field->setForm($this->parent);
+
         $this->fields->push($field);
 
         return $this;
