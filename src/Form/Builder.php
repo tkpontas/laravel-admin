@@ -286,6 +286,17 @@ class Builder
     }
 
     /**
+     * Set unique class name for class selector
+     *
+     * @return  $this
+     */ 
+    public function setUniqueName($uniqueName)
+    {
+        $this->uniqueName = $uniqueName;
+        return $this;
+    }
+
+    /**
      * Get unique class name for class selector
      *
      * @return  string
@@ -565,6 +576,7 @@ class Builder
         $class = Arr::get($options, 'class');
         $class .= " $this->uniqueName";
         $attributes['class'] = $class;
+        $attributes['data-form_uniquename'] = $this->uniqueName;
 
         if ($this->hasFile()) {
             $attributes['enctype'] = 'multipart/form-data';

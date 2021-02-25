@@ -42,6 +42,11 @@ class Select extends Field
     protected $config = [];
 
     /**
+     * @var boolean
+     */
+    protected $freeInput = false;
+
+    /**
      * @var mixed options for validation.
      */
     protected $validationOptions;
@@ -202,6 +207,20 @@ class Select extends Field
     }
 
     /**
+     * Set free input option
+     * 
+     * @param boolean $freeInput
+     *
+     * @return $this
+     */
+    public function freeInput(bool $freeInput)
+    {
+        $this->freeInput = $freeInput;
+
+        return $this;
+    }
+
+    /**
      * Load options for other select on change.
      *
      * @param string $field
@@ -234,6 +253,7 @@ $(document).on('change', "{$this->getElementClassSelector()}", function () {
         $(target).select2({
             placeholder: $placeholder,
             allowClear: $allowClear,
+            tags: $this->freeInput,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;
@@ -279,6 +299,7 @@ var refreshOptions = function(url, target) {
         $(target).select2({
             placeholder: $placeholder,
             allowClear: $allowClear,        
+            tags: $this->freeInput,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;
@@ -366,6 +387,7 @@ EOT;
         ];
         $configs = array_merge([
             'allowClear'         => true,
+            'tags'               => $this->freeInput,
             'placeholder'        => [
                 'id'        => '',
                 'text'      => trans('admin.choose'),
@@ -420,6 +442,7 @@ EOT;
             'allowClear'         => true,
             'placeholder'        => $this->label,
             'minimumInputLength' => 1,
+            'tags'               => $this->freeInput,
         ], $this->config);
 
         $configs = json_encode($configs);
@@ -499,6 +522,7 @@ EOT;
     {
         $configs = array_merge([
             'allowClear'  => true,
+            'tags'        => $this->freeInput,
             'language' =>  \App::getLocale(),
             'placeholder' => [
                 'id'   => '',

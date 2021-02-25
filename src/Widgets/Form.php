@@ -236,6 +236,7 @@ class Form implements Renderable
             'class'          => 'form-horizontal ' . $this->uniqueName,
             'accept-charset' => 'UTF-8',
             'pjax-container' => true,
+            'data-form_uniquename' => $this->uniqueName,
         ];
     }
 
@@ -580,6 +581,17 @@ class Form implements Renderable
         return null;
     }
     
+    /**
+     * Set unique class name for class selector
+     *
+     * @return  $this
+     */ 
+    public function setUniqueName($uniqueName)
+    {
+        $this->uniqueName = $uniqueName;
+        return $this;
+    }
+
     /**
      * Get unique class name for class selector
      *

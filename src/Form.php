@@ -1764,6 +1764,17 @@ class Form implements Renderable
     }
 
     /**
+     * Set unique class name for class selector
+     *
+     * @return  string
+     */ 
+    public function setUniqueName($uniqueName)
+    {
+        $this->builder()->setUniqueName($uniqueName);
+        return $this;
+    }
+
+    /**
      * Get unique class name for class selector
      *
      * @return  string
