@@ -331,7 +331,7 @@ class HasMany extends Field
      */
     protected function getKeyName()
     {
-        if (is_null($this->form)) {
+        if (is_null($this->form) || is_null($this->form->model())) {
             return;
         }
 
@@ -402,7 +402,7 @@ class HasMany extends Field
             }
         }
 
-        if (is_null($this->form)) {
+        if (is_null($this->form) || is_null($this->form->model())) {
             return $forms;
         }
 
