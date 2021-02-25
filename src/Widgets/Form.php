@@ -686,6 +686,14 @@ class Form implements Renderable
         return $this;
     }
 
+    /**
+     * @return null
+     */
+    public function model()
+    {
+        return null;
+    }
+
     protected function prepareForm()
     {
         if (method_exists($this, 'form')) {

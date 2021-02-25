@@ -822,7 +822,7 @@ class Field implements Renderable
             $rules = array_filter(explode('|', $rules));
         }
 
-        if (!$this->form) {
+        if (!$this->form || !$this->form->model()) {
             return $rules;
         }
 
