@@ -290,6 +290,13 @@ class Field implements Renderable
     public $isJsonType = false;
 
     /**
+     * Whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @var bool
+     */
+    protected $internal = false;
+
+    /**
      * Field constructor.
      *
      * @param       $column
@@ -1455,9 +1462,10 @@ class Field implements Renderable
     /**
      * Get element class selector.
      *
+     * @param boolean $appendFormName if true, set form unique name
      * @return string|array
      */
-    protected function getElementClassSelector()
+    protected function getElementClassSelector($appendFormName = true)
     {
         $elementClass = $this->getElementClass();
 
@@ -1473,7 +1481,7 @@ class Field implements Renderable
 
         // Append form class name for filtering class name in form
         $class = '';
-        if(!is_null($this->getFormUniqueName())){
+        if(boolval($appendFormName) && !is_null($this->getFormUniqueName())){
             $class .= '.' . $this->getFormUniqueName() . ' ';
         }
         return $class . '.'.implode('.', $elementClass);
@@ -1666,6 +1674,30 @@ class Field implements Renderable
         return $this;
     }
 
+    /**
+     * Get whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @return  bool
+     */ 
+    public function getInternal()
+    {
+        return $this->internal;
+    }
+
+    /**
+     * Set whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @param  bool  $internal  Whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @return  self
+     */ 
+    public function setInternal(bool $internal)
+    {
+        $this->internal = $internal;
+
+        return $this;
+    }
+    
     /**
      * Get the view variables of this field.
      *

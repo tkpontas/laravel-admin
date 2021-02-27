@@ -1083,7 +1083,7 @@ class Form implements Renderable
             $columns = $field->column();
 
             // If column not in input array data, then continue.
-            if (!Arr::has($updates, $columns)) {
+            if (!$field->getInternal() && !Arr::has($updates, $columns)) {
                 continue;
             }
 
@@ -1145,6 +1145,17 @@ class Form implements Renderable
             }
 
             $inserts[$column] = $field->prepare($value);
+        }
+
+        // set internal value.
+        foreach ($this->builder->fields() as $field) {
+            // If column not in input array data, then continue.
+            if (!$field->getInternal()) {
+                continue;
+            }
+            
+            $column = $field->column();
+            $inserts[$column] = $field->prepare(null);
         }
 
         $prepared = [];

@@ -31,6 +31,20 @@ class MultipleFile extends Field
     ];
 
     /**
+     * Caption.
+     *
+     * @var \Closure
+     */
+    protected $caption = null;
+
+    /**
+     * file Index.
+     *
+     * @var \Closure
+     */
+    protected $fileIndex = null;
+
+    /**
      * Create a new File instance.
      *
      * @param string $column
@@ -78,7 +92,7 @@ class MultipleFile extends Field
 
         $attributes[$this->column] = $this->label;
 
-        list($rules, $input) = $this->hydrateFiles(Arr::get($input, $this->column, []));
+        list($rules, $input) = $this->hydrateFiles(Arr::get($input, $this->column) ?? []);
 
         return \validator($input, $rules, $this->getValidationMessages(), $attributes);
     }
@@ -190,21 +204,62 @@ class MultipleFile extends Field
     }
 
     /**
-     * Initialize the caption.
+     * set fileIndex.
+     *
+     * @param \Closure $fileIndex
+     *
+     * @return $this
+     */
+    public function fileIndex($fileIndex)
+    {
+        $this->fileIndex = $fileIndex;
+
+        return $this;
+    }
+
+    /**
+     * set caption.
+     *
+     * @param \Closure $caption
+     *
+     * @return $this
+     */
+    public function caption($caption)
+    {
+        $this->caption = $caption;
+
+        return $this;
+    }
+
+    /**
+     * Initialize the index.
      *
      * @param array $caption
      *
      * @return string
      */
-    protected function initialCaption($caption)
+    protected function initialFileIndex($index, $file)
     {
-        if (empty($caption)) {
-            return '';
+        if($this->fileIndex instanceof \Closure){
+            return $this->fileIndex->call($this, $index, $file);
         }
+        return $index;
+    }
 
-        $caption = array_map('basename', $caption);
-
-        return implode(',', $caption);
+    /**
+     * Initialize the caption.
+     *
+     * @param string $caption
+     * @param string $key
+     *
+     * @return string
+     */
+    protected function initialCaption($caption, $key)
+    {
+        if($this->caption instanceof \Closure){
+            return $this->caption->call($this, $caption, $key);
+        }
+        return basename($caption);
     }
 
     /**
@@ -217,9 +272,10 @@ class MultipleFile extends Field
         $config = [];
 
         foreach ($files as $index => $file) {
+            $key = $this->initialFileIndex($index, $file);
             $preview = array_merge([
-                'caption' => basename($file),
-                'key'     => $index,
+                'caption' => $this->initialCaption($file, $key),
+                'key'     => $key,
             ], $this->guessPreviewType($file));
 
             $config[] = $preview;
@@ -280,6 +336,14 @@ $("{$this->getElementClassSelector()}").on('filebeforedelete', function() {
     });
 });
 EOT;
+            if(isset($this->options['deletedEvent'])){
+                $deletedEvent = $this->options['deletedEvent'];
+                $this->script .= <<<EOT
+                $("{$this->getElementClassSelector()}").on('filedeleted', function(event, key, jqXHR, data) {
+                    {$deletedEvent};
+                });
+EOT;
+            }
         }
 
         if ($this->fileActionSettings['showDrag']) {

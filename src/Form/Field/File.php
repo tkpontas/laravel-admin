@@ -38,6 +38,13 @@ class File extends Field
     protected $caption = null;
 
     /**
+     * file Index.
+     *
+     * @var \Closure
+     */
+    protected $fileIndex = null;
+
+    /**
      * Create a new File instance.
      *
      * @param string $column
@@ -157,6 +164,20 @@ class File extends Field
     }
 
     /**
+     * set fileIndex.
+     *
+     * @param \Closure $fileIndex
+     *
+     * @return $this
+     */
+    public function fileIndex($fileIndex)
+    {
+        $this->fileIndex = $fileIndex;
+
+        return $this;
+    }
+
+    /**
      * set caption.
      *
      * @param \Closure $caption
@@ -171,16 +192,31 @@ class File extends Field
     }
 
     /**
+     * Initialize the index.
+     *
+     * @param array $caption
+     *
+     * @return string
+     */
+    protected function initialFileIndex($file)
+    {
+        if($this->fileIndex instanceof \Closure){
+            return $this->fileIndex->call($this, 0, $file);
+        }
+        return 0;
+    }
+
+    /**
      * Initialize the caption.
      *
      * @param string $caption
      *
      * @return string
      */
-    protected function initialCaption($caption)
+    protected function initialCaption($caption, $key)
     {
         if($this->caption instanceof Closure){
-            return $this->caption->call($this, $caption);
+            return $this->caption->call($this, $caption, $key);
         }
         return basename($caption);
     }
@@ -190,7 +226,8 @@ class File extends Field
      */
     protected function initialPreviewConfig()
     {
-        $config = ['caption' => basename($this->value), 'key' => 0];
+        $key = $this->initialFileIndex($this->value);
+        $config = ['caption' => $this->initialCaption($this->value, $key), 'key' => $key];
 
         $config = array_merge($config, $this->guessPreviewType($this->value));
 
@@ -275,10 +312,10 @@ EOT;
         }
 
         if (!empty($this->value)) {
-            $this->attribute('data-initial-preview', $this->preview());
-            $this->attribute('data-initial-caption', $this->initialCaption($this->value));
-
             $this->setupPreviewOptions();
+
+            $this->attribute('data-initial-preview', $this->preview());
+            $this->attribute('data-initial-caption', array_get($this->options, 'initialPreviewConfig.0.caption'));
 
             $previewType = $this->guessPreviewType($this->value);
             $this->attribute('data-initial-type', array_get($previewType, 'type'));

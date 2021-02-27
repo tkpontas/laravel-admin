@@ -45,4 +45,15 @@ class Image extends File
 
         return $path;
     }
+    
+    /**
+     * Render file upload field.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function render()
+    {
+        $this->filetype('image');
+        return parent::render();
+    }
 }
