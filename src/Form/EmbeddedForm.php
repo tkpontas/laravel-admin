@@ -142,11 +142,11 @@ class EmbeddedForm
      *
      * @return mixed
      */
-    public function prepare($input)
+    public function prepare($input, bool $asConfirm = false)
     {
         foreach ($input as $key => $record) {
             $this->setFieldOriginalValue($key);
-            $input[$key] = $this->prepareValue($key, $record);
+            $input[$key] = $this->prepareValue($key, $record, $asConfirm);
         }
 
         // remove non exists column's values.
@@ -168,12 +168,15 @@ class EmbeddedForm
      *
      * @return mixed
      */
-    protected function prepareValue($key, $record)
+    protected function prepareValue($key, $record, bool $asConfirm = false)
     {
         $field = $this->fields->first(function (Field $field) use ($key) {
             return in_array($key, (array) $field->column());
         });
 
+        if($asConfirm && method_exists($field, 'prepareConfirm')){
+            return $field->prepareConfirm($record);
+        }
         if (method_exists($field, 'prepare')) {
             return $field->prepare($record);
         }

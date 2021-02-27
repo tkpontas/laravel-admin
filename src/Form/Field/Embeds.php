@@ -49,6 +49,20 @@ class Embeds extends Field
     }
 
     /**
+     * Prepare input data for confirm.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function prepareConfirm($input)
+    {
+        $form = $this->buildEmbeddedForm();
+
+        return $form->setOriginal($this->original)->prepare($input, true);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getValidator(array $input)

@@ -12,6 +12,11 @@ class File extends Field
     use UploadField;
 
     /**
+     * Tmp file prefix name. If file name is this prefix, get from tmp file.
+     */
+    const TMP_FILE_PREFIX = 'tmp:';
+
+    /**
      * Css.
      *
      * @var array
@@ -43,6 +48,21 @@ class File extends Field
      * @var \Closure
      */
     protected $fileIndex = null;
+
+
+    /**
+     * Set file to tmp. Almost use preview.
+     *
+     * @var \Closure
+     */
+    protected $setTmp = null;
+
+    /**
+     * Get file from tmp. Almost use preview.
+     *
+     * @var \Closure
+     */
+    protected $getTmp = null;
 
     /**
      * Create a new File instance.
@@ -110,12 +130,17 @@ class File extends Field
     /**
      * Prepare for saving.
      *
-     * @param UploadedFile|array $file
+     * @param UploadedFile|array|string $file
      *
      * @return mixed|string
      */
     public function prepare($file)
     {
+        // If has $file is string, and has TMP_FILE_PREFIX, get $file
+        if(is_string($file) && strpos($file, static::TMP_FILE_PREFIX) === 0 && $this->getTmp){
+            $file = call_user_func($this->getTmp, $file);
+        }
+
         if (request()->has(static::FILE_DELETE_FLAG)) {
             return $this->destroy();
         }
@@ -124,6 +149,32 @@ class File extends Field
 
         return $this->uploadAndDeleteOriginal($file);
     }
+
+    /**
+     * Prepare for preview.
+     * Not delete and not store.
+     *
+     * @param UploadedFile|array|string $file
+     *
+     * @return mixed|string
+     */
+    public function prepareConfirm($file)
+    {
+        if(!$this->setTmp){
+            return $this->prepare($file);
+        }
+
+        // set tmp file to tmp file etc.
+        $tmpFile = call_user_func($this->setTmp, $file);
+        if(!is_null($tmpFile)){
+            $this->name = $tmpFile;
+            return $this->name;
+        }
+
+        $this->prepare($file);
+    }
+
+
 
     /**
      * Upload file and delete original file.
@@ -151,6 +202,36 @@ class File extends Field
         $this->destroy();
 
         return $path;
+    }
+
+
+    /**
+     * Set set file to tmp. Almost use preview.
+     * If use tmp, please append prefix to tmpfile name.
+     *
+     * @param  \Closure  $setTmp  Set file to tmp. Almost use preview.
+     *
+     * @return  self
+     */ 
+    public function setTmp(\Closure $setTmp)
+    {
+        $this->setTmp = $setTmp;
+
+        return $this;
+    }
+
+    /**
+     * Set get file from tmp. Almost use preview.
+     *
+     * @param  \Closure  $getTmp  Get file from tmp. Almost use preview.
+     *
+     * @return  self
+     */ 
+    public function getTmp(\Closure $getTmp)
+    {
+        $this->getTmp = $getTmp;
+
+        return $this;
     }
 
     /**

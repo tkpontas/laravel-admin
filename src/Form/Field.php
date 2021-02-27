@@ -1356,6 +1356,18 @@ class Field implements Renderable
     }
 
     /**
+     * Prepare for confirm(preview). Almost is same prepare($value), but file is not saving
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function prepareConfirm($value)
+    {
+        return $this->prepare($value);
+    }
+
+    /**
      * Format the field attributes.
      *
      * @return string

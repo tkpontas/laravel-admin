@@ -1168,6 +1168,48 @@ class Form implements Renderable
     }
 
     /**
+     * Prepare data for confirm.
+     *
+     * @param $inserts
+     *
+     * @return array
+     */
+    protected function prepareConfirm($inserts)
+    {
+        if ($this->isHasOneRelation($inserts)) {
+            $inserts = Arr::dot($inserts);
+        }
+
+        foreach ($inserts as $column => $value) {
+            if (is_null($field = $this->getFieldByColumn($column))) {
+                unset($inserts[$column]);
+                continue;
+            }
+
+            $inserts[$column] = $field->prepareConfirm($value);
+        }
+
+        // set internal value.
+        foreach ($this->builder->fields() as $field) {
+            // If column not in input array data, then continue.
+            if (!$field->getInternal()) {
+                continue;
+            }
+            
+            $column = $field->column();
+            $inserts[$column] = $field->prepareConfirm(null);
+        }
+
+        $prepared = [];
+
+        foreach ($inserts as $key => $value) {
+            Arr::set($prepared, $key, $value);
+        }
+
+        return $prepared;
+    }
+
+    /**
      * Is input data is has-one relation.
      *
      * @param array $inserts
@@ -1318,7 +1360,7 @@ class Form implements Renderable
             return $response;
         }
 
-        $inserts = $this->prepareInsert($this->updates);
+        $inserts = $this->prepareConfirm($this->updates);
 
         if($model){
             $this->model = $model;
