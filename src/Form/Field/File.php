@@ -51,20 +51,6 @@ class File extends Field
 
 
     /**
-     * Set file to tmp. Almost use preview.
-     *
-     * @var \Closure
-     */
-    protected $setTmp = null;
-
-    /**
-     * Get file from tmp. Almost use preview.
-     *
-     * @var \Closure
-     */
-    protected $getTmp = null;
-
-    /**
      * Create a new File instance.
      *
      * @param string $column
@@ -150,31 +136,6 @@ class File extends Field
         return $this->uploadAndDeleteOriginal($file);
     }
 
-    /**
-     * Prepare for preview.
-     * Not delete and not store.
-     *
-     * @param UploadedFile|array|string $file
-     *
-     * @return mixed|string
-     */
-    public function prepareConfirm($file)
-    {
-        if(!$this->setTmp){
-            return $this->prepare($file);
-        }
-
-        // set tmp file to tmp file etc.
-        $tmpFile = call_user_func($this->setTmp, $file);
-        if(!is_null($tmpFile)){
-            $this->name = $tmpFile;
-            return $this->name;
-        }
-
-        $this->prepare($file);
-    }
-
-
 
     /**
      * Upload file and delete original file.
@@ -202,36 +163,6 @@ class File extends Field
         $this->destroy();
 
         return $path;
-    }
-
-
-    /**
-     * Set set file to tmp. Almost use preview.
-     * If use tmp, please append prefix to tmpfile name.
-     *
-     * @param  \Closure  $setTmp  Set file to tmp. Almost use preview.
-     *
-     * @return  self
-     */ 
-    public function setTmp(\Closure $setTmp)
-    {
-        $this->setTmp = $setTmp;
-
-        return $this;
-    }
-
-    /**
-     * Set get file from tmp. Almost use preview.
-     *
-     * @param  \Closure  $getTmp  Get file from tmp. Almost use preview.
-     *
-     * @return  self
-     */ 
-    public function getTmp(\Closure $getTmp)
-    {
-        $this->getTmp = $getTmp;
-
-        return $this;
     }
 
     /**

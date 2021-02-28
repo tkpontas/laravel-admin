@@ -193,6 +193,14 @@ class Form implements Renderable
      */
     protected static $initCallbacks;
 
+
+    /**
+     * If set, not call default renderException, and \Closure.
+     *
+     * @var \Closure
+     */
+    protected $renderException;
+
     /**
      * Create a new form instance.
      *
@@ -1354,7 +1362,7 @@ class Form implements Renderable
      */
     public function getModelByInputs(?Model $model = null)
     {
-        $data = \request()->all();
+        $data = request()->all();
 
         if (($response = $this->prepare($data)) instanceof Response) {
             return $response;
@@ -1371,7 +1379,6 @@ class Form implements Renderable
         }
 
         return $this->model;
-
     }
 
 
@@ -1838,6 +1845,18 @@ class Form implements Renderable
     }
 
     /**
+     * Set if true, not call default renderException, and \Closure.
+     *
+     * @return  self
+     */ 
+    public function renderException(\Closure $renderException)
+    {
+        $this->renderException = $renderException;
+
+        return $this;
+    }
+
+    /**
      * Get current resource route url.
      *
      * @param int $slice
@@ -1859,6 +1878,10 @@ class Form implements Renderable
         try {
             return $this->builder->render();
         } catch (\Exception $e) {
+            if($this->renderException){
+                return call_user_func($this->renderException, $e);
+            }
+
             \Log::error($e);
             return Handler::renderException($e);
         }

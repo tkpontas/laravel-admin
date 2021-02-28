@@ -2,6 +2,7 @@
 
 namespace Encore\Admin;
 
+use Encore\Admin\Exception\Handler;
 use Encore\Admin\Show\Divider;
 use Encore\Admin\Show\Field;
 use Encore\Admin\Show\Panel;
@@ -76,6 +77,13 @@ class Show implements Renderable
      * @var \Closure
      */
     protected static $initCallback;
+
+    /**
+     * If set, not call default renderException, and \Closure.
+     *
+     * @var \Closure
+     */
+    protected $renderException;
 
     /**
      * Show constructor.
@@ -213,18 +221,23 @@ class Show implements Renderable
     /**
      * Add a model field to show.
      *
-     * @param string $name
+     * @param string|Field $name
      * @param string $label
      *
      * @return Field
      */
-    protected function addField($name, $label = '')
+    public function addField($name, $label = '')
     {
-        $field = new Field($name, $label);
+        if($name instanceof Field){
+            $field = $name;
+        }
+        else{
+            $field = new Field($name, $label);
+        }
 
         $field->setParent($this);
 
-        $this->overwriteExistingField($name);
+        $this->overwriteExistingField($field->getName());
 
         return tap($field, function ($field) {
             $this->fields->push($field);
@@ -496,6 +509,17 @@ class Show implements Renderable
 
         return false;
     }
+    /**
+     * Set if true, not call default renderException, and \Closure.
+     *
+     * @return  self
+     */ 
+    public function renderException(\Closure $renderException)
+    {
+        $this->renderException = $renderException;
+
+        return $this;
+    }
 
     /**
      * Render the show panels.
@@ -504,26 +528,40 @@ class Show implements Renderable
      */
     public function render()
     {
-        if (is_callable($this->builder)) {
-            call_user_func($this->builder, $this);
+        try {
+            if (is_callable($this->builder)) {
+                call_user_func($this->builder, $this);
+            }
+    
+            if ($this->fields->isEmpty()) {
+                $this->all();
+            }
+    
+            if (is_array($this->builder)) {
+                $this->fields($this->builder);
+            }
+    
+            $this->fields->each->setValue($this->model);
+            $this->relations->each->setModel($this->model);
+    
+            $data = [
+                'panel'     => $this->panel->fill($this->fields),
+                'relations' => $this->relations,
+            ];
+    
+            return $this->renderView($data);
+        } catch (\Exception $e) {
+            if($this->renderException){
+                return call_user_func($this->renderException, $e);
+            }
+
+            \Log::error($e);
+            return Handler::renderException($e);
         }
+    }
 
-        if ($this->fields->isEmpty()) {
-            $this->all();
-        }
-
-        if (is_array($this->builder)) {
-            $this->fields($this->builder);
-        }
-
-        $this->fields->each->setValue($this->model);
-        $this->relations->each->setModel($this->model);
-
-        $data = [
-            'panel'     => $this->panel->fill($this->fields),
-            'relations' => $this->relations,
-        ];
-
-        return view('admin::show', $data)->render();
+    protected function renderView($data)
+    {
+        return view('admin::show', $data);
     }
 }

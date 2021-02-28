@@ -150,6 +150,16 @@ class MultipleFile extends Field
      */
     public function prepare($files)
     {
+        // If has $files is array, items is all string and has TMP_FILE_PREFIX, get $file
+        if (is_array($files) && $this->getTmp) {
+            if (!collect($files)->contains(function ($file) {
+                // If has $file is string, and has TMP_FILE_PREFIX, get $file
+                return !is_string($file) || strpos($file, File::TMP_FILE_PREFIX) !== 0;
+            })) {
+                $files = call_user_func($this->getTmp, $files);
+            }
+        }
+
         if (request()->has(static::FILE_DELETE_FLAG)) {
             return $this->destroy(request(static::FILE_DELETE_FLAG));
         }

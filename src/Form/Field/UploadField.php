@@ -88,6 +88,13 @@ trait UploadField
     protected $filetype;
 
     /**
+     * Get file from tmp. Almost use preview.
+     *
+     * @var \Closure
+     */
+    protected $getTmp = null;
+
+    /**
      * @var array
      */
     protected $fileTypes = [
@@ -120,6 +127,20 @@ trait UploadField
     public function filetype($filetype)
     {
         $this->filetype = $filetype;
+
+        return $this;
+    }
+
+    /**
+     * Set get file from tmp. Almost use preview.
+     *
+     * @param  \Closure  $getTmp  Get file from tmp. Almost use preview.
+     *
+     * @return  self
+     */ 
+    public function getTmp(\Closure $getTmp)
+    {
+        $this->getTmp = $getTmp;
 
         return $this;
     }

@@ -49,6 +49,13 @@ class Field implements Renderable
     ];
 
     /**
+     * If the form horizontal layout.
+     *
+     * @var bool
+     */
+    protected $horizontal = true;
+
+    /**
      * Escape field value or not.
      *
      * @var bool
@@ -80,6 +87,13 @@ class Field implements Renderable
      * @var string
      */
     protected $relation;
+
+    /**
+     * Whether disable label.
+     *
+     * @var bool
+     */
+    protected $disableLabel = false;
 
     /**
      * If show contents in box.
@@ -165,6 +179,24 @@ class Field implements Renderable
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * @return $this
+     */
+    public function getHorizontal()
+    {
+        return $this->horizontal;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disableHorizontal()
+    {
+        $this->horizontal = false;
+
+        return $this;
     }
 
     /**
@@ -468,6 +500,18 @@ HTML;
     }
 
     /**
+     * disable label.
+     *
+     * @return $this
+     */
+    public function disableLabel()
+    {
+        $this->disableLabel = true;
+
+        return $this;
+    }
+
+    /**
      * Set value for this field.
      *
      * @param Model $model
@@ -599,13 +643,29 @@ HTML;
      */
     protected function variables()
     {
-        return [
+        $variables = [
             'content'   => $this->value,
             'escape'    => $this->escape,
-            'label'     => $this->getLabel(),
+            'label'     => !$this->disableLabel ? $this->getLabel() : null,
             'wrapped'   => $this->border,
-            'width'     => $this->width,
         ];
+
+        if($this->horizontal){
+            $variables['width'] = [
+                'label' => "col-md-{$this->width['label']}",
+                'field' => "col-md-{$this->width['field']}",
+            ];
+            $variables['form_group'] = 'form-group';
+        }
+        else{
+            $variables['width'] = [
+                'label' => "",
+                'field' => "",
+            ];
+            $variables['form_group'] = 'form-group-vertical';
+        }
+        
+        return $variables;
     }
 
     /**

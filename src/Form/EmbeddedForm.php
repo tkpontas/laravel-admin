@@ -149,6 +149,15 @@ class EmbeddedForm
             $input[$key] = $this->prepareValue($key, $record, $asConfirm);
         }
 
+        // Append internal value
+        foreach($this->fields as $field){
+            if (!$field->getInternal()) {
+                continue;
+            }
+            $key = $field->column();
+            $input[$key] = $this->prepareValue($key, null, $asConfirm);
+        }
+        
         // remove non exists column's values.
         $keys = collect($this->fields)->map(function(Field $field){
             return $field->column();

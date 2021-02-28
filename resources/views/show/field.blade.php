@@ -1,6 +1,6 @@
-<div class="form-group ">
-    <label class="col-md-{{$width['label']}} control-label">{{ $label }}</label>
-    <div class="col-md-{{$width['field']}}">
+<div class="{{$form_group}} ">
+    <label class="{{$width['label']}} control-label">{{ $label }}</label>
+    <div class="{{$width['field']}}">
         @if($wrapped)
         <div class="box box-solid box-default no-margin box-show">
             <!-- /.box-header -->

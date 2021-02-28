@@ -297,6 +297,11 @@ class Field implements Renderable
     protected $internal = false;
 
     /**
+     * @var \Closure
+     */
+    protected $prepareConfirm;
+
+    /**
      * Field constructor.
      *
      * @param       $column
@@ -1364,7 +1369,23 @@ class Field implements Renderable
      */
     public function prepareConfirm($value)
     {
-        return $this->prepare($value);
+        if(!$this->prepareConfirm){
+            return $this->prepare($value);
+        }
+        return call_user_func($this->prepareConfirm, $value);
+    }
+
+    /**
+     * Set Prepare for confirm(preview). Almost is same prepare($value), but file is not saving
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function setPrepareConfirm(\Closure $callback)
+    {
+        $this->prepareConfirm = $callback;
+        return $this;
     }
 
     /**

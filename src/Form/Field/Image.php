@@ -27,6 +27,11 @@ class Image extends File
      */
     public function prepare($image)
     {
+        // If has $file is string, and has TMP_FILE_PREFIX, get $file
+        if(is_string($image) && strpos($image, File::TMP_FILE_PREFIX) === 0 && $this->getTmp){
+            $image = call_user_func($this->getTmp, $image);
+        }
+
         if (request()->has(static::FILE_DELETE_FLAG)) {
             return $this->destroy();
         }

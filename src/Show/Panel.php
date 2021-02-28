@@ -59,6 +59,11 @@ class Panel implements Renderable
         ];
     }
 
+    public function setData($key, $value)
+    {
+        $this->data[$key] = $value;
+    }
+
     /**
      * Set parent container.
      *

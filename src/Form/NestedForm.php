@@ -312,6 +312,10 @@ class NestedForm
 
             $value = $this->fetchColumnValue($record, $columns);
 
+            if($field->getInternal()){
+                $value = $field->prepare(null);
+            }
+
             if (is_null($value) && is_null($field->original())) {
                 continue;
             }

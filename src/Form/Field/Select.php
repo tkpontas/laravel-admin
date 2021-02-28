@@ -244,6 +244,8 @@ class Select extends Field
             'text' => trans('admin.choose'),
         ]);
 
+        $freeInput = $this->freeInput ? '1' : '0';
+
         $script = <<<EOT
 $(document).off('change', "{$this->getElementClassSelector()}");
 $(document).on('change', "{$this->getElementClassSelector()}", function () {
@@ -253,7 +255,7 @@ $(document).on('change', "{$this->getElementClassSelector()}", function () {
         $(target).select2({
             placeholder: $placeholder,
             allowClear: $allowClear,
-            tags: $this->freeInput,
+            tags: $freeInput,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;
