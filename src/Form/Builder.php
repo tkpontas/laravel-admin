@@ -492,7 +492,7 @@ class Builder
                     return true;
                 }
             }
-            elseif ($field instanceof Field\File) {
+            elseif ($field instanceof Field\File || $field instanceof Field\MultipleFile) {
                 return true;
             }
         }
