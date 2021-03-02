@@ -291,6 +291,8 @@ EOT;
             'text' => trans('admin.choose'),
         ]);
 
+        $freeInput = $this->freeInput ? '1' : '0';
+
         $script = <<<EOT
 var fields = '$fieldsStr'.split('.');
 var urls = '$urlsStr'.split('^');
@@ -301,7 +303,7 @@ var refreshOptions = function(url, target) {
         $(target).select2({
             placeholder: $placeholder,
             allowClear: $allowClear,        
-            tags: $this->freeInput,
+            tags: $freeInput,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;
