@@ -43,13 +43,6 @@ class Builder
     protected $fields;
 
     /**
-     * unique class name for class selector
-     * 
-     * @var string
-     */
-    protected $uniqueName;
-
-    /**
      * @var array
      */
     protected $options = [];
@@ -141,8 +134,6 @@ class Builder
     {
         $this->tools = new Tools($this);
         $this->footer = new static::$footerClassName($this);
-
-        $this->uniqueName = 'form-' . mb_substr(md5(uniqid()), 0, 32);
     }
 
     /**
@@ -283,27 +274,6 @@ class Builder
         $this->disableValidate = true;
 
         return $this;
-    }
-
-    /**
-     * Set unique class name for class selector
-     *
-     * @return  $this
-     */ 
-    public function setUniqueName($uniqueName)
-    {
-        $this->uniqueName = $uniqueName;
-        return $this;
-    }
-
-    /**
-     * Get unique class name for class selector
-     *
-     * @return  string
-     */ 
-    public function getUniqueName()
-    {
-        return $this->uniqueName;
     }
 
     /**
@@ -574,9 +544,9 @@ class Builder
         }
 
         $class = Arr::get($options, 'class');
-        $class .= " $this->uniqueName";
+        $class .= " " . $this->form->getUniqueName();
         $attributes['class'] = $class;
-        $attributes['data-form_uniquename'] = $this->uniqueName;
+        $attributes['data-form_uniquename'] = $this->form->getUniqueName();
 
         if ($this->hasFile()) {
             $attributes['enctype'] = 'multipart/form-data';

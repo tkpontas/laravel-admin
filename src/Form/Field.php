@@ -242,10 +242,11 @@ class Field implements Renderable
 
     /**
      * If the form horizontal layout.
+     * If this value is null, get form.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $horizontal = true;
+    protected $horizontal = null;
 
     /**
      * column data format.
@@ -1405,11 +1406,27 @@ class Field implements Renderable
     }
 
     /**
-     * @return $this
+     * @return bool
      */
     public function getHorizontal()
     {
+        if(is_null($this->horizontal)){
+            if($this->form){
+                return $this->form->getHorizontal();
+            }
+            return true;
+        }
         return $this->horizontal;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setHorizontal(bool $horizontal)
+    {
+        $this->horizontal = $horizontal;
+        
+        return $this; 
     }
 
     /**
@@ -1427,7 +1444,7 @@ class Field implements Renderable
      */
     public function getViewElementClasses()
     {
-        if ($this->horizontal) {
+        if ($this->getHorizontal()) {
             return [
                 'label'      => "col-md-{$this->width['label']} {$this->getLabelClass()}",
                 'field'      => "col-md-{$this->width['field']} {$this->getFieldClass()}",

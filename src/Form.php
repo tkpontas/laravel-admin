@@ -10,6 +10,7 @@ use Encore\Admin\Form\HasHooks;
 use Encore\Admin\Form\Row;
 use Encore\Admin\Form\Tab;
 use Encore\Admin\Traits\Resource;
+use Encore\Admin\Traits\FormTrait;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
@@ -76,6 +77,7 @@ class Form implements Renderable
 {
     use Resource;
     use HasHooks;
+    use FormTrait;
 
     /**
      * Remove flag in `has many` form.
@@ -192,7 +194,6 @@ class Form implements Renderable
      * @var []Closure
      */
     protected static $initCallbacks;
-
 
     /**
      * If set, not call default renderException, and \Closure.
@@ -1821,27 +1822,6 @@ class Form implements Renderable
         }
 
         call_user_func($callback, $this->builder()->getFooter());
-    }
-
-    /**
-     * Set unique class name for class selector
-     *
-     * @return  string
-     */ 
-    public function setUniqueName($uniqueName)
-    {
-        $this->builder()->setUniqueName($uniqueName);
-        return $this;
-    }
-
-    /**
-     * Get unique class name for class selector
-     *
-     * @return  string
-     */ 
-    public function getUniqueName()
-    {
-        return $this->builder()->getUniqueName();
     }
 
     /**
