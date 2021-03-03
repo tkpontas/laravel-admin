@@ -136,9 +136,9 @@ class Column
     protected $displayCallbacks = [];
 
     /**
-     * @var []Closure
+     * @var bool
      */
-    protected $displayEscapeCallbacks = [];
+    protected $escape = true;
 
     /**
      * Displayers for grid column.
@@ -482,7 +482,6 @@ class Column
 
     /**
      * Add a display callback.
-     * *PLEASE CALL ONLY SHOWING AS HTML.
      *
      * @param Closure $callback
      *
@@ -496,15 +495,15 @@ class Column
     }
 
     /**
-     * Add a display callback. Execute escape.
+     * Whether escape this
      *
-     * @param Closure $callback
+     * @param bool $escape
      *
      * @return $this
      */
-    public function displayEscape(Closure $callback)
+    public function escape(bool $escape)
     {
-        $this->displayEscapeCallbacks[] = $callback;
+        $this->escape = $escape;
 
         return $this;
     }
@@ -715,16 +714,6 @@ class Column
     }
 
     /**
-     * If has display callbacks.
-     *
-     * @return bool
-     */
-    protected function hasDisplayEscapeCallbacks()
-    {
-        return !empty($this->displayEscapeCallbacks);
-    }
-
-    /**
      * Call all of the "display" callbacks column.
      *
      * @param mixed $value
@@ -748,34 +737,10 @@ class Column
             }
         }
 
-        return $value;
-    }
-
-    /**
-     * Call all of the "display" callbacks column.
-     *
-     * @param mixed $value
-     * @param int   $key
-     *
-     * @return mixed
-     */
-    protected function callDisplayEscapeCallbacks($value, $key)
-    {
-        foreach ($this->displayEscapeCallbacks as $callback) {
-            $previous = $value;
-
-            $callback = $this->bindOriginalRowModel($callback, $key);
-            $value = call_user_func_array($callback, [$value, $this, $this->getRowModel($key)]);
-
-            if (($value instanceof static) &&
-                ($last = array_pop($this->displayCallbacks))
-            ) {
-                $last = $this->bindOriginalRowModel($last, $key);
-                $value = call_user_func($last, $previous);
-            }
+        if(!$this->escape){
+            return $value;
         }
-
-        return htmlentities($value);
+        return $this->htmlEntityEncode($value);
     }
 
     /**
@@ -825,10 +790,6 @@ class Column
 
             if ($this->hasDisplayCallbacks()) {
                 $value = $this->callDisplayCallbacks($this->original, $key);
-                Arr::set($row, $this->name, $value);
-            }
-            if ($this->hasDisplayEscapeCallbacks()) {
-                $value = $this->callDisplayEscapeCallbacks($this->original, $key);
                 Arr::set($row, $this->name, $value);
             }
         }
@@ -1067,7 +1028,7 @@ HELP;
                 $displayer = new $abstract($value, $grid, $column, $this);
 
                 return $displayer->display(...$arguments);
-            });
+            })->escape(false);
         }
 
         return $this;
