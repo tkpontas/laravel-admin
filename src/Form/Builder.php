@@ -63,6 +63,11 @@ class Builder
     /**
      * @var array
      */
+    protected $attributes = [];
+
+    /**
+     * @var array
+     */
     protected $hiddenFields = [];
 
     /**
@@ -527,7 +532,8 @@ class Builder
      */
     public function open($options = [])
     {
-        $attributes = [];
+        // set atribute
+        $this->form->attribute($options);
 
         if ($this->isMode(self::MODE_EDIT)) {
             $this->addHiddenField((new Hidden('_method'))->value('PUT'));
@@ -535,25 +541,23 @@ class Builder
 
         $this->addRedirectUrlField();
 
-        $attributes['action'] = url($this->getAction());
-        $attributes['method'] = Arr::get($options, 'method', 'post');
-        $attributes['accept-charset'] = 'UTF-8';
-
+        $this->form->attribute([
+            'action' => url($this->getAction()),
+            'method' => Arr::get($options, 'method', 'post'),
+            'accept-charset' => 'UTF-8',
+            'data-form_uniquename' => $this->form->getUniqueName(),
+            'class' => $this->form->getUniqueName(),
+        ]);
+        
         if($this->disableValidate){
-            $attributes['novalidate'] = 1;
+            $this->form->attribute('novalidate', 1);
         }
-
-        $class = Arr::get($options, 'class');
-        $class .= " " . $this->form->getUniqueName();
-        $attributes['class'] = $class;
-        $attributes['data-form_uniquename'] = $this->form->getUniqueName();
-
         if ($this->hasFile()) {
-            $attributes['enctype'] = 'multipart/form-data';
+            $this->form->attribute('enctype', 'multipart/form-data');
         }
 
         $html = [];
-        foreach ($attributes as $name => $value) {
+        foreach ($this->form->getAttributes() as $name => $value) {
             $html[] = "$name=\"$value\"";
         }
 

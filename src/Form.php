@@ -1379,8 +1379,49 @@ class Form implements Renderable
             $this->model->setAttribute($column, $value);
         }
 
+        // Now, I only call this function, If need, set such as array.
+        $this->getRelationModelByInputs($data);
+
         return $this->model;
     }
+
+    
+    /**
+     * Get relation models
+     *
+     * @param array $relationInputs
+     * @return voidarray
+     */
+    public function getRelationModelByInputs(array $inputs)
+    {
+        $relations = [];
+        foreach ($inputs as $column => $value) {
+            if (!method_exists($this->model, $column)) {
+                continue;
+            }
+
+            $relation = call_user_func([$this->model, $column]);
+
+            if ($relation instanceof Relations\Relation) {
+                // create child model
+                foreach($value as $v){
+                    if (array_get($v, Form::REMOVE_FLAG_NAME) == 1) {
+                        continue;
+                    }
+
+                    $prepared = $this->prepareConfirm([$column => $value], false);
+
+                    $model = clone $relation->getRelated();
+                    $model->fill($v);
+
+                    $relations[$column][] = $model;
+                }
+            }
+        }
+
+        return $relations;
+    }
+
 
 
     protected function replicateModel($oldModel, $relations, $ignore = []){

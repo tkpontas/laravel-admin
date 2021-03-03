@@ -20,7 +20,11 @@ trait FormTrait
      */
     protected $horizontal = true;
 
-    
+    /**
+     * @var array
+     */
+    protected $attributes = [];
+
     /**
      * Set unique class name for class selector
      *
@@ -74,6 +78,41 @@ trait FormTrait
     }
 
     /**
+     * Add form attributes.
+     *
+     * @param string|array $attr
+     * @param string       $value
+     *
+     * @return $this
+     */
+    public function attribute($attr, $value = '')
+    {
+        if (is_array($attr)) {
+            foreach ($attr as $key => $value) {
+                if($key == 'class'){
+                    $this->setClass($value);
+                }
+                else{
+                    $this->attribute($key, $value);
+                }
+            }
+        } else {
+            if($attr == 'class'){
+                $this->setClass($value);
+            }
+            else{
+                $this->attributes[$attr] = $value;
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAttributes(){
+        return $this->attributes;
+    }
+
+    /**
      * set class
      *
      * @param string|array $value
@@ -95,5 +134,7 @@ trait FormTrait
 
         $result = implode(' ', array_unique($result));
         $this->attributes['class'] = $result;
+
+        return $this;
     }
 }

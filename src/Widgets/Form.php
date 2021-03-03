@@ -81,11 +81,6 @@ class Form implements Renderable
     protected $data = [];
 
     /**
-     * @var array
-     */
-    protected $attributes = [];
-
-    /**
      * Submit label.
      *
      * @var string
@@ -234,36 +229,6 @@ class Form implements Renderable
         ];
     }
 
-    /**
-     * Add form attributes.
-     *
-     * @param string|array $attr
-     * @param string       $value
-     *
-     * @return $this
-     */
-    public function attribute($attr, $value = '')
-    {
-        if (is_array($attr)) {
-            foreach ($attr as $key => $value) {
-                if($key == 'class'){
-                    $this->setClass($value);
-                }
-                else{
-                    $this->attribute($key, $value);
-                }
-            }
-        } else {
-            if($attr == 'class'){
-                $this->setClass($value);
-            }
-            else{
-                $this->attributes[$attr] = $value;
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * Format form attributes form array to html.

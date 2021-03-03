@@ -289,6 +289,20 @@ class HasMany extends Field
         return $form->setOriginal($this->original, $this->getKeyName())->prepare($input);
     }
 
+    /**
+     * Prepare input data for Confirm.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function prepareConfirm($input)
+    {
+        $form = $this->buildNestedForm($this->column, $this->builder);
+
+        return $form->setOriginal($this->original, $this->getKeyName())->prepareConfirm($input);
+    }
+
     public function disableHeader()
     {
         $this->enableHeader = false;
