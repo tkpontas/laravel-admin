@@ -1048,7 +1048,11 @@ class Field implements Renderable
             $help['icon'] = $this->helpIcon;
         }
         if(isset($this->helpText)){
-            $help['text'] = $this->helpText;
+            if(function_exists('html_clean')){
+                $help['text'] = html_clean($this->helpText);
+            }else{
+                $help['text'] = $this->helpText;
+            }
         }
         return $help;
     }
