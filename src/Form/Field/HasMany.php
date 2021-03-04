@@ -303,6 +303,29 @@ class HasMany extends Field
         return $form->setOriginal($this->original, $this->getKeyName())->prepareConfirm($input);
     }
 
+    /**
+     * Determine if form fields has files.
+     *
+     * @return bool
+     */
+    public function hasFile()
+    {
+        $form = $this->buildNestedForm($this->column, $this->builder);
+
+        foreach ($form->fields() as $field) {
+            if(method_exists($field, 'hasFile')){
+                if($field->hasFile()){
+                    return true;
+                }
+            }
+            elseif ($field instanceof Field\File || $field instanceof Field\MultipleFile) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     public function disableHeader()
     {
         $this->enableHeader = false;
