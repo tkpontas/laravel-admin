@@ -564,7 +564,7 @@ EOT;
                 escapeMarkup: function(markup) {
                     return markup;
                 }
-            })";
+            });";
         }
 
         if ($this->options instanceof \Closure) {
