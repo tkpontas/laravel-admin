@@ -37,6 +37,11 @@ class Select extends Field
     protected $buttons = [];
 
     /**
+     * @var bool
+     */
+    protected $escapeMarkup;
+
+    /**
      * @var array
      */
     protected $config = [];
@@ -136,6 +141,20 @@ class Select extends Field
     public function validationOptions($options)
     {
         $this->validationOptions = $options;
+
+        return $this;
+    }
+
+    /**
+     * Set the markup. render as html
+     *
+     * @param  bool  $escapeMarkup
+     *
+     * @return  self
+     */ 
+    public function escapeMarkup(bool $escapeMarkup)
+    {
+        $this->escapeMarkup = $escapeMarkup;
 
         return $this;
     }
@@ -538,6 +557,14 @@ EOT;
 
         if (empty($this->script)) {
             $this->script = "$(\"{$this->getElementClassSelector()}\").not('.admin-added-select2').select2($configs).addClass('admin-added-select2');";
+        }
+
+        if($this->escapeMarkup){
+            $this->script .= "$(\"{$this->getElementClassSelector()}\").select2({
+                escapeMarkup: function(markup) {
+                    return markup;
+                }
+            })";
         }
 
         if ($this->options instanceof \Closure) {
