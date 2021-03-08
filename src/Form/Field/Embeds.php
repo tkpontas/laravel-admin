@@ -185,6 +185,11 @@ class Embeds extends Field
                 if (Str::endsWith($key, ".$column")) {
                     $attributes[$key] = $label;
                 }
+                //Bug fix multiple select rule
+                elseif (Str::endsWith($key, ".$column.0")) {
+                    $key = str_replace(".0", "", $key);
+                    $attributes[$key] = $label;
+                }
             } else {
                 foreach ($new as $k => $val) {
                     if (Str::endsWith($key, ".$k")) {
