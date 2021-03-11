@@ -202,6 +202,14 @@ class Form implements Renderable
      */
     protected $renderException;
 
+
+    /**
+     * Set relation models
+     *
+     * @var arrar|null
+     */
+    protected $relationModels;
+
     /**
      * Create a new form instance.
      *
@@ -1370,9 +1378,11 @@ class Form implements Renderable
      * @param Model|null $model if set base model, set args
      * @return Model
      */
-    public function getModelByInputs(?Model $model = null)
+    public function getModelByInputs(array $data = null, ?Model $model = null)
     {
-        $data = request()->all();
+        if(is_null($data)){
+            $data = request()->all();
+        }
 
         if (($response = $this->prepare($data)) instanceof Response) {
             return $response;
@@ -1401,36 +1411,56 @@ class Form implements Renderable
      * @param array $relationInputs
      * @return voidarray
      */
-    public function getRelationModelByInputs(array $inputs)
+    public function getRelationModelByInputs(array $inputs = null)
     {
+        if(!is_null($this->relationModels)){
+            return $this->relationModels;
+        }
+
+        if(is_null($inputs)){
+            $inputs = request()->all();
+        }
+
         $relations = [];
         foreach ($inputs as $column => $value) {
+            
             if (!method_exists($this->model, $column)) {
                 continue;
             }
 
             $relation = call_user_func([$this->model, $column]);
 
-            if ($relation instanceof Relations\Relation) {
-                // create child model
-                foreach($value as $v){
-                    if (array_get($v, Form::REMOVE_FLAG_NAME) == 1) {
-                        continue;
-                    }
-
-                    $prepared = $this->prepareConfirm([$column => $value], false);
-
-                    $model = clone $relation->getRelated();
-                    $model->fill($v);
-
-                    $relations[$column][] = $model;
+            if (!($relation instanceof Relations\Relation)) {
+                continue;
+            }
+            
+            $value = array_filter($value);
+            if ($relation instanceof Relations\BelongsToMany || $relation instanceof Relations\MorphToMany) {
+                $relations[$column] = (clone $relation->getRelated())->query()->findMany($value);
+                continue;
+            }
+            
+            // create child model
+            foreach($value as $v){
+                if(is_null($v)){
+                    continue;
                 }
+                if (array_get($v, Form::REMOVE_FLAG_NAME) == 1) {
+                    continue;
+                }
+
+                $prepared = $this->prepareConfirm([$column => $value], false);
+
+                $model = clone $relation->getRelated();
+                $model->fill($v);
+
+                $relations[$column][] = $model;
             }
         }
 
+        $this->relationModels = $relations;
         return $relations;
     }
-
 
 
     protected function replicateModel($oldModel, $relations, $ignore = []){
