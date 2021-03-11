@@ -270,6 +270,15 @@ class Form implements Renderable
     }
 
     /**
+     * @return Model
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
+        return $this;
+    }
+
+    /**
      * @return Builder
      */
     public function builder()
@@ -787,7 +796,7 @@ class Form implements Renderable
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function redirectAfterStore()
+    public function redirectAfterStore()
     {
         $resourcesPath = $this->getResource(0);
 
