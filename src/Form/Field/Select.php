@@ -26,6 +26,8 @@ class Select extends Field
         '/vendor/laravel-admin/AdminLTE/plugins/select2/select2.full.min.js',
     ];
 
+    public static $modalSelectorName = '#modal-showmodal';
+
     /**
      * @var array
      */
@@ -55,6 +57,12 @@ class Select extends Field
      * @var mixed options for validation.
      */
     protected $validationOptions;
+
+    /**
+     * @var bool Whether is select is modal.
+     * https://select2.org/troubleshooting/common-problems
+     */
+    protected $asModal = false;
 
     /**
      * Field constructor.
@@ -225,6 +233,20 @@ class Select extends Field
         return $this;
     }
 
+    /**
+     * Set as Modal.
+     *
+     * https://select2.org/troubleshooting/common-problems
+     *
+     * @return $this
+     */
+    public function asModal()
+    {
+        $this->asModal = true;
+
+        return $this;
+    }
+    
     /**
      * Set free input option
      * 
@@ -470,6 +492,7 @@ EOT;
 
         $configs = json_encode($configs);
         $configs = substr($configs, 1, strlen($configs) - 2);
+        $dropdownParent = $this->asModal ? '$("' . static::$modalSelectorName . ' .modal-dialog")' : 'null';
 
         $this->script = <<<EOT
 
@@ -501,6 +524,7 @@ $("{$this->getElementClassSelector()}").not('.admin-added-select2').select2({
     cache: true
   },
   $configs,
+  dropdownParent: $dropdownParent,
   escapeMarkup: function (markup) {
       return markup;
   }
@@ -554,9 +578,14 @@ EOT;
         ], $this->config);
 
         $configs = json_encode($configs);
+        $configs = substr($configs, 1, strlen($configs) - 2);
 
         if (empty($this->script)) {
-            $this->script = "$(\"{$this->getElementClassSelector()}\").not('.admin-added-select2').select2($configs).addClass('admin-added-select2');";
+            $dropdownParent = $this->asModal ? '$("' . static::$modalSelectorName . ' .modal-dialog")' : 'null';
+            $this->script = "$(\"{$this->getElementClassSelector()}\").not('.admin-added-select2').select2({
+                dropdownParent: $dropdownParent,
+                $configs,
+            }).addClass('admin-added-select2');";
         }
 
         if($this->escapeMarkup){
