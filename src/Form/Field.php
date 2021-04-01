@@ -386,6 +386,18 @@ class Field implements Renderable
     }
 
     /**
+     * enable label.
+     *
+     * @return $this
+     */
+    public function enableLabel()
+    {
+        $this->disableLabel = false;
+
+        return $this;
+    }
+
+    /**
      * Format the label value.
      *
      * @param array $arguments
