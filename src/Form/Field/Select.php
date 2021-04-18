@@ -39,9 +39,19 @@ class Select extends Field
     protected $buttons = [];
 
     /**
+     * @var bool
+     */
+    protected $escapeMarkup;
+
+    /**
      * @var array
      */
     protected $config = [];
+
+    /**
+     * @var boolean
+     */
+    protected $freeInput = false;
 
     /**
      * @var mixed options for validation.
@@ -144,6 +154,20 @@ class Select extends Field
     }
 
     /**
+     * Set the markup. render as html
+     *
+     * @param  bool  $escapeMarkup
+     *
+     * @return  self
+     */ 
+    public function escapeMarkup(bool $escapeMarkup)
+    {
+        $this->escapeMarkup = $escapeMarkup;
+
+        return $this;
+    }
+
+    /**
      * @param array $groups
      */
 
@@ -222,6 +246,20 @@ class Select extends Field
 
         return $this;
     }
+    
+    /**
+     * Set free input option
+     * 
+     * @param boolean $freeInput
+     *
+     * @return $this
+     */
+    public function freeInput(bool $freeInput)
+    {
+        $this->freeInput = $freeInput;
+
+        return $this;
+    }
 
     /**
      * Load options for other select on change.
@@ -247,6 +285,8 @@ class Select extends Field
             'text' => trans('admin.choose'),
         ]);
 
+        $freeInput = $this->freeInput ? '1' : '0';
+
         $script = <<<EOT
 $(document).off('change', "{$this->getElementClassSelector()}");
 $(document).on('change', "{$this->getElementClassSelector()}", function () {
@@ -256,6 +296,7 @@ $(document).on('change', "{$this->getElementClassSelector()}", function () {
         $(target).select2({
             placeholder: $placeholder,
             allowClear: $allowClear,
+            tags: $freeInput,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;
@@ -291,6 +332,8 @@ EOT;
             'text' => trans('admin.choose'),
         ]);
 
+        $freeInput = $this->freeInput ? '1' : '0';
+
         $script = <<<EOT
 var fields = '$fieldsStr'.split('.');
 var urls = '$urlsStr'.split('^');
@@ -301,6 +344,7 @@ var refreshOptions = function(url, target) {
         $(target).select2({
             placeholder: $placeholder,
             allowClear: $allowClear,        
+            tags: $freeInput,
             data: $.map(data, function (d) {
                 d.id = d.$idField;
                 d.text = d.$textField;
@@ -388,6 +432,7 @@ EOT;
         ];
         $configs = array_merge([
             'allowClear'         => true,
+            'tags'               => $this->freeInput,
             'placeholder'        => [
                 'id'        => '',
                 'text'      => trans('admin.choose'),
@@ -442,6 +487,7 @@ EOT;
             'allowClear'         => true,
             'placeholder'        => $this->label,
             'minimumInputLength' => 1,
+            'tags'               => $this->freeInput,
         ], $this->config);
 
         $configs = json_encode($configs);
@@ -523,10 +569,11 @@ EOT;
     {
         $configs = array_merge([
             'allowClear'  => true,
+            'tags'        => $this->freeInput,
             'language' =>  \App::getLocale(),
             'placeholder' => [
                 'id'   => '',
-                'text' => $this->label,
+                'text' => $this->getPlaceholder(),
             ],
         ], $this->config);
 
@@ -541,8 +588,16 @@ EOT;
             }).addClass('admin-added-select2');";
         }
 
+        if($this->escapeMarkup){
+            $this->script .= "$(\"{$this->getElementClassSelector()}\").select2({
+                escapeMarkup: function(markup) {
+                    return markup;
+                }
+            });";
+        }
+
         if ($this->options instanceof \Closure) {
-            if ($this->form) {
+            if ($this->form && $this->form->model()) {
                 $this->options = $this->options->bindTo($this->form->model());
             }
 

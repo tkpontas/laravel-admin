@@ -319,7 +319,7 @@ EOT;
             'default_check'    => $this->getDefaultCheck(),
         ];
 
-        return view($this->view, $data)->render();
+        return view($this->view, $data);
     }
 
 

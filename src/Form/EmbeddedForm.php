@@ -142,19 +142,28 @@ class EmbeddedForm
      *
      * @return mixed
      */
-    public function prepare($input)
+    public function prepare($input, bool $asConfirm = false)
     {
         foreach ($input as $key => $record) {
             $this->setFieldOriginalValue($key);
-            $input[$key] = $this->prepareValue($key, $record);
+            $input[$key] = $this->prepareValue($key, $record, $asConfirm);
         }
 
+        // Append internal value
+        foreach($this->fields as $field){
+            if (!$field->getInternal()) {
+                continue;
+            }
+            $key = $field->column();
+            $input[$key] = $this->prepareValue($key, null, $asConfirm);
+        }
+        
         // remove non exists column's values.
         $keys = collect($this->fields)->map(function(Field $field){
             return $field->column();
         });
         $input = array_filter($input, function($i, $k) use($keys){
-            return $keys->contains($k);
+            return $keys->flatten()->contains($k);
         }, ARRAY_FILTER_USE_BOTH);
 
         return $input;
@@ -168,12 +177,15 @@ class EmbeddedForm
      *
      * @return mixed
      */
-    protected function prepareValue($key, $record)
+    protected function prepareValue($key, $record, bool $asConfirm = false)
     {
         $field = $this->fields->first(function (Field $field) use ($key) {
             return in_array($key, (array) $field->column());
         });
 
+        if($asConfirm && method_exists($field, 'prepareConfirm')){
+            return $field->prepareConfirm($record);
+        }
         if (method_exists($field, 'prepare')) {
             return $field->prepare($record);
         }
@@ -263,6 +275,9 @@ class EmbeddedForm
     public function pushField(Field $field)
     {
         $field = $this->formatField($field);
+
+        // set $parent form to $field
+        $field->setForm($this->parent);
 
         $this->fields->push($field);
 

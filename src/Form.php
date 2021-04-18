@@ -10,6 +10,7 @@ use Encore\Admin\Form\HasHooks;
 use Encore\Admin\Form\Row;
 use Encore\Admin\Form\Tab;
 use Encore\Admin\Traits\Resource;
+use Encore\Admin\Traits\FormTrait;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations;
@@ -76,6 +77,7 @@ class Form implements Renderable
 {
     use Resource;
     use HasHooks;
+    use FormTrait;
 
     /**
      * Remove flag in `has many` form.
@@ -194,6 +196,21 @@ class Form implements Renderable
     protected static $initCallbacks;
 
     /**
+     * If set, not call default renderException, and \Closure.
+     *
+     * @var \Closure
+     */
+    protected $renderException;
+
+
+    /**
+     * Set relation models
+     *
+     * @var arrar|null
+     */
+    protected $relationModels;
+
+    /**
      * Create a new form instance.
      *
      * @param $model
@@ -258,6 +275,15 @@ class Form implements Renderable
     public function model()
     {
         return $this->model;
+    }
+
+    /**
+     * @return Model
+     */
+    public function setModel($model)
+    {
+        $this->model = $model;
+        return $this;
     }
 
     /**
@@ -413,9 +439,11 @@ class Form implements Renderable
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Http\JsonResponse
      */
-    public function store()
+    public function store($data = null)
     {
-        $data = \request()->all();
+        if(!$data){
+            $data = \request()->all();
+        }
 
         // Handle validation errors.
         if ($validationMessages = $this->validationMessages($data)) {
@@ -776,7 +804,7 @@ class Form implements Renderable
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function redirectAfterStore()
+    public function redirectAfterStore()
     {
         $resourcesPath = $this->getResource(0);
 
@@ -1081,7 +1109,7 @@ class Form implements Renderable
             $columns = $field->column();
 
             // If column not in input array data, then continue.
-            if (!Arr::has($updates, $columns)) {
+            if (!$field->getInternal() && !Arr::has($updates, $columns)) {
                 continue;
             }
 
@@ -1143,6 +1171,59 @@ class Form implements Renderable
             }
 
             $inserts[$column] = $field->prepare($value);
+        }
+
+        // set internal value.
+        foreach ($this->builder->fields() as $field) {
+            // If column not in input array data, then continue.
+            if (!$field->getInternal()) {
+                continue;
+            }
+            
+            $column = $field->column();
+            $inserts[$column] = $field->prepare(null);
+        }
+
+        $prepared = [];
+
+        foreach ($inserts as $key => $value) {
+            Arr::set($prepared, $key, $value);
+        }
+
+        return $prepared;
+    }
+
+    /**
+     * Prepare data for confirm.
+     *
+     * @param $inserts
+     *
+     * @return array
+     */
+    protected function prepareConfirm($inserts)
+    {
+        if ($this->isHasOneRelation($inserts)) {
+            $inserts = Arr::dot($inserts);
+        }
+
+        foreach ($inserts as $column => $value) {
+            if (is_null($field = $this->getFieldByColumn($column))) {
+                unset($inserts[$column]);
+                continue;
+            }
+
+            $inserts[$column] = $field->prepareConfirm($value);
+        }
+
+        // set internal value.
+        foreach ($this->builder->fields() as $field) {
+            // If column not in input array data, then continue.
+            if (!$field->getInternal()) {
+                continue;
+            }
+            
+            $column = $field->column();
+            $inserts[$column] = $field->prepareConfirm(null);
         }
 
         $prepared = [];
@@ -1268,7 +1349,11 @@ class Form implements Renderable
             $builder = $builder->withTrashed();
         }
 
-        $this->model = $builder->with($relations)->findOrFail($id);
+        if($id instanceof \Illuminate\Database\Eloquent\Model){
+            $this->model = $id;
+        }else{
+            $this->model = $builder->with($relations)->findOrFail($id);
+        }
 
         if($replicate){
             $this->model = $this->replicateModel($this->model, $relations, $ignore);
@@ -1286,6 +1371,97 @@ class Form implements Renderable
             }
         });
     }
+
+    /**
+     * Get model by inputs
+     * 
+     * @param Model|null $model if set base model, set args
+     * @return Model
+     */
+    public function getModelByInputs(array $data = null, ?Model $model = null)
+    {
+        if(is_null($data)){
+            $data = request()->all();
+        }
+
+        if (($response = $this->prepare($data)) instanceof Response) {
+            return $response;
+        }
+
+        $inserts = $this->prepareConfirm($this->updates);
+
+        if($model){
+            $this->model = $model;
+        }
+
+        foreach ($inserts as $column => $value) {
+            $this->model->setAttribute($column, $value);
+        }
+
+        // Now, I only call this function, If need, set such as array.
+        $this->getRelationModelByInputs($data);
+
+        return $this->model;
+    }
+
+    
+    /**
+     * Get relation models
+     *
+     * @param array $relationInputs
+     * @return voidarray
+     */
+    public function getRelationModelByInputs(array $inputs = null)
+    {
+        if(!is_null($this->relationModels)){
+            return $this->relationModels;
+        }
+
+        if(is_null($inputs)){
+            $inputs = request()->all();
+        }
+
+        $relations = [];
+        foreach ($inputs as $column => $value) {
+            
+            if (!method_exists($this->model, $column)) {
+                continue;
+            }
+
+            $relation = call_user_func([$this->model, $column]);
+
+            if (!($relation instanceof Relations\Relation)) {
+                continue;
+            }
+            
+            $value = array_filter($value);
+            if ($relation instanceof Relations\BelongsToMany || $relation instanceof Relations\MorphToMany) {
+                $relations[$column] = (clone $relation->getRelated())->query()->findMany($value);
+                continue;
+            }
+            
+            // create child model
+            foreach($value as $v){
+                if(is_null($v)){
+                    continue;
+                }
+                if (array_get($v, Form::REMOVE_FLAG_NAME) == 1) {
+                    continue;
+                }
+
+                $prepared = $this->prepareConfirm([$column => $value], false);
+
+                $model = clone $relation->getRelated();
+                $model->fill($v);
+
+                $relations[$column][] = $model;
+            }
+        }
+
+        $this->relationModels = $relations;
+        return $relations;
+    }
+
 
     protected function replicateModel($oldModel, $relations, $ignore = []){
         $model = $oldModel->replicate()->setRelations([]);
@@ -1584,6 +1760,30 @@ class Form implements Renderable
     }
 
     /**
+     * Disable Pjax.
+     *
+     * @return $this
+     */
+    public function disablePjax()
+    {
+        $this->builder()->disablePjax();
+
+        return $this;
+    }
+
+    /**
+     * Disable Validate.
+     *
+     * @return $this
+     */
+    public function disableValidate()
+    {
+        $this->builder()->disableValidate();
+
+        return $this;
+    }
+
+    /**
      * Disable form submit.
      *
      * @param bool $disable
@@ -1705,6 +1905,18 @@ class Form implements Renderable
     }
 
     /**
+     * Set if true, not call default renderException, and \Closure.
+     *
+     * @return  self
+     */ 
+    public function renderException(\Closure $renderException)
+    {
+        $this->renderException = $renderException;
+
+        return $this;
+    }
+
+    /**
      * Get current resource route url.
      *
      * @param int $slice
@@ -1726,7 +1938,10 @@ class Form implements Renderable
         try {
             return $this->builder->render();
         } catch (\Exception $e) {
-            \Log::error($e);
+            if($this->renderException){
+                return call_user_func($this->renderException, $e);
+            }
+
             return Handler::renderException($e);
         }
     }

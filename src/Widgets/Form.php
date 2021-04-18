@@ -5,6 +5,7 @@ namespace Encore\Admin\Widgets;
 use Closure;
 use Encore\Admin\Form as BaseForm;
 use Encore\Admin\Form\Field;
+use Encore\Admin\Traits\FormTrait;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
@@ -60,6 +61,8 @@ use Illuminate\Validation\Validator;
  */
 class Form implements Renderable
 {
+    use FormTrait;
+
     /**
      * The title of form.
      *
@@ -76,11 +79,6 @@ class Form implements Renderable
      * @var array
      */
     protected $data = [];
-
-    /**
-     * @var array
-     */
-    protected $attributes = [];
 
     /**
      * Submit label.
@@ -146,6 +144,13 @@ class Form implements Renderable
      * @var Closure
      */
     protected $validatorSavingCallback;
+
+    /**
+     * Whether only render fields.
+     *
+     * @var bool
+     */
+    protected $onlyRenderFields = false;
 
     /**
      * Form constructor.
@@ -217,32 +222,13 @@ class Form implements Renderable
         $this->attributes = [
             'method'         => 'POST',
             'action'         => '',
-            'class'          => 'form-horizontal',
+            'class'          => 'form-horizontal ' . $this->getUniqueName(),
             'accept-charset' => 'UTF-8',
             'pjax-container' => true,
+            'data-form_uniquename' => $this->getUniqueName(),
         ];
     }
 
-    /**
-     * Add form attributes.
-     *
-     * @param string|array $attr
-     * @param string       $value
-     *
-     * @return $this
-     */
-    public function attribute($attr, $value = '')
-    {
-        if (is_array($attr)) {
-            foreach ($attr as $key => $value) {
-                $this->attribute($key, $value);
-            }
-        } else {
-            $this->attributes[$attr] = $value;
-        }
-
-        return $this;
-    }
 
     /**
      * Format form attributes form array to html.
@@ -437,6 +423,8 @@ class Form implements Renderable
      */
     public function pushField(Field &$field)
     {
+        $field->setForm($this);
+
         array_push($this->fields, $field);
 
         return $this;
@@ -450,6 +438,12 @@ class Form implements Renderable
     public function fields()
     {
         return $this->fields;
+    }
+
+
+    public function onlyRenderFields(){
+        $this->onlyRenderFields = true;
+        return $this;
     }
 
     /**
@@ -496,7 +490,7 @@ class Form implements Renderable
     public function hasFile()
     {
         foreach ($this->fields as $field) {
-            if ($field instanceof Field\File) {
+            if ($field instanceof Field\File || $field instanceof Field\MultipleFile) {
                 return true;
             }
         }
@@ -533,7 +527,6 @@ class Form implements Renderable
         return true;
     }
     
-
 
     /**
      * Get default check value
@@ -653,6 +646,14 @@ class Form implements Renderable
         return $this;
     }
 
+    /**
+     * @return null
+     */
+    public function model()
+    {
+        return null;
+    }
+
     protected function prepareForm()
     {
         if (method_exists($this, 'form')) {
@@ -696,7 +697,15 @@ EOT;
 
         $this->setupScript();
 
-        $form = view('admin::widgets.form', $this->getVariables())->render();
+        // if only render fields, set view, and set unique name
+        if($this->onlyRenderFields){
+            $valiables = $this->getVariables();
+            $valiables['uniqueName'] = $this->getUniqueName();
+            $form = view('admin::widgets.fields', $valiables);
+        }
+        else{
+            $form = view('admin::widgets.form', $this->getVariables())->render();
+        }
 
         if (!($title = $this->title()) || !$this->inbox) {
             return $form;

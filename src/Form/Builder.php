@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
  */
 class Builder
 {
+    public static $footerClassName = \Encore\Admin\Form\Footer::class;
+
     /**
      *  Previous url key.
      */
@@ -61,6 +63,11 @@ class Builder
     /**
      * @var array
      */
+    protected $attributes = [];
+
+    /**
+     * @var array
+     */
     protected $hiddenFields = [];
 
     /**
@@ -98,6 +105,20 @@ class Builder
     protected $title;
 
     /**
+     * Whether disable pjax
+     *
+     * @var disable pjax
+     */
+    protected $disablePjax = false;
+
+    /**
+     * Whether disable validate
+     *
+     * @var bool
+     */
+    protected $disableValidate = false;
+
+    /**
      * Builder constructor.
      *
      * @param Form $form
@@ -117,7 +138,7 @@ class Builder
     public function init()
     {
         $this->tools = new Tools($this);
-        $this->footer = new Footer($this);
+        $this->footer = new static::$footerClassName($this);
     }
 
     /**
@@ -201,7 +222,13 @@ class Builder
      */
     public function setResourceId($id)
     {
-        $this->id = $id;
+        if($id instanceof \Illuminate\Database\Eloquent\Model){
+            $this->id = $id->id;
+        }else{
+            $this->id = $id;
+        }
+
+        return $this;
     }
 
     /**
@@ -227,6 +254,31 @@ class Builder
         }
 
         return $this->form->resource();
+    }
+
+    /**
+     * Disable Pjax.
+     *
+     * @return $this
+     */
+    public function disablePjax()
+    {
+        $this->disablePjax = true;
+        \Admin::disablePjax();
+
+        return $this;
+    }
+
+    /**
+     * Disable Validate.
+     *
+     * @return $this
+     */
+    public function disableValidate()
+    {
+        $this->disableValidate = true;
+
+        return $this;
     }
 
     /**
@@ -440,7 +492,12 @@ class Builder
     public function hasFile()
     {
         foreach ($this->fields() as $field) {
-            if ($field instanceof Field\File) {
+            if(method_exists($field, 'hasFile')){
+                if($field->hasFile()){
+                    return true;
+                }
+            }
+            elseif ($field instanceof Field\File || $field instanceof Field\MultipleFile) {
                 return true;
             }
         }
@@ -475,7 +532,8 @@ class Builder
      */
     public function open($options = [])
     {
-        $attributes = [];
+        // set atribute
+        $this->form->attribute($options);
 
         if ($this->isMode(self::MODE_EDIT)) {
             $this->addHiddenField((new Hidden('_method'))->value('PUT'));
@@ -483,22 +541,27 @@ class Builder
 
         $this->addRedirectUrlField();
 
-        $attributes['action'] = url($this->getAction());
-        $attributes['method'] = Arr::get($options, 'method', 'post');
-        $attributes['accept-charset'] = 'UTF-8';
-
-        $attributes['class'] = Arr::get($options, 'class');
-
+        $this->form->attribute([
+            'action' => url($this->getAction()),
+            'method' => Arr::get($options, 'method', 'post'),
+            'accept-charset' => 'UTF-8',
+            'data-form_uniquename' => $this->form->getUniqueName(),
+            'class' => $this->form->getUniqueName(),
+        ]);
+        
+        if($this->disableValidate){
+            $this->form->attribute('novalidate', 1);
+        }
         if ($this->hasFile()) {
-            $attributes['enctype'] = 'multipart/form-data';
+            $this->form->attribute('enctype', 'multipart/form-data');
         }
 
         $html = [];
-        foreach ($attributes as $name => $value) {
+        foreach ($this->form->getAttributes() as $name => $value) {
             $html[] = "$name=\"$value\"";
         }
 
-        return '<form '.implode(' ', $html).' pjax-container>';
+        return '<form '.implode(' ', $html).' ' . ($this->disablePjax ? '' : 'pjax-container') . '>';
     }
 
     /**

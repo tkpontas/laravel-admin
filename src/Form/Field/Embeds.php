@@ -49,6 +49,20 @@ class Embeds extends Field
     }
 
     /**
+     * Prepare input data for confirm.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function prepareConfirm($input)
+    {
+        $form = $this->buildEmbeddedForm();
+
+        return $form->setOriginal($this->original)->prepare($input, true);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getValidator(array $input)
@@ -132,6 +146,22 @@ class Embeds extends Field
     }
 
     /**
+     * Determine if form fields has files.
+     *
+     * @return bool
+     */
+    public function hasFile()
+    {
+        foreach ($this->fields() as $field) {
+            if ($field instanceof Field\File || $field instanceof Field\MultipleFile) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Format validation attributes.
      *
      * @param array  $input
@@ -153,6 +183,11 @@ class Embeds extends Field
         foreach (array_keys(Arr::dot($input)) as $key) {
             if (is_string($column)) {
                 if (Str::endsWith($key, ".$column")) {
+                    $attributes[$key] = $label;
+                }
+                //Bug fix multiple select rule
+                elseif (Str::endsWith($key, ".$column.0")) {
+                    $key = str_replace(".0", "", $key);
                     $attributes[$key] = $label;
                 }
             } else {

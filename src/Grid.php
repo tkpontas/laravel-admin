@@ -588,7 +588,8 @@ class Grid
         }
 
         $this->addColumn(Column::ACTION_COLUMN_NAME, trans('admin.action'))
-            ->displayUsing($this->actionsClass, [$this->actionsCallback]);
+            ->displayUsing($this->actionsClass, [$this->actionsCallback])
+            ->escape(false);
     }
 
     /**
@@ -615,7 +616,8 @@ class Grid
         }
 
         $this->prependColumn(Column::SELECT_COLUMN_NAME, ' ')
-            ->displayUsing(Displayers\RowSelector::class);
+            ->displayUsing(Displayers\RowSelector::class)
+            ->escape(false);
     }
 
     /**
@@ -1052,7 +1054,6 @@ class Grid
         try {
             $this->build();
         } catch (\Exception $e) {
-            \Log::error($e);
             return Handler::renderException($e);
         }
 

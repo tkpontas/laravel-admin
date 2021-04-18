@@ -5,6 +5,7 @@ namespace Encore\Admin\Form;
 use Closure;
 use Encore\Admin\Admin;
 use Encore\Admin\Form;
+use Encore\Admin\Widgets\Form as WidgetForm;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
@@ -62,6 +63,20 @@ class Field implements Renderable
      * @var string
      */
     protected $label = '';
+
+    /**
+     * Whether disable label.
+     *
+     * @var bool
+     */
+    protected $disableLabel = false;
+
+    /**
+     * Whether disable display.
+     *
+     * @var bool
+     */
+    protected $disableDisplayRequired = false;
 
     /**
      * Column name.
@@ -227,10 +242,11 @@ class Field implements Renderable
 
     /**
      * If the form horizontal layout.
+     * If this value is null, get form.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $horizontal = true;
+    protected $horizontal = null;
 
     /**
      * column data format.
@@ -273,6 +289,18 @@ class Field implements Renderable
      * @var bool
      */
     public $isJsonType = false;
+
+    /**
+     * Whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @var bool
+     */
+    protected $internal = false;
+
+    /**
+     * @var \Closure
+     */
+    protected $prepareConfirm;
 
     /**
      * Field constructor.
@@ -343,6 +371,30 @@ class Field implements Renderable
     public function formatId($column)
     {
         return str_replace('.', '_', $column);
+    }
+
+    /**
+     * disable label.
+     *
+     * @return $this
+     */
+    public function disableLabel()
+    {
+        $this->disableLabel = true;
+
+        return $this;
+    }
+
+    /**
+     * enable label.
+     *
+     * @return $this
+     */
+    public function enableLabel()
+    {
+        $this->disableLabel = false;
+
+        return $this;
     }
 
     /**
@@ -497,11 +549,11 @@ class Field implements Renderable
     }
 
     /**
-     * @param Form $form
+     * @param Form|WidgetForm $form
      *
      * @return $this
      */
-    public function setForm(Form $form = null)
+    public function setForm($form = null)
     {
         $this->form = $form;
 
@@ -579,7 +631,12 @@ class Field implements Renderable
         }
 
         if ($this instanceof Form\Field\MultipleFile
-            || $this instanceof Form\Field\File) {
+            || $this instanceof Form\Field\File
+            || get_class($this) == Form\Field\Checbox::class) {
+            return;
+        }
+
+        if($this->disableDisplayRequired){
             return;
         }
 
@@ -791,7 +848,7 @@ class Field implements Renderable
             $rules = array_filter(explode('|', $rules));
         }
 
-        if (!$this->form) {
+        if (!$this->form || !$this->form->model()) {
             return $rules;
         }
 
@@ -1004,7 +1061,11 @@ class Field implements Renderable
             $help['icon'] = $this->helpIcon;
         }
         if(isset($this->helpText)){
-            $help['text'] = $this->helpText;
+            if(function_exists('html_clean')){
+                $help['text'] = html_clean($this->helpText);
+            }else{
+                $help['text'] = $this->helpText;
+            }
         }
         return $help;
     }
@@ -1173,6 +1234,23 @@ class Field implements Renderable
         return $this->attribute('required', true);
     }
 
+
+    /**
+     * set the input filed required rule.
+     * Set asterisk, set validation browser, and set rule
+     *
+     * @param bool $isLabelAsterisked
+     *
+     * @return Field
+     */
+    public function requiredRule()
+    {
+        $this->required();
+        $this->rules('required');
+
+        return $this;
+    }
+
     /**
      * Set the field automatically get focus.
      *
@@ -1244,7 +1322,8 @@ class Field implements Renderable
      */
     public function getPlaceholder()
     {
-        return $this->placeholder ?: trans('admin.input').' '.$this->label;
+        return $this->placeholder;
+        //return $this->placeholder ?: trans('admin.input').' '.$this->label;
     }
 
     /**
@@ -1300,6 +1379,34 @@ class Field implements Renderable
     }
 
     /**
+     * Prepare for confirm(preview). Almost is same prepare($value), but file is not saving
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function prepareConfirm($value)
+    {
+        if(!$this->prepareConfirm){
+            return $this->prepare($value);
+        }
+        return call_user_func($this->prepareConfirm, $value);
+    }
+
+    /**
+     * Set Prepare for confirm(preview). Almost is same prepare($value), but file is not saving
+     *
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function setPrepareConfirm(\Closure $callback)
+    {
+        $this->prepareConfirm = $callback;
+        return $this;
+    }
+
+    /**
      * Format the field attributes.
      *
      * @return string
@@ -1313,6 +1420,30 @@ class Field implements Renderable
         }
 
         return implode(' ', $html);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getHorizontal()
+    {
+        if(is_null($this->horizontal)){
+            if($this->form){
+                return $this->form->getHorizontal();
+            }
+            return true;
+        }
+        return $this->horizontal;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setHorizontal(bool $horizontal)
+    {
+        $this->horizontal = $horizontal;
+        
+        return $this; 
     }
 
     /**
@@ -1330,15 +1461,15 @@ class Field implements Renderable
      */
     public function getViewElementClasses()
     {
-        if ($this->horizontal) {
+        if ($this->getHorizontal()) {
             return [
-                'label'      => "col-sm-{$this->width['label']} {$this->getLabelClass()}",
-                'field'      => "col-sm-{$this->width['field']} {$this->getFieldClass()}",
+                'label'      => "col-md-{$this->width['label']} {$this->getLabelClass()}",
+                'field'      => "col-md-{$this->width['field']} {$this->getFieldClass()}",
                 'form-group' => $this->getGroupClass(true),
             ];
         }
 
-        return ['label' => "{$this->getLabelClass()}", 'field' => "{$this->getFieldClass()}", 'form-group' => ''];
+        return ['label' => "{$this->getLabelClass()}", 'field' => "{$this->getFieldClass()}", 'form-group' => 'form-group-vertical'];
     }
 
     /**
@@ -1398,9 +1529,10 @@ class Field implements Renderable
     /**
      * Get element class selector.
      *
+     * @param boolean $appendFormName if true, set form unique name
      * @return string|array
      */
-    protected function getElementClassSelector()
+    protected function getElementClassSelector($appendFormName = true)
     {
         $elementClass = $this->getElementClass();
 
@@ -1414,7 +1546,12 @@ class Field implements Renderable
             return $classes;
         }
 
-        return '.'.implode('.', $elementClass);
+        // Append form class name for filtering class name in form
+        $class = '';
+        if(boolval($appendFormName) && !is_null($this->getFormUniqueName())){
+            $class .= '.' . $this->getFormUniqueName() . ' ';
+        }
+        return $class . '.'.implode('.', $elementClass);
     }
 
     /**
@@ -1528,6 +1665,10 @@ class Field implements Renderable
     public function getLabelClass()
     : string
     {
+        if($this->disableLabel && in_array('asterisk', $this->labelClass)){
+            $this->labelClass = array_diff($this->labelClass, ['asterisk']);
+            $this->labelClass = array_values($this->labelClass);
+        }
         return implode(' ', $this->labelClass);
     }
 
@@ -1569,6 +1710,16 @@ class Field implements Renderable
     }
 
     /**
+     * Get form unique class name for class selector
+     *
+     * @return  string
+     */ 
+    public function getFormUniqueName()
+    {
+        return $this->form ? $this->form->getUniqueName() : null;
+    }
+
+    /**
      * @return int
      */
     public function getIndex()
@@ -1591,6 +1742,30 @@ class Field implements Renderable
     }
 
     /**
+     * Get whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @return  bool
+     */ 
+    public function getInternal()
+    {
+        return $this->internal;
+    }
+
+    /**
+     * Set whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @param  bool  $internal  Whether internal field. If true, Even if not set form's input, set result.
+     *
+     * @return  self
+     */ 
+    public function setInternal(bool $internal)
+    {
+        $this->internal = $internal;
+
+        return $this;
+    }
+    
+    /**
      * Get the view variables of this field.
      *
      * @return array
@@ -1603,7 +1778,7 @@ class Field implements Renderable
             'help'        => $this->getHelpArray(),
             'class'       => $this->getElementClassString(),
             'value'       => $this->value(),
-            'label'       => $this->label,
+            'label'       => $this->disableLabel ? '' : $this->label,
             'viewClass'   => $this->getViewElementClasses(),
             'column'      => $this->column,
             'errorKey'    => $this->getErrorKey(),

@@ -200,7 +200,7 @@ class NestedForm
      *
      * @return $this
      */
-    public function setForm(Form $form = null)
+    public function setForm($form = null)
     {
         $this->form = $form;
 
@@ -272,6 +272,24 @@ class NestedForm
         return $input;
     }
 
+
+    /**
+     * Prepare for Confirm.
+     *
+     * @param array $input
+     *
+     * @return mixed
+     */
+    public function prepareConfirm($input)
+    {
+        foreach ($input as $key => $record) {
+            $this->setFieldOriginalValue($key);
+            $input[$key] = $this->prepareRecord($record, true);
+        }
+
+        return $input;
+    }
+
     /**
      * Set original data for each field.
      *
@@ -298,7 +316,7 @@ class NestedForm
      *
      * @return array
      */
-    protected function prepareRecord($record)
+    protected function prepareRecord($record, bool $asConfirm = false)
     {
         if ($record[static::REMOVE_FLAG_NAME] == 1) {
             return $record;
@@ -312,16 +330,25 @@ class NestedForm
 
             $value = $this->fetchColumnValue($record, $columns);
 
+            if($field->getInternal()){
+                $value = $field->prepare(null);
+            }
+
             if (is_null($value) && is_null($field->original())) {
                 continue;
             }
 
-            if (method_exists($field, 'prepare')) {
-                $value = $field->prepare($value);
+            if($asConfirm && method_exists($field, 'prepareConfirm')){
+                $value = $field->prepareConfirm($value);
             }
-
-            if (method_exists($field, 'prepareRecord')) {
-                $value = $field->prepareRecord($value, $record);
+            else{
+                if (method_exists($field, 'prepare')) {
+                    $value = $field->prepare($value);
+                }
+    
+                if (method_exists($field, 'prepareRecord')) {
+                    $value = $field->prepareRecord($value, $record);
+                }
             }
 
             $isSet = false;

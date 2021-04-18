@@ -12,6 +12,11 @@ class File extends Field
     use UploadField;
 
     /**
+     * Tmp file prefix name. If file name is this prefix, get from tmp file.
+     */
+    const TMP_FILE_PREFIX = 'tmp:';
+
+    /**
      * Css.
      *
      * @var array
@@ -36,6 +41,14 @@ class File extends Field
      * @var \Closure
      */
     protected $caption = null;
+
+    /**
+     * file Index.
+     *
+     * @var \Closure
+     */
+    protected $fileIndex = null;
+
 
     /**
      * Create a new File instance.
@@ -103,12 +116,17 @@ class File extends Field
     /**
      * Prepare for saving.
      *
-     * @param UploadedFile|array $file
+     * @param UploadedFile|array|string $file
      *
      * @return mixed|string
      */
     public function prepare($file)
     {
+        // If has $file is string, and has TMP_FILE_PREFIX, get $file
+        if(is_string($file) && strpos($file, static::TMP_FILE_PREFIX) === 0 && $this->getTmp){
+            $file = call_user_func($this->getTmp, $file);
+        }
+
         if (request()->has(static::FILE_DELETE_FLAG)) {
             return $this->destroy();
         }
@@ -118,6 +136,7 @@ class File extends Field
         return $this->uploadAndDeleteOriginal($file);
     }
 
+
     /**
      * Upload file and delete original file.
      *
@@ -125,8 +144,12 @@ class File extends Field
      *
      * @return mixed
      */
-    protected function uploadAndDeleteOriginal(UploadedFile $file)
+    protected function uploadAndDeleteOriginal(?UploadedFile $file)
     {
+        if(is_null($file)){
+            return null;
+        }
+        
         $this->renameIfExists($file);
 
         $path = null;
@@ -153,6 +176,20 @@ class File extends Field
     }
 
     /**
+     * set fileIndex.
+     *
+     * @param \Closure $fileIndex
+     *
+     * @return $this
+     */
+    public function fileIndex($fileIndex)
+    {
+        $this->fileIndex = $fileIndex;
+
+        return $this;
+    }
+
+    /**
      * set caption.
      *
      * @param \Closure $caption
@@ -167,16 +204,31 @@ class File extends Field
     }
 
     /**
+     * Initialize the index.
+     *
+     * @param array $caption
+     *
+     * @return string
+     */
+    protected function initialFileIndex($file)
+    {
+        if($this->fileIndex instanceof \Closure){
+            return $this->fileIndex->call($this, 0, $file);
+        }
+        return 0;
+    }
+
+    /**
      * Initialize the caption.
      *
      * @param string $caption
      *
      * @return string
      */
-    protected function initialCaption($caption)
+    protected function initialCaption($caption, $key)
     {
         if($this->caption instanceof Closure){
-            return $this->caption->call($this, $caption);
+            return $this->caption->call($this, $caption, $key);
         }
         return basename($caption);
     }
@@ -186,7 +238,8 @@ class File extends Field
      */
     protected function initialPreviewConfig()
     {
-        $config = ['caption' => basename($this->value), 'key' => 0];
+        $key = $this->initialFileIndex($this->value);
+        $config = ['caption' => $this->initialCaption($this->value, $key), 'key' => $key];
 
         $config = array_merge($config, $this->guessPreviewType($this->value));
 
@@ -199,7 +252,7 @@ class File extends Field
     protected function setupScripts($options)
     {
         $this->script = <<<EOT
-$("input{$this->getElementClassSelector()}").each(function(index, element){
+$("{$this->getElementClassSelector()}").each(function(index, element){
     var options = {$options};
     if(options['initialPreviewConfig'] && options['initialPreviewConfig'].length > 0){
         options['initialPreviewConfig'][0]['caption'] = $(element).data('initial-caption');
@@ -219,7 +272,7 @@ EOT;
             ];
 
             $this->script .= <<<EOT
-$("input{$this->getElementClassSelector()}").on('filebeforedelete', function() {
+$("{$this->getElementClassSelector()}").on('filebeforedelete', function() {
     
     return new Promise(function(resolve, reject) {
     
@@ -247,7 +300,7 @@ EOT;
             if(isset($this->options['deletedEvent'])){
                 $deletedEvent = $this->options['deletedEvent'];
                 $this->script .= <<<EOT
-                $("input{$this->getElementClassSelector()}").on('filedeleted', function(event, key, jqXHR, data) {
+                $("{$this->getElementClassSelector()}").on('filedeleted', function(event, key, jqXHR, data) {
                     {$deletedEvent};
                 });
 EOT;
@@ -271,10 +324,10 @@ EOT;
         }
 
         if (!empty($this->value)) {
-            $this->attribute('data-initial-preview', $this->preview());
-            $this->attribute('data-initial-caption', $this->initialCaption($this->value));
-
             $this->setupPreviewOptions();
+
+            $this->attribute('data-initial-preview', $this->preview());
+            $this->attribute('data-initial-caption', array_get($this->options, 'initialPreviewConfig.0.caption'));
 
             $previewType = $this->guessPreviewType($this->value);
             $this->attribute('data-initial-type', array_get($previewType, 'type'));

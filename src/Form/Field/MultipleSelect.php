@@ -4,6 +4,7 @@ namespace Encore\Admin\Form\Field;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Arr;
+use Encore\Admin\Validator\CheckboxRequiredRule;
 
 class MultipleSelect extends Select
 {
@@ -105,6 +106,25 @@ class MultipleSelect extends Select
         } else {
             $this->original = $relations;
         }
+    }
+
+    /**
+     * Get field validation rules.
+     *
+     * @return string
+     */
+    protected function getRules()
+    {
+        $rules = parent::getRules();
+
+        // if contains required rule, set select option rule
+        foreach($rules as $rule){
+            if(is_string($rule) && $rule == 'required'){
+                $rules[] = new CheckboxRequiredRule;
+            }
+        }
+
+        return $rules;
     }
 
     public function prepare($value)

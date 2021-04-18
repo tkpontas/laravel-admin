@@ -59,6 +59,13 @@ class Panel implements Renderable
         ];
     }
 
+    public function setData($key, $value)
+    {
+        $this->data[$key] = $value;
+        
+        return $this;
+    }
+
     /**
      * Set parent container.
      *
@@ -156,6 +163,6 @@ class Panel implements Renderable
      */
     public function render()
     {
-        return view($this->view, $this->data)->render();
+        return view($this->view, $this->data);
     }
 }

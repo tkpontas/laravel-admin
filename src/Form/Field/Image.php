@@ -21,14 +21,23 @@ class Image extends File
     protected $rules = 'image';
 
     /**
-     * @param array|UploadedFile $image
+     * @param array|UploadedFile|null $image
      *
      * @return string
      */
     public function prepare($image)
     {
+        // If has $file is string, and has TMP_FILE_PREFIX, get $file
+        if(is_string($image) && strpos($image, File::TMP_FILE_PREFIX) === 0 && $this->getTmp){
+            $image = call_user_func($this->getTmp, $image);
+        }
+
         if (request()->has(static::FILE_DELETE_FLAG)) {
             return $this->destroy();
+        }
+
+        if(is_null($image)){
+            return null;
         }
 
         $this->name = $this->getStoreName($image);
@@ -40,5 +49,16 @@ class Image extends File
         $this->uploadAndDeleteOriginalThumbnail($image);
 
         return $path;
+    }
+    
+    /**
+     * Render file upload field.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function render()
+    {
+        $this->filetype('image');
+        return parent::render();
     }
 }

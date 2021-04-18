@@ -88,6 +88,13 @@ trait UploadField
     protected $filetype;
 
     /**
+     * Get file from tmp. Almost use preview.
+     *
+     * @var \Closure
+     */
+    protected $getTmp = null;
+
+    /**
      * @var array
      */
     protected $fileTypes = [
@@ -125,6 +132,20 @@ trait UploadField
     }
 
     /**
+     * Set get file from tmp. Almost use preview.
+     *
+     * @param  \Closure  $getTmp  Get file from tmp. Almost use preview.
+     *
+     * @return  self
+     */ 
+    public function getTmp(\Closure $getTmp)
+    {
+        $this->getTmp = $getTmp;
+
+        return $this;
+    }
+
+    /**
      * Set default options form image field.
      *
      * @return void
@@ -141,6 +162,8 @@ trait UploadField
             'showCancel'           => false,
             'dropZoneEnabled'      => false,
             'preferIconicPreview'  => true,
+            'allowedPreviewTypes'  => ['image'],
+            'previewFileIcon' => '<i class="fa fa-file"></i>',
             'previewFileIconSettings' => array(
                 'txt' => '<i class="fa fa-file text-primary"></i>',
                 'xml' => '<i class="fa fa-file text-primary"></i>',
@@ -395,8 +418,12 @@ trait UploadField
      *
      * @return string
      */
-    protected function getStoreName(UploadedFile $file)
+    protected function getStoreName(?UploadedFile $file)
     {
+        if(is_null($file)){
+            return null;
+        }
+        
         if ($this->useUniqueName) {
             return $this->generateUniqueName($file);
         }

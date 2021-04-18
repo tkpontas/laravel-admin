@@ -289,6 +289,43 @@ class HasMany extends Field
         return $form->setOriginal($this->original, $this->getKeyName())->prepare($input);
     }
 
+    /**
+     * Prepare input data for Confirm.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function prepareConfirm($input)
+    {
+        $form = $this->buildNestedForm($this->column, $this->builder);
+
+        return $form->setOriginal($this->original, $this->getKeyName())->prepareConfirm($input);
+    }
+
+    /**
+     * Determine if form fields has files.
+     *
+     * @return bool
+     */
+    public function hasFile()
+    {
+        $form = $this->buildNestedForm($this->column, $this->builder);
+
+        foreach ($form->fields() as $field) {
+            if(method_exists($field, 'hasFile')){
+                if($field->hasFile()){
+                    return true;
+                }
+            }
+            elseif ($field instanceof Field\File || $field instanceof Field\MultipleFile) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
     public function disableHeader()
     {
         $this->enableHeader = false;
@@ -331,7 +368,7 @@ class HasMany extends Field
      */
     protected function getKeyName()
     {
-        if (is_null($this->form)) {
+        if (is_null($this->form) || is_null($this->form->model())) {
             return;
         }
 
@@ -402,7 +439,7 @@ class HasMany extends Field
             }
         }
 
-        if (is_null($this->form)) {
+        if (is_null($this->form) || is_null($this->form->model())) {
             return $forms;
         }
 
