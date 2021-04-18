@@ -162,6 +162,8 @@ trait UploadField
             'showCancel'           => false,
             'dropZoneEnabled'      => false,
             'preferIconicPreview'  => true,
+            'allowedPreviewTypes'  => ['image'],
+            'previewFileIcon' => '<i class="fa fa-file"></i>',
             'previewFileIconSettings' => array(
                 'txt' => '<i class="fa fa-file text-primary"></i>',
                 'xml' => '<i class="fa fa-file text-primary"></i>',
