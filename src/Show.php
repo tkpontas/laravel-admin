@@ -554,7 +554,6 @@ class Show implements Renderable
                 return call_user_func($this->renderException, $e);
             }
 
-            \Log::error($e);
             return Handler::renderException($e);
         }
     }

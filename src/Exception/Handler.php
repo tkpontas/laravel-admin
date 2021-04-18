@@ -16,6 +16,7 @@ class Handler
      */
     public static function renderException(\Exception $exception)
     {
+        \Log::error($exception);
         $error = new MessageBag([
             'type'    => get_class($exception),
             'message' => $exception->getMessage(),

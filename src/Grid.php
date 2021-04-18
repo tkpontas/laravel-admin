@@ -1054,7 +1054,6 @@ class Grid
         try {
             $this->build();
         } catch (\Exception $e) {
-            \Log::error($e);
             return Handler::renderException($e);
         }
 
