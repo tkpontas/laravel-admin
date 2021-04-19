@@ -28,7 +28,10 @@ class Handler
         $errors = new ViewErrorBag();
         $errors->put('exception', $error);
 
-        return view('admin::partials.exception', compact('errors'))->render();
+        return view('admin::partials.exception', [
+            'errors' => $errors,
+            'isShowDetail' => boolval(config('app.debug', false)),
+        ])->render();
     }
 
     /**
