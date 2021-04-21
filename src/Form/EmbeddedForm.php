@@ -155,6 +155,7 @@ class EmbeddedForm
                 continue;
             }
             $key = $field->column();
+            $this->setFieldOriginalValue($key);
             $input[$key] = $this->prepareValue($key, null, $asConfirm);
         }
         
