@@ -168,9 +168,18 @@ class MultipleFile extends Field
             return $this->sortFiles($files);
         }
 
+        if(is_string($files)){
+            $files = [$files];
+        }
         $targets = array_map([$this, 'prepareForeach'], $files);
+        
+        // get original
+        $original = $this->original();
+        if(is_string($original)){
+            $original = [$original];
+        }
 
-        return array_merge($this->original(), $targets);
+        return array_merge($original, $targets);
     }
 
     /**
