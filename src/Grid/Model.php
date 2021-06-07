@@ -394,7 +394,13 @@ class Model
         $this->queries->reject(function ($query) {
             return $query['method'] == 'paginate';
         })->each(function ($query) {
-            $this->model = $this->model->{$query['method']}(...$query['arguments']);
+            if(isset($query['callback'])){
+                $func = $query['callback'];
+                $func($this->model, $query['arguments']);
+            }
+            else{
+                $this->model = $this->model->{$query['method']}(...$query['arguments']);
+            }
         });
 
         return $this->model->chunk($count, $callback);
@@ -445,7 +451,13 @@ class Model
         $this->setPaginate();
 
         $this->queries->unique()->each(function ($query) {
-            $this->model = call_user_func_array([$this->model, $query['method']], $query['arguments']);
+            if(isset($query['callback'])){
+                $func = $query['callback'];
+                $func($this->model, $query['arguments']);
+            }
+            else{
+                $this->model = call_user_func_array([$this->model, $query['method']], $query['arguments']);
+            }
         });
 
         if ($this->model instanceof Collection) {
@@ -479,7 +491,13 @@ class Model
         $this->queries->reject(function ($query) {
             return in_array($query['method'], ['get', 'paginate']);
         })->each(function ($query) use (&$queryBuilder) {
-            $queryBuilder = $queryBuilder->{$query['method']}(...$query['arguments']);
+            if(isset($query['callback'])){
+                $func = $query['callback'];
+                $func($queryBuilder, $query['arguments']);
+            }
+            else{
+                $queryBuilder = $queryBuilder->{$query['method']}(...$query['arguments']);
+            }
         });
 
         return $queryBuilder;
@@ -598,6 +616,12 @@ class Model
             return;
         }
 
+        // if sort as callback, Execute callback
+        if(!empty($this->sort['callback'])){
+            $this->setCallbackSort();
+            return;
+        }
+
         $relationSort = false;
         if(boolval(array_get($this->sort, 'direct'))){
         }
@@ -666,6 +690,32 @@ class Model
                 ],
             ]);
         }
+    }
+
+    /**
+     * Set callback sort.
+     *
+     * @param string $column
+     *
+     * @return void
+     */
+    protected function setCallbackSort()
+    {
+        $column_name = $this->sort['column'];
+        $this->grid->columns()->each(function($column) use($column_name){
+            if($column->getSortName() == $column_name && !is_null($column->getSortCallback())){
+                $this->resetOrderBy();   
+
+                // call callback sorting.
+                $func = $column->getSortCallback();
+                $this->queries->push([
+                    'method' => null,
+                    'callback' => $func,
+                    'arguments' => [$this->sort['type'] ?? 'asc'],
+                ]);
+                return false;
+            }
+        });
     }
 
     /**

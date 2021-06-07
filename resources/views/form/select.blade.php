@@ -10,6 +10,9 @@
 
         <select class="form-control {{$class}}" style="width: 100%;" name="{{$name}}" {!! $attributes !!} >
             @if($groups)
+                @if($addEmpty)
+                    <option value=""></option>
+                @endif
                 @foreach($groups as $group)
                     <optgroup label="{{ $group['label'] }}">
                         @foreach($group['options'] as $select => $option)
@@ -18,7 +21,9 @@
                     </optgroup>
                 @endforeach
              @else
-                <option value=""></option>
+                @if($addEmpty)
+                    <option value=""></option>
+                @endif
                 @foreach($options as $select => $option)
                     <option value="{{$select}}" {{ $select == $old ?'selected':'' }}>{{$option}}</option>
                 @endforeach

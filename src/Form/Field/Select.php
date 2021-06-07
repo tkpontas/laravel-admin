@@ -54,6 +54,11 @@ class Select extends Field
     protected $freeInput = false;
 
     /**
+     * @var boolean
+     */
+    protected $addEmpty = true;
+
+    /**
      * @var mixed options for validation.
      */
     protected $validationOptions;
@@ -257,6 +262,20 @@ class Select extends Field
     public function freeInput(bool $freeInput)
     {
         $this->freeInput = $freeInput;
+
+        return $this;
+    }
+    
+    /**
+     * Set add empty option
+     * 
+     * @param boolean $addEmpty
+     *
+     * @return $this
+     */
+    public function addEmpty(bool $addEmpty)
+    {
+        $this->addEmpty = $addEmpty;
 
         return $this;
     }
@@ -610,6 +629,7 @@ EOT;
             'options' => $this->options,
             'groups'  => $this->groups,
             'buttons'  => $this->buttons,
+            'addEmpty'  => $this->addEmpty,
         ]);
 
         $this->attribute('data-value', implode(',', (array) $this->value()));

@@ -96,11 +96,18 @@ class Column
     protected $help = '';
 
     /**
-     * Cast Name.
+     * Cast Name for sort.
      *
      * @var array
      */
     protected $cast;
+
+    /**
+     * Sort as callback.
+     *
+     * @var \Closure
+     */
+    protected $sortCallback;
 
     /**
      * Attributes of column.
@@ -459,6 +466,18 @@ class Column
     }
 
     /**
+     * Get sort coolumn name.
+     *
+     * @param string $sortName
+     *
+     * @return $this
+     */
+    public function getSortName()
+    {
+        return isset($this->sortName) ? $this->sortName : $this->name;
+    }
+
+    /**
      * Mark this column as sortable.
      *
      * @return $this
@@ -478,6 +497,28 @@ class Column
         $this->cast = $cast;
 
         return $this;
+    }
+
+    /**
+     * Set sort callback.
+     *
+     * @return $this
+     */
+    public function sortCallback(\Closure $callback)
+    {
+        $this->sortCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Get sort callback.
+     *
+     * @return $this
+     */
+    public function getSortCallback()
+    {
+        return $this->sortCallback;
     }
 
     /**
@@ -887,7 +928,10 @@ class Column
             $sort = ['column' => $this->name, 'type' => $type];
         }
         
-        if (isset($this->cast)) {
+        if (isset($this->sortCallback)) {
+            $sort['callback'] = 1;
+        }
+        elseif (isset($this->cast)) {
             $sort['cast'] = $this->cast;
         }
 

@@ -204,6 +204,16 @@ class Filter implements Renderable
     }
 
     /**
+     * Get grid model pure.
+     *
+     * @return Model
+     */
+    public function model()
+    {
+        return $this->model;
+    }
+
+    /**
      * Set ID of search form.
      *
      * @param string $filterID
