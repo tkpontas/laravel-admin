@@ -239,9 +239,7 @@ abstract class AbstractFilter
         $isnull = Arr::get($inputs, 'isnull-'. $this->column);
 
         if (isset($isnull)) {
-            $this->isnull = true;
-            $this->query = 'whereNull';
-            return $this->buildCondition($this->column);
+            return $this->whereNullCondition();
         }
 
         return $this->condition($inputs);
@@ -265,6 +263,20 @@ abstract class AbstractFilter
         $this->value = $value;
 
         return $this->buildCondition($this->column, $this->value);
+    }
+
+    /**
+     * Get query where null condition from filter.
+     *
+     * @param array $inputs
+     *
+     * @return array|mixed|null
+     */
+    public function whereNullCondition()
+    {
+        $this->isnull = true;
+        $this->query = 'whereNull';
+        return $this->buildCondition($this->column);
     }
 
     /**
