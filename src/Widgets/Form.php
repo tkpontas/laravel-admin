@@ -572,6 +572,20 @@ class Form implements Renderable
      */
     public function validationMessages(array $input)
     {
+        $message = $this->validationMessageArray($input);
+
+        return $message->any() ? $message : false;
+    }
+
+    /**
+     * Get validation messages.
+     *
+     * @param array $input
+     *
+     * @return MessageBag|bool
+     */
+    public function validationMessageArray(array $input)
+    {
         if (method_exists($this, 'form')) {
             $this->form();
         }
@@ -596,7 +610,7 @@ class Form implements Renderable
             $func($input, $message, $this);
         }
 
-        return $message->any() ? $message : false;
+        return $message;
     }
 
 
