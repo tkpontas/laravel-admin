@@ -4,10 +4,9 @@ namespace Encore\Admin\Widgets\Grid;
 
 use Closure;
 use Encore\Admin\Exception\Handler;
-use Encore\Admin\Grid\Exporter;
-use Encore\Admin\Grid\Exporters\AbstractExporter;
-use Encore\Admin\Grid\Model;
 use Encore\Admin\Grid\Row;
+use Encore\Admin\Widgets\Grid\Exporters\AbstractExporter;
+use Encore\Admin\Widgets\Grid\Exporter;
 use Encore\Admin\Widgets\Grid\Column;
 use Encore\Admin\Widgets\Grid\Concerns;
 use Encore\Admin\Widgets\Grid\Displayers;
@@ -72,6 +71,13 @@ class Grid
     public $perPage = 20;
 
     /**
+     * Chunk count. If change chunk count, set value.
+     *
+     * @var integer
+     */
+    protected $chunkCount = 100;
+
+    /**
      * @var string
      */
     public $tableID;
@@ -93,11 +99,23 @@ class Grid
     ];
 
     /**
-     * paginator
+     * paginator or getdata callback
      *
-     * @var LengthAwarePaginator
+     * @var \Closure
      */
-    protected $paginator;
+    protected $getDataCallback;
+
+    /**
+     * Called paginator
+     */
+    protected $_paginator;
+
+    /**
+     * Enable paginator
+     *
+     * @var boolean
+     */
+    protected $enablePaginator = true;
 
     /**
      * resourceUri(for create, edit, delete)
@@ -114,11 +132,25 @@ class Grid
     protected $keyName = 'id';
 
     /**
+     * Export driver.
+     *
+     * @var string
+     */
+    protected $exporter;
+
+    /**
      * Grid builder.
      *
      * @var \Closure
      */
     protected $builder;
+
+    /**
+     * Mark if the grid is builded.
+     *
+     * @var bool
+     */
+    protected $builded = false;
 
     /**
      * Callback for grid actions.
@@ -137,12 +169,12 @@ class Grid
     /**
      * Create a new grid instance.
      *
-     * @param Eloquent $model
      * @param Closure  $builder
      */
-    public function __construct(Closure $builder = null)
+    public function __construct(Closure $builder = null, Closure $getDataCallback = null)
     {
         $this->builder = $builder;
+        $this->getDataCallback = $getDataCallback;
 
         $this->initialize();
     }
@@ -158,6 +190,37 @@ class Grid
         $this->rows = Collection::make();
         
         $this->initTools();
+    }
+
+    /**
+     * Handle export request.
+     *
+     * @param bool $forceExport
+     */
+    protected function handleExportRequest($forceExport = false)
+    {
+        if (!$scope = request(Exporter::$queryName)) {
+            return;
+        }
+
+        // clear output buffer.
+        if (ob_get_length()) {
+            ob_end_clean();
+        }
+
+        if ($forceExport) {
+            $this->getExporter($scope)->export();
+        }
+    }
+
+    /**
+     * @param string $scope
+     *
+     * @return AbstractExporter
+     */
+    protected function getExporter($scope)
+    {
+        return (new Exporter($this))->resolve($this->exporter)->withScope($scope);
     }
 
     
@@ -181,31 +244,89 @@ class Grid
     }
 
     /**
+     * Get paginator or all data.
+     * 
+     */ 
+    public function getData(array $options = []) : Collection
+    {
+        if($this->enablePaginator){
+            $this->_paginator = $this->getPaginatorData();
+            return collect($this->_paginator->items());
+        }
+
+        $callback = $this->getDataCallback;
+        return collect($callback($this, $options));
+    }
+
+    /**
      * Get the grid paginator.
      *
      * @return mixed
      */
     public function paginator()
     {
-        return new Tools\Paginator($this, $this->paginator);
+        if (!$this->enablePaginator) {
+            return null;
+        }
+
+        if(!$this->_paginator){
+            $this->_paginator = $this->getPaginatorData();
+        }
+        return new Tools\Paginator($this, $this->_paginator);
     }
 
     /**
-     * Set paginator
+     * Get paginator data.
+     * 
      *
-     * @param  LengthAwarePaginator  $paginator  paginator
+     * @return  LengthAwarePaginator
+     */ 
+    public function getPaginatorData(array $options = []) : LengthAwarePaginator
+    {
+        $paginatorCallback = $this->getDataCallback;
+        return $paginatorCallback($this, $options);
+    }
+
+    /**
+     * disable paginator.
+     * 
      *
      * @return  self
      */ 
-    public function setPaginator(LengthAwarePaginator $paginator)
+    public function disablePaginator()
     {
-        $this->paginator = $paginator;
+        $this->enablePaginator = false;
 
         return $this;
     }
 
     /**
-     * Get primary key name of model.
+     * Get paginator callback.
+     * 
+     *
+     * @return  Closure
+     */ 
+    public function getPaginator() : ?Closure
+    {
+        return $this->paginator;
+    }
+
+    // /**
+    //  * Set paginator data. Instead of model.
+    //  *
+    //  * @param  LengthAwarePaginator  $paginator  paginator
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setPaginator(LengthAwarePaginator $paginator)
+    // {
+    //     $this->paginator = $paginator;
+
+    //     return $this;
+    // }
+
+    /**
+     * Get primary key name of data.
      *
      * @return string
      */
@@ -215,7 +336,7 @@ class Grid
     }
 
     /**
-     * Set primary key name of model.
+     * Set primary key name of data.
      *
      * @return $this
      */
@@ -549,6 +670,57 @@ class Grid
     }
 
     /**
+     * Execute the filter with conditions.
+     * *ToDo: Moved from filter. If support filter, move to filter class.*
+     *
+     * @return Collection
+     */
+    public function getCurrentPage(?int $perPage = null, ?int $page = null)
+    {
+        return $this->getData([
+            'per_page' => $perPage,
+            'page' => $page,
+        ]);
+    }
+
+    /**
+     * *ToDo: Moved from filter. If support filter, move to filter class.*
+     * @param callable $callback
+     * @param int      $count
+     *
+     * @return bool
+     */
+    public function chunk(callable $callback, ?int $count = null)
+    {
+        if(!$this->enablePaginator){
+            return $this->getData();
+        }
+
+        if(is_null($count)){
+            $count = $this->chunkCount;
+        }
+        
+        $records = collect();
+        $page = 1;
+        while(true){
+            $paginator = $this->getPaginatorData([
+                'per_page' => $count,
+                'page' => $page,
+            ]);
+
+            $records = $records->merge($paginator->items());
+
+            if($paginator->currentPage() >= $paginator->lastPage()){
+                break;
+            }
+
+            $page++;
+        }
+
+        return $callback($records);
+    }
+
+    /**
      * Dynamically add columns to the grid view.
      *
      * @param $method
@@ -575,10 +747,32 @@ class Grid
             $builder($this);
         }
 
+        $this->handleExportRequest(true);
+
+        try {
+            $this->build();
+        } catch (\Exception $e) {
+            return Handler::renderException($e);
+        }
+
+        return view($this->view, $this->variables())->render();
+    }
+    
+    /**
+     * Build the grid.
+     *
+     * @return void
+     */
+    public function build()
+    {
+        if ($this->builded) {
+            return;
+        }
+
         $this->prependRowSelectorColumn();
         $this->appendActionsColumn();
 
-        $collection = collect($this->paginator->items());
+        $collection = $this->getData();
         Column::setOriginalGridModels($collection);
 
         $this->originalCollection = $collection;
@@ -594,6 +788,30 @@ class Grid
 
         $this->buildRows($data);
 
-        return view($this->view, $this->variables())->render();
+        $this->builded = true;
+    }
+
+    /**
+     * Get chunk count. If change chunk count, set value.
+     *
+     * @return  integer
+     */ 
+    public function getChunkCount()
+    {
+        return $this->chunkCount;
+    }
+
+    /**
+     * Set chunk count. If change chunk count, set value.
+     *
+     * @param  integer  $chunkCount  Chunk count. If change chunk count, set value.
+     *
+     * @return  self
+     */ 
+    public function setChunkCount($chunkCount)
+    {
+        $this->chunkCount = $chunkCount;
+
+        return $this;
     }
 }
