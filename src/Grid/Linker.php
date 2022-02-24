@@ -2,11 +2,6 @@
 
 namespace Encore\Admin\Grid;
 
-use Closure;
-use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Renderable;
-
 /**
  * grid link.
  */
@@ -164,6 +159,7 @@ class Linker
 
     protected function getParams($array){
         return implode(" ", collect($array)->map(function($attribute, $key){
+            $attribute = htmlspecialchars($attribute, ENT_QUOTES|ENT_HTML5);
             return "{$key}='{$attribute}'";
         })->toArray());
     }
