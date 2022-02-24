@@ -14,6 +14,12 @@
         @endforeach
       </div>
     @endif
+@elseif(isset($alert_error))
+    <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i>{{ \Illuminate\Support\Arr::get($alert_error->get('title'), 0) }}</h4>
+        <p>{!!  \Illuminate\Support\Arr::get($alert_error->get('message'), 0) !!}</p>
+    </div>
 @endif
 
 @if($success = session()->get('success'))
@@ -37,5 +43,11 @@
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4><i class="icon fa fa-warning"></i>{{ \Illuminate\Support\Arr::get($warning->get('title'), 0) }}</h4>
         <p>{!!  \Illuminate\Support\Arr::get($warning->get('message'), 0) !!}</p>
+    </div>
+@elseif(isset($alert_warning))
+    <div class="alert alert-warning alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-warning"></i>{{ \Illuminate\Support\Arr::get($alert_warning->get('title'), 0) }}</h4>
+        <p>{!!  \Illuminate\Support\Arr::get($alert_warning->get('message'), 0) !!}</p>
     </div>
 @endif

@@ -153,6 +153,52 @@ if (!function_exists('admin_info')) {
     }
 }
 
+
+if (!function_exists('admin_error_once')) {
+
+    /**
+     * Flash a error message bag to session once.
+     *
+     * @param string $title
+     * @param string $message
+     */
+    function admin_error_once($title, $message = '')
+    {
+        admin_info_once($title, $message, 'error');
+    }
+}
+
+if (!function_exists('admin_warning_once')) {
+
+    /**
+     * Flash a warning message bag to session once.
+     *
+     * @param string $title
+     * @param string $message
+     */
+    function admin_warning_once($title, $message = '')
+    {
+        admin_info_once($title, $message, 'warning');
+    }
+}
+
+if (!function_exists('admin_info_once')) {
+
+    /**
+     * Flash a message bag to session once.
+     *
+     * @param string $title
+     * @param string $message
+     * @param string $type
+     */
+    function admin_info_once($title, $message = '', $type = 'info')
+    {
+        $message = new MessageBag(get_defined_vars());
+
+        View::share("alert_$type", $message);
+    }
+}
+
 if (!function_exists('admin_asset')) {
 
     /**
