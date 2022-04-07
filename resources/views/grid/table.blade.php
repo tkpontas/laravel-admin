@@ -26,9 +26,9 @@
     <div class="box-body table-responsive no-padding">
         <table class="table table-hover" id="{{ $grid->tableID }}">
             <thead>
-                <tr>
+                <tr {!! $grid->getHeaderAttributes() !!}>
                     @foreach($grid->visibleColumns() as $column)
-                    <th class="column-{!! $column->getName() !!}">{{$column->getLabel()}}{!! $column->sorter() !!}{!! $column->help() !!}</th>
+                    <th class="column-{!! $column->getName() !!}" {!! $column->getHeaderAttributes() !!}>{{$column->getLabel()}}{!! $column->sorter() !!}{!! $column->help() !!}</th>
                     @endforeach
                 </tr>
             </thead>

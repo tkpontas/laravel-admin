@@ -117,6 +117,13 @@ class Column
     protected $attributes = [];
 
     /**
+     * Classes of column header.
+     *
+     * @var array
+     */
+    protected $headerAttributes = [];
+
+    /**
      * Relation name.
      *
      * @var bool
@@ -381,6 +388,40 @@ class Column
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get header classes of this column.
+     *
+     * @return mixed
+     */
+    public function getHeaderAttributes()
+    {
+        $attrArr = [];
+        foreach ($this->headerAttributes as $name => $val) {
+            $attrArr[] = $name.'="'.e($val).'"';
+        }
+
+        return implode(' ', $attrArr);
+    }
+
+    /**
+     * Set header classes.
+     *
+     * @param array $classes
+     */
+    public function setHeaderStyle(array $style)
+    {
+        if (is_array($style)) {
+            $style = implode('', array_map(function ($key, $val) {
+                return "$key:$val";
+            }, array_keys($style), array_values($style)));
+        }
+
+        if (is_string($style)) {
+            $this->headerAttributes['style'] = $style;
+        }
+        return $this;
     }
 
     /**
