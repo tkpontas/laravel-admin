@@ -148,6 +148,13 @@ class Grid
     protected $actionsClass = Displayers\Actions::class;
 
     /**
+     * Attributes of table header.
+     *
+     * @var array
+     */
+    protected $headerAttributes = [];
+
+    /**
      * Options for grid.
      *
      * @var array
@@ -812,6 +819,31 @@ class Grid
     public function renderCreateButton()
     {
         return (new Tools\CreateButton($this))->render();
+    }
+
+    /**
+     * Set table header attributes.
+     *
+     * @param array $attributes
+     */
+    public function setHeaderAttributes(array $attributes)
+    {
+        $this->headerAttributes = $attributes;
+    }
+
+    /**
+     * Get table header attributes in html format.
+     *
+     * @return string
+     */
+    public function getHeaderAttributes()
+    {
+        $attrArr = [];
+        foreach ($this->headerAttributes as $name => $val) {
+            $attrArr[] = $name.'="'.e($val).'"';
+        }
+
+        return implode(' ', $attrArr);
     }
 
     /**

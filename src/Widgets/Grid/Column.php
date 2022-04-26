@@ -1,12 +1,12 @@
 <?php
 
-namespace Encore\Admin\Grid;
+namespace Encore\Admin\Widgets\Grid;
 
 use Carbon\Carbon;
 use Closure;
 use Encore\Admin\Admin;
-use Encore\Admin\Grid;
-use Encore\Admin\Grid\Displayers\AbstractDisplayer;
+use Encore\Admin\Widgets\Grid\Grid;
+use Encore\Admin\Widgets\Grid\Displayers\AbstractDisplayer;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -117,13 +117,6 @@ class Column
     protected $attributes = [];
 
     /**
-     * Classes of column header.
-     *
-     * @var array
-     */
-    protected $headerAttributes = [];
-
-    /**
      * Relation name.
      *
      * @var bool
@@ -179,11 +172,6 @@ class Column
     protected static $classes = [];
 
     /**
-     * @var Model
-     */
-    protected static $model;
-
-    /**
      * @param string $name
      * @param string $label
      */
@@ -224,20 +212,6 @@ class Column
     public function setGrid(Grid $grid)
     {
         $this->grid = $grid;
-
-        $this->setModel($grid->model()->eloquent());
-    }
-
-    /**
-     * Set model for column.
-     *
-     * @param $model
-     */
-    public function setModel($model)
-    {
-        if (is_null(static::$model) && ($model instanceof Model)) {
-            static::$model = $model->newInstance();
-        }
     }
 
     /**
@@ -388,40 +362,6 @@ class Column
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Get header classes of this column.
-     *
-     * @return mixed
-     */
-    public function getHeaderAttributes()
-    {
-        $attrArr = [];
-        foreach ($this->headerAttributes as $name => $val) {
-            $attrArr[] = $name.'="'.e($val).'"';
-        }
-
-        return implode(' ', $attrArr);
-    }
-
-    /**
-     * Set header classes.
-     *
-     * @param array $classes
-     */
-    public function setHeaderStyle(array $style)
-    {
-        if (is_array($style)) {
-            $style = implode('', array_map(function ($key, $val) {
-                return "$key:$val";
-            }, array_keys($style), array_values($style)));
-        }
-
-        if (is_string($style)) {
-            $this->headerAttributes['style'] = $style;
-        }
-        return $this;
     }
 
     /**
