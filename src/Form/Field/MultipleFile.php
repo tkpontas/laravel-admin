@@ -406,6 +406,11 @@ EOT;
         if (!empty($this->value)) {
             $this->options(['initialPreview' => $this->preview()]);
             $this->setupPreviewOptions();
+            /*
+             * If has original value, means the form is in edit mode,
+             * then remove required rule from rules.
+             */
+            unset($this->attributes['required']);
         }
 
         $options = json_encode($this->options);
