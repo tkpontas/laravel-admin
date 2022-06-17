@@ -184,6 +184,10 @@ class EmbeddedForm
             return in_array($key, (array) $field->column());
         });
 
+        if (is_null($field)) {
+            return $record;
+        }
+
         if($asConfirm && method_exists($field, 'prepareConfirm')){
             return $field->prepareConfirm($record);
         }
