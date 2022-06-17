@@ -459,7 +459,7 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
+        \ExmentDB::transaction(function () {
             $inserts = $this->prepareInsert($this->updates);
 
             foreach ($inserts as $column => $value) {
@@ -625,7 +625,7 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
+        \ExmentDB::transaction(function () {
             $updates = $this->prepareUpdate($this->updates);
 
             foreach ($updates as $column => $value) {
@@ -727,7 +727,7 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
+        \ExmentDB::transaction(function () {
             $updates = $this->prepareUpdate($this->updates);
 
             foreach ($updates as $column => $value) {
