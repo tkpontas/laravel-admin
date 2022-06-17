@@ -14,7 +14,7 @@
     "require": {
         "php": "^8.1.0",
         "symfony/dom-crawler": "~5.0",
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^9.0",
         "intervention/image": "~2.3",
         "doctrine/dbal": "2.*"
     },
