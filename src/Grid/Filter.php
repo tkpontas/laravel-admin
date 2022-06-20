@@ -648,7 +648,7 @@ class Filter implements Renderable
         Arr::forget($query, $keys);
 
         // remove quick search
-        Arr::forget($query, HasQuickSearch::$searchKey);
+        Arr::forget($query, HasQuickSearch::getSearchKey());
 
         $question = $request->getBaseUrl().$request->getPathInfo() == '/' ? '/?' : '?';
 
