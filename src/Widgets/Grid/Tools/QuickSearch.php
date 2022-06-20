@@ -19,12 +19,12 @@ class QuickSearch extends AbstractTool
     {
         $query = request()->query();
 
-        Arr::forget($query, HasQuickSearch::$searchKey);
+        Arr::forget($query, HasQuickSearch::getSearchKey());
 
         $vars = [
             'action' => request()->url().'?'.http_build_query($query),
-            'key'    => HasQuickSearch::$searchKey,
-            'value'  => request(HasQuickSearch::$searchKey),
+            'key'    => HasQuickSearch::getSearchKey(),
+            'value'  => request(HasQuickSearch::getSearchKey()),
         ];
 
         return view($this->view, $vars);
