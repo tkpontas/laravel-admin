@@ -377,4 +377,90 @@ if (!function_exists('json_encode_options')) {
 
         return str_replace($data['toReplace'], $data['original'], $json);
     }
+    
+    if (!function_exists('strcmp_ex')) {
+        /**
+         * Wrapper for strcmp that throws when an error occurs.
+         *
+         * @param ?string $string1  compare string data 1
+         * @param ?string $string2  compare string data 2
+         *
+         * @return int
+         */
+        function strcmp_ex(?string $string1, ?string $string2): int
+        {
+            $string1 = $string1?? '';
+            $string2 = $string2?? '';
+
+            return strcmp($string1, $string2);
+        }
+    }
+    
+    if (!function_exists('explode_ex')) {
+        /**
+         * Wrapper for explode that throws when an error occurs.
+         *
+         * @param string $separator Delimited string
+         * @param ?string $string   Input string
+         * @param ?int    $limit    Number of elements in the return array
+         *
+         * @return array
+         */
+        function explode_ex(string $separator, ?string $string, int $limit = PHP_INT_MAX): array
+        {
+            $string = $string?? '';
+
+            return explode($separator, $string, $limit);
+        }
+    }
+    
+    if (!function_exists('htmlentities_ex')) {
+        /**
+         * Wrapper for htmlentities that throws when an error occurs.
+         *
+         * @param ?string $string   input value
+         * @param int     $flags    A bit mask that combines flags. 
+         *                          Specifies quotes, invalid code unit sequences, and document type handling.
+         * @param ?string $encoding Defines the encoding used when converting characters.
+         * @param bool    $double_encode If double_encode is turned off, PHP will not encode existing html entities.
+         *
+         * @return object|array|string|int|float|bool|null
+         */
+        function htmlentities_ex(
+            ?string $string,
+            int $flags = ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401,
+            ?string $encoding = null,
+            bool $double_encode = true): string
+        {
+            $string = $string?? '';
+
+            return htmlentities($string, $flags, $encoding, $double_encode);
+        }
+    }
+    
+    if (!function_exists('preg_match_ex')) {
+        /**
+         * Wrapper for preg_match that throws when an error occurs.
+         *
+         * @param string  $pattern A string that represents the pattern to search for
+         * @param ?string $subject input value
+         * @param array   $matches If matches is specified, the search results will be assigned. 
+         * @param int     $flags   mattching type flags. 
+         * @param int     $offset  Specify the start position of the search (in bytes)
+         *
+         * @return int|false
+         */
+        function preg_match_ex(
+            string $pattern,
+            ?string $subject,
+            array &$matches = null,
+            int $flags = 0,
+            int $offset = 0
+        ): int|false
+        {
+            $subject = $subject?? '';
+
+            return preg_match($pattern, $subject, $matches, $flags, $offset);
+        }
+    }
 }

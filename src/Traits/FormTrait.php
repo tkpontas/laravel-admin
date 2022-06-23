@@ -120,10 +120,10 @@ trait FormTrait
      */
     public function setClass($value)
     {
-        $result = explode(' ', Arr::get($this->attributes, 'class'));
+        $result = explode_ex(' ', Arr::get($this->attributes, 'class'));
 
         if(is_string($value)){
-            $value = explode(' ', $value);
+            $value = explode_ex(' ', $value);
         }
         foreach($value as $v){
             if(empty($v)){
