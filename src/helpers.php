@@ -67,7 +67,7 @@ if (!function_exists('admin_base_path')) {
 
         $prefix = ($prefix == '/') ? '' : $prefix;
 
-        $path = trim($path, '/');
+        $path = trim($path?? '', '/');
 
         if (is_null($path) || strlen($path) == 0) {
             return $prefix ?: '/';
@@ -461,6 +461,23 @@ if (!function_exists('json_encode_options')) {
             $string = $string?? '';
 
             return explode($separator, $string, $limit);
+        }
+    }
+    
+    if (!function_exists('parse_url_ex')) {
+        /**
+         * Wrapper for parse_url that throws when an error occurs.
+         *
+         * @param ?string $string    parse target URL
+         * @param ?int    $component get only a specific URL component
+         *
+         * @return int|string|array|null|false
+         */
+        function parse_url_ex(?string $url, int $component = -1): int|string|array|null|false
+        {
+            $url = $url?? '';
+
+            return parse_url($url, $component);
         }
     }
     
