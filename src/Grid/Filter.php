@@ -2,7 +2,7 @@
 
 namespace Encore\Admin\Grid;
 
-use Encore\Admin\Grid\Concerns\HasQuickSearch;
+use Encore\Admin\Grid as GridClass;
 use Encore\Admin\Grid\Filter\AbstractFilter;
 use Encore\Admin\Grid\Filter\Between;
 use Encore\Admin\Grid\Filter\Date;
@@ -648,7 +648,7 @@ class Filter implements Renderable
         Arr::forget($query, $keys);
 
         // remove quick search
-        Arr::forget($query, HasQuickSearch::getSearchKey());
+        Arr::forget($query, GridClass::getSearchKey());
 
         $question = $request->getBaseUrl().$request->getPathInfo() == '/' ? '/?' : '?';
 
