@@ -21,12 +21,33 @@ trait HasQuickSearch
     /**
      * @var string
      */
-    public static $searchKey = '__search__';
+    protected static $searchKey = '__search__';
 
     /**
      * @var array|string|\Closure
      */
     protected $search;
+
+    /**
+     * Get Search Key
+     *
+     * @return string
+     */
+    public static function getSearchKey() : string
+    {
+        return static::$searchKey;
+    }
+
+    /**
+     * Set search key
+     *
+     * @param string $key
+     * @return void
+     */
+    public static function setSearchKey(string $key)
+    {
+        static::$searchKey = $key;
+    }
 
     /**
      * @param array|string|\Closure
@@ -59,7 +80,7 @@ trait HasQuickSearch
      */
     public function applyQuickSearch()
     {
-        if (!$query = request()->get(static::$searchKey)) {
+        if (!$query = request()->get(static::getSearchKey())) {
             return;
         }
 

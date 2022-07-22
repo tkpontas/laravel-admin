@@ -67,7 +67,7 @@ if (!function_exists('admin_base_path')) {
 
         $prefix = ($prefix == '/') ? '' : $prefix;
 
-        $path = trim($path, '/');
+        $path = trim($path?? '', '/');
 
         if (is_null($path) || strlen($path) == 0) {
             return $prefix ?: '/';
@@ -376,5 +376,208 @@ if (!function_exists('json_encode_options')) {
         $json = json_encode($data['options']);
 
         return str_replace($data['toReplace'], $data['original'], $json);
+    }
+    
+    if (!function_exists('strcmp_ex')) {
+        /**
+         * Wrapper for strcmp that throws when an error occurs.
+         *
+         * @param ?string $string1  compare string data 1
+         * @param ?string $string2  compare string data 2
+         *
+         * @return int
+         */
+        function strcmp_ex(?string $string1, ?string $string2): int
+        {
+            $string1 = $string1?? '';
+            $string2 = $string2?? '';
+
+            return strcmp($string1, $string2);
+        }
+    }
+    
+    if (!function_exists('strpos_ex')) {
+        /**
+         * Wrapper for strpos that throws when an error occurs.
+         *
+         * @param ?string $haystack string to search
+         * @param string  $needle   search string
+         * @param int     $offset   search start position in the string
+         *
+         * @return int|false
+         */
+        function strpos_ex(?string $haystack, string $needle, int $offset = 0): int|false
+        {
+            $haystack = $haystack?? '';
+
+            return strpos($haystack, $needle, $offset);
+        }
+    }
+    
+    if (!function_exists('strlen_ex')) {
+        /**
+         * Wrapper for strlen that throws when an error occurs.
+         *
+         * @param ?string $string  String to check the length
+         *
+         * @return int
+         */
+        function strlen_ex(?string $string): int
+        {
+            $string = $string?? '';
+
+            return strlen($string);
+        }
+    }
+    
+    if (!function_exists('ucfirst_ex')) {
+        /**
+         * Wrapper for ucfirst that throws when an error occurs.
+         *
+         * @param ?string $string  input string
+         *
+         * @return string
+         */
+        function ucfirst_ex(?string $string): string
+        {
+            $string = $string?? '';
+
+            return ucfirst($string);
+        }
+    }
+    
+    if (!function_exists('explode_ex')) {
+        /**
+         * Wrapper for explode that throws when an error occurs.
+         *
+         * @param string $separator Delimited string
+         * @param ?string $string   Input string
+         * @param ?int    $limit    Number of elements in the return array
+         *
+         * @return array
+         */
+        function explode_ex(string $separator, ?string $string, int $limit = PHP_INT_MAX): array
+        {
+            $string = $string?? '';
+
+            return explode($separator, $string, $limit);
+        }
+    }
+    
+    if (!function_exists('parse_url_ex')) {
+        /**
+         * Wrapper for parse_url that throws when an error occurs.
+         *
+         * @param ?string $string    parse target URL
+         * @param ?int    $component get only a specific URL component
+         *
+         * @return int|string|array|null|false
+         */
+        function parse_url_ex(?string $url, int $component = -1): int|string|array|null|false
+        {
+            $url = $url?? '';
+
+            return parse_url($url, $component);
+        }
+    }
+    
+    if (!function_exists('htmlentities_ex')) {
+        /**
+         * Wrapper for htmlentities that throws when an error occurs.
+         *
+         * @param ?string $string   input value
+         * @param int     $flags    A bit mask that combines flags. 
+         *                          Specifies quotes, invalid code unit sequences, and document type handling.
+         * @param ?string $encoding Defines the encoding used when converting characters.
+         * @param bool    $double_encode If double_encode is turned off, PHP will not encode existing html entities.
+         *
+         * @return string
+         */
+        function htmlentities_ex(
+            ?string $string,
+            int $flags = ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401,
+            ?string $encoding = null,
+            bool $double_encode = true): string
+        {
+            $string = $string?? '';
+
+            return htmlentities($string, $flags, $encoding, $double_encode);
+        }
+    }
+    
+    
+    if (!function_exists('htmlspecialchars_ex')) {
+        /**
+         * Wrapper for htmlspecialchars that throws when an error occurs.
+         *
+         * @param ?string $string   input value
+         * @param int     $flags    A bit mask that combines flags. 
+         *                          Specifies quotes, invalid code unit sequences, and document type handling.
+         * @param ?string $encoding Defines the encoding used when converting characters.
+         * @param bool    $double_encode If double_encode is turned off, PHP will not encode existing html entities.
+         *
+         * @return string
+         */
+        function htmlspecialchars_ex(
+            ?string $string,
+            int $flags = ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401,
+            ?string $encoding = null,
+            bool $double_encode = true
+        ): string
+        {
+            $string = $string?? '';
+
+            return htmlspecialchars($string, $flags, $encoding, $double_encode);
+        }
+    }
+    
+    if (!function_exists('str_replace_ex')) {
+        /**
+         * Wrapper for str_replace that throws when an error occurs.
+         *
+         * @param array|string   $string  search string or array
+         * @param ?string|?array $replace replace string or array
+         * @param ?string|?array $subject string or array to be searched / replaced.
+         * @param int $count The number of matched and replaced locations is stored here.
+         *
+         * @return string|array
+         */
+        function str_replace_ex(
+            array|string $search,
+            array|string $replace = null,
+            string|array $subject = null,
+            int &$count = null
+        ): string|array
+        {
+            $replace = $replace?? '';
+            $subject = $subject?? '';
+            return str_replace($search, $replace, $subject, $count);
+        }
+    }
+    
+    if (!function_exists('preg_match_ex')) {
+        /**
+         * Wrapper for preg_match that throws when an error occurs.
+         *
+         * @param string  $pattern A string that represents the pattern to search for
+         * @param ?string $subject input value
+         * @param array   $matches If matches is specified, the search results will be assigned. 
+         * @param int     $flags   mattching type flags. 
+         * @param int     $offset  Specify the start position of the search (in bytes)
+         *
+         * @return int|false
+         */
+        function preg_match_ex(
+            string $pattern,
+            ?string $subject,
+            array &$matches = null,
+            int $flags = 0,
+            int $offset = 0
+        ): int|false
+        {
+            $subject = $subject?? '';
+
+            return preg_match($pattern, $subject, $matches, $flags, $offset);
+        }
     }
 }

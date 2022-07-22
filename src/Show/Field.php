@@ -166,7 +166,7 @@ class Field implements Renderable
      */
     protected function formatLabel($label)
     {
-        $label = $label ?: ucfirst($this->name);
+        $label = $label ?: ucfirst_ex($this->name);
 
         return str_replace(['.', '_'], ' ', $label);
     }
