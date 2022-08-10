@@ -98,7 +98,7 @@ class Column
     /**
      * Cast Name for sort.
      *
-     * @var array
+     * @var string|null
      */
     protected $cast;
 
@@ -541,6 +541,16 @@ class Column
     }
 
     /**
+     * Set cast name for sortable.
+     *
+     * @return string|null
+     */
+    public function getCast()
+    {
+        return $this->cast;
+    }
+
+    /**
      * Set sort callback.
      *
      * @return $this
@@ -954,11 +964,12 @@ class Column
         }
 
         $icon = 'fa-sort';
-        $type = 'desc';
+        $type = -1;
 
+        // If this column is sorted, reverse sort
         if ($this->isSorted()) {
-            $type = $this->sort['type'] == 'desc' ? 'asc' : 'desc';
-            $icon .= "-amount-{$this->sort['type']}";
+            $type = $this->sort['type'] == 1 ? -1 : 1;
+            $icon .= "-amount-" . ($type == 1 ? 'desc' : 'asc');
         }
 
         // set sort value
@@ -981,7 +992,7 @@ class Column
 
         $url = url()->current().'?'.http_build_query($query);
 
-        return "<a class=\"fa fa-fw $icon\" href=\"$url\"></a>";
+        return "<a class=\"fa fa-fw " . e($icon) . "\" href=\"" . e($url) . "\"></a>";
     }
 
     /**
@@ -991,7 +1002,7 @@ class Column
      */
     protected function isSorted()
     {
-        $this->sort = app('request')->get($this->grid->model()->getSortName());
+        $this->setSortInfo();
 
         if (empty($this->sort)) {
             return false;
@@ -1006,6 +1017,22 @@ class Column
         };
 
         return false;
+    }
+
+    /**
+     * Determine if this column is currently sorted.
+     *
+     * @return $this
+     */
+    protected function setSortInfo()
+    {
+        $this->sort = app('request')->get($this->grid->model()->getSortName());
+
+        if (empty($this->sort)) {
+            return $this;
+        }
+
+        return $this;
     }
 
     /**
