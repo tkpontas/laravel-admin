@@ -19,6 +19,13 @@ class Row implements Buildable, Renderable
     protected $class = [];
 
     /**
+     * Element attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
      * Row constructor.
      *
      * @param string $content
@@ -62,6 +69,35 @@ class Row implements Buildable, Renderable
     }
 
     /**
+     * Add html attributes to elements.
+     *
+     * @param array|string $attribute
+     * @param mixed        $value
+     *
+     * @return $this
+     */
+    public function attribute($attribute, $value = null)
+    {
+        if (is_array($attribute)) {
+            $this->attributes = array_merge($this->attributes, $attribute);
+        } else {
+            $this->attributes[$attribute] = (string) $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get field attributes.
+     *
+     * @return string
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * @param Column $column
      */
     protected function addColumn(Column $column)
@@ -90,7 +126,23 @@ class Row implements Buildable, Renderable
     {
         $class = $this->class;
         $class[] = 'row';
-        echo '<div class="'.implode(' ', $class).'">';
+        echo '<div class="'.implode(' ', $class).'" ' . $this->formatAttributes() . '>';
+    }
+
+    /**
+     * Format the field attributes.
+     *
+     * @return string
+     */
+    protected function formatAttributes()
+    {
+        $html = [];
+
+        foreach ($this->attributes as $name => $value) {
+            $html[] = $name.'="'.e($value).'"';
+        }
+
+        return implode(' ', $html);
     }
 
     /**

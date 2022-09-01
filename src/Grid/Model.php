@@ -616,8 +616,9 @@ class Model
             return;
         }
 
+        $column = $this->getSortColumn();
         // if sort as callback, Execute callback
-        if(!empty($this->sort['callback'])){
+        if($column && !is_null($column->getSortCallback())){
             $this->setCallbackSort();
             return;
         }
@@ -635,16 +636,19 @@ class Model
         else {
             $this->resetOrderBy();
 
+            // Change type -1 to desc, 1 to asc.
+            $type = ($this->sort['type'] ?? 1) == -1 ? 'desc' : 'asc';
+    
             // get column. if contains "cast", set set column as cast
-            if (!empty($this->sort['cast'])) {
+            if ($column && !is_null($cast = $column->getCast())) {
                 $columnName = \DB::getQueryGrammar()->wrap($this->sort['column']);
-                $column = "CAST({$columnName} AS {$this->sort['cast']}) {$this->sort['type']}";
+                $column = "CAST({$columnName} AS {$cast}) {$type}";
                 $method = 'orderByRaw';
                 $arguments = [$column];
             } else {
                 $column = $this->sort['column'];
                 $method = 'orderBy';
-                $arguments = [$column, $this->sort['type']];
+                $arguments = [$column, $type];
             }
 
             $this->queries->push([
@@ -652,6 +656,19 @@ class Model
                 'arguments' => $arguments,
             ]);
         }
+    }
+
+    protected function getSortColumn(){
+        $column_name = $this->sort['column'] ?? null;
+        if(!$column_name){
+            return null;
+        }
+        return $this->grid->columns()->first(function($column) use($column_name){
+            if($column->getSortName() == $column_name){
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
@@ -682,11 +699,14 @@ class Model
 
             $this->resetOrderBy();
 
+            // Change type -1 to desc, 1 to asc.
+            $type = ($this->sort['type'] ?? 1) == -1 ? 'desc' : 'asc';
+    
             $this->queries->push([
                 'method'    => 'orderBy',
                 'arguments' => [
                     $relation->getRelated()->getTable().'.'.$relationColumn,
-                    $this->sort['type'],
+                    $type,
                 ],
             ]);
         }
@@ -701,21 +721,21 @@ class Model
      */
     protected function setCallbackSort()
     {
-        $column_name = $this->sort['column'];
-        $this->grid->columns()->each(function($column) use($column_name){
-            if($column->getSortName() == $column_name && !is_null($column->getSortCallback())){
-                $this->resetOrderBy();   
+        $column = $this->getSortColumn();
+        if($column && !is_null($func = $column->getSortCallback())){
+            $this->resetOrderBy();   
 
-                // call callback sorting.
-                $func = $column->getSortCallback();
-                $this->queries->push([
-                    'method' => null,
-                    'callback' => $func,
-                    'arguments' => [$this->sort['type'] ?? 'asc'],
-                ]);
-                return false;
-            }
-        });
+            // Change type -1 to desc, 1 to asc.
+            $type = ($this->sort['type'] ?? 1) == -1 ? 'desc' : 'asc';
+    
+            // call callback sorting.
+            $this->queries->push([
+                'method' => null,
+                'callback' => $func,
+                'arguments' => [$type],
+            ]);
+            return false;
+        }
     }
 
     /**

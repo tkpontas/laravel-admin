@@ -182,6 +182,11 @@ class Form implements Renderable
     protected $isSoftDeletes = false;
 
     /**
+     * @var bool
+     */
+    protected $isForceDelete = false;
+
+    /**
      * redirect callback to list.
      *
      * @var []Closure
@@ -380,7 +385,7 @@ class Form implements Renderable
 
                 $model = $builder->with($this->getRelations())->findOrFail($id);
 
-                if ($this->isSoftDeletes && $model->trashed()) {
+                if (($this->isSoftDeletes && $model->trashed()) || $this->isForceDelete) {
                     $this->deleteFiles($model, true);
                     $model->forceDelete();
 
@@ -454,7 +459,7 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
+        \ExmentDB::transaction(function () {
             $inserts = $this->prepareInsert($this->updates);
 
             foreach ($inserts as $column => $value) {
@@ -620,7 +625,7 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
+        \ExmentDB::transaction(function () {
             $updates = $this->prepareUpdate($this->updates);
 
             foreach ($updates as $column => $value) {
@@ -722,7 +727,7 @@ class Form implements Renderable
             return $response;
         }
 
-        DB::transaction(function () {
+        \ExmentDB::transaction(function () {
             $updates = $this->prepareUpdate($this->updates);
 
             foreach ($updates as $column => $value) {
@@ -1693,6 +1698,20 @@ class Form implements Renderable
     public function setTitle($title = '')
     {
         $this->builder()->setTitle($title);
+
+        return $this;
+    }
+
+    /**
+     * Set Force delete
+     *
+     * @param bool $val
+     *
+     * @return $this
+     */
+    public function setIsForceDelete(bool $val = true)
+    {
+        $this->isForceDelete = $val;
 
         return $this;
     }

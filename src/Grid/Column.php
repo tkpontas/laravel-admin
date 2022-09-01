@@ -98,7 +98,7 @@ class Column
     /**
      * Cast Name for sort.
      *
-     * @var array
+     * @var string|null
      */
     protected $cast;
 
@@ -115,6 +115,13 @@ class Column
      * @var array
      */
     protected $attributes = [];
+
+    /**
+     * Classes of column header.
+     *
+     * @var array
+     */
+    protected $headerAttributes = [];
 
     /**
      * Relation name.
@@ -384,6 +391,40 @@ class Column
     }
 
     /**
+     * Get header classes of this column.
+     *
+     * @return mixed
+     */
+    public function getHeaderAttributes()
+    {
+        $attrArr = [];
+        foreach ($this->headerAttributes as $name => $val) {
+            $attrArr[] = $name.'="'.e($val).'"';
+        }
+
+        return implode(' ', $attrArr);
+    }
+
+    /**
+     * Set header classes.
+     *
+     * @param array $classes
+     */
+    public function setHeaderStyle(array $style)
+    {
+        if (is_array($style)) {
+            $style = implode('', array_map(function ($key, $val) {
+                return "$key:$val";
+            }, array_keys($style), array_values($style)));
+        }
+
+        if (is_string($style)) {
+            $this->headerAttributes['style'] = $style;
+        }
+        return $this;
+    }
+
+    /**
      * Format label.
      *
      * @param $label
@@ -497,6 +538,16 @@ class Column
         $this->cast = $cast;
 
         return $this;
+    }
+
+    /**
+     * Set cast name for sortable.
+     *
+     * @return string|null
+     */
+    public function getCast()
+    {
+        return $this->cast;
     }
 
     /**
@@ -892,10 +943,10 @@ class Column
     {
         if (is_array($item)) {
             array_walk_recursive($item, function (&$value) {
-                $value = htmlentities($value);
+                $value = htmlentities_ex($value);
             });
         } else {
-            $item = htmlentities($item);
+            $item = htmlentities_ex($item);
         }
 
         return $item;
@@ -913,11 +964,12 @@ class Column
         }
 
         $icon = 'fa-sort';
-        $type = 'desc';
+        $type = -1;
 
+        // If this column is sorted, reverse sort
         if ($this->isSorted()) {
-            $type = $this->sort['type'] == 'desc' ? 'asc' : 'desc';
-            $icon .= "-amount-{$this->sort['type']}";
+            $type = $this->sort['type'] == 1 ? -1 : 1;
+            $icon .= "-amount-" . ($type == 1 ? 'desc' : 'asc');
         }
 
         // set sort value
@@ -928,19 +980,12 @@ class Column
             $sort = ['column' => $this->name, 'type' => $type];
         }
         
-        if (isset($this->sortCallback)) {
-            $sort['callback'] = 1;
-        }
-        elseif (isset($this->cast)) {
-            $sort['cast'] = $this->cast;
-        }
-
         $query = app('request')->all();
         $query = array_merge($query, [$this->grid->model()->getSortName() => $sort]);
 
         $url = url()->current().'?'.http_build_query($query);
 
-        return "<a class=\"fa fa-fw $icon\" href=\"$url\"></a>";
+        return "<a class=\"fa fa-fw " . e($icon) . "\" href=\"" . e($url) . "\"></a>";
     }
 
     /**
@@ -950,7 +995,7 @@ class Column
      */
     protected function isSorted()
     {
-        $this->sort = app('request')->get($this->grid->model()->getSortName());
+        $this->setSortInfo();
 
         if (empty($this->sort)) {
             return false;
@@ -965,6 +1010,22 @@ class Column
         };
 
         return false;
+    }
+
+    /**
+     * Determine if this column is currently sorted.
+     *
+     * @return $this
+     */
+    protected function setSortInfo()
+    {
+        $this->sort = app('request')->get($this->grid->model()->getSortName());
+
+        if (empty($this->sort)) {
+            return $this;
+        }
+
+        return $this;
     }
 
     /**

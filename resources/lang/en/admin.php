@@ -99,10 +99,10 @@ return [
         'filter_placeholder' => 'Filter',
     ],
     'grid_items_selected'    => '{n} items selected',
-
     'menu_titles'            => [],
     'prev'                   => 'Prev',
     'next'                   => 'Next',
+    'empty'                  => 'Empty',
 
     'validation' => [
         'not_in_option' => 'A value that is not included in the choices is selected.',
