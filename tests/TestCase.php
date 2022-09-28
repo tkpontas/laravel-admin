@@ -38,7 +38,7 @@ class TestCase extends BaseTestCase
         $adminConfig = require __DIR__.'/config/admin.php';
 
         $this->app['config']->set('database.default', 'mysql');
-        $this->app['config']->set('database.connections.mysql.host', env('MYSQL_HOST', 'localhost'));
+        $this->app['config']->set('database.connections.mysql.host', env('MYSQL_HOST', '127.0.0.1'));
         $this->app['config']->set('database.connections.mysql.database', 'laravel_admin_test');
         $this->app['config']->set('database.connections.mysql.username', 'root');
         $this->app['config']->set('database.connections.mysql.password', 'password');
@@ -63,8 +63,6 @@ class TestCase extends BaseTestCase
         }
 
         require __DIR__.'/routes.php';
-
-        require __DIR__.'/seeds/factory.php';
     }
 
     public function tearDown(): void
