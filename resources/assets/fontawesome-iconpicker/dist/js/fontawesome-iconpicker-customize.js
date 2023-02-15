@@ -1,3 +1,11 @@
+/*!
+ * Font Awesome Icon Picker
+ * https://farbelous.github.io/fontawesome-iconpicker/
+ *
+ * @author Javi Aguilar, itsjavi.com
+ * @license MIT License
+ * @see https://github.com/farbelous/fontawesome-iconpicker/blob/master/LICENSE
+ */
 (function(a) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], a);
@@ -1025,6 +1033,14 @@
             }
         });
     };
+   /*!
+    * fontawesome6-icon-picker
+    * https://github.com/marioninc/fontawesome6-icon-picker
+    *
+    * @author marioninc
+    * @license MIT License
+    * @see https://github.com/marioninc/fontawesome6-icon-picker/blob/main/LICENSE
+    */
     // 下記のリポジトリを参考しました。
     // https://github.com/marioninc/fontawesome6-icon-picker/blob/main/js/fontawesome6-icon-picker.js
     let targetCssName = "all.min.css"; // 解析するCSS名
