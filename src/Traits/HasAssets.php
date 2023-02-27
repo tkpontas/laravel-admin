@@ -67,7 +67,8 @@ trait HasAssets
      */
     public static $baseCss = [
         'vendor/laravel-admin/AdminLTE/bootstrap/css/bootstrap.min.css',
-        'vendor/laravel-admin/font-awesome/css/font-awesome.min.css',
+        'vendor/laravel-admin/font-awesome/css/all.min.css',
+        'vendor/laravel-admin/font-awesome/css/v4-shims.min.css',
         'vendor/laravel-admin/laravel-admin/laravel-admin.css',
         'vendor/laravel-admin/nprogress/nprogress.css',
         'vendor/laravel-admin/sweetalert2/dist/sweetalert2.css',
