@@ -23,7 +23,7 @@ class Image extends File
     /**
      * @param array|UploadedFile|null $image
      *
-     * @return string
+     * @return string|void
      */
     public function prepare($image)
     {
@@ -33,7 +33,8 @@ class Image extends File
         }
 
         if (request()->has(static::FILE_DELETE_FLAG)) {
-            return $this->destroy();
+            $this->destroy();
+            return;
         }
 
         if(is_null($image)){

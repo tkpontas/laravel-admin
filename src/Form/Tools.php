@@ -318,9 +318,6 @@ HTML;
 
     /**
      * Disable back button.
-     *
-     * @return $this
-     *
      * @deprecated
      */
     public function disableBackButton()
@@ -342,7 +339,7 @@ HTML;
     /**
      * Render custom tools.
      *
-     * @param Collection $tools
+     * @param Collection|null $tools
      *
      * @return mixed
      */

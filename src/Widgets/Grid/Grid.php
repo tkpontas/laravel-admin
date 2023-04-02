@@ -22,6 +22,13 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Renderable;
 
+/**
+ * @method $this addRelationColumn(string $name, string $label)
+ * @method $this addJsonColumn(string $name, string $label)
+ * @property mixed $paginator
+ * @property mixed $variables
+ * @property mixed $originalCollection
+ */
 class Grid
 {
     use Concerns\HasElementNames,

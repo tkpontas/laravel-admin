@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
  * Class Administrator.
  *
  * @property Role[] $roles
+ * @phpstan-consistent-constructor
  */
 class Administrator extends Model implements AuthenticatableContract
 {

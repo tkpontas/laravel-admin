@@ -213,6 +213,7 @@ trait UploadField
      */
     protected function guessPreviewType($file)
     {
+        $ext = '';
         if(!is_null($this->filetype)){
             $filetype = $this->filetype;
         }

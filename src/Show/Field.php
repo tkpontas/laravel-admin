@@ -280,7 +280,7 @@ class Field implements Renderable
     public function carousel($width = 300, $height = 200, $server = '')
     {
         return $this->unescape()->as(function ($images) use ($server, $width, $height) {
-            $items = collect($images)->map(function ($path) use ($server, $width, $height) {
+            $items = collect($images)->map(function ($path) use ($server) {
                 if (empty($path)) {
                     return '';
                 }

@@ -8,6 +8,9 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 
+/**
+ * @property mixed $model
+ */
 class Row
 {
     /**

@@ -71,8 +71,6 @@ abstract class AbstractExporter implements ExporterInterface
     /**
      * @param callable $callback
      * @param int      $count
-     *
-     * @return bool
      */
     public function chunk(callable $callback, $count = 100)
     {
@@ -97,16 +95,19 @@ abstract class AbstractExporter implements ExporterInterface
         // Export data of giving page number.
         if ($this->page) {
             $keyName = $this->grid->getKeyName();
+            /** @phpstan-ignore-next-line maybe error */
             $perPage = request($model->getPerPageName(), $model->getPerPage());
 
+            /** @phpstan-ignore-next-line maybe error */
             $scope = (clone $queryBuilder)
                 ->select([$keyName])
                 ->setEagerLoads([])
                 ->forPage($this->page, $perPage)->get();
 
+            /** @phpstan-ignore-next-line maybe error */
             $queryBuilder->whereIn($keyName, $scope->pluck($keyName));
         }
-
+        /** @phpstan-ignore-next-line maybe error */
         return $queryBuilder;
     }
 

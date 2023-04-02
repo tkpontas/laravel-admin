@@ -329,7 +329,7 @@ class Column
     /**
      * Set the min-width of column.
      *
-     * @param int $width
+     * @param int|null $width
      *
      * @return $this
      */
@@ -345,7 +345,7 @@ class Column
     /**
      * Set the max-width of column.
      *
-     * @param int $width
+     * @param int|null $width
      *
      * @return $this
      */

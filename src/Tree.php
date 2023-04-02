@@ -102,6 +102,11 @@ class Tree implements Renderable
     public $tools;
 
     /**
+     * @var string
+     */
+    public $path;
+
+    /**
      * Menu constructor.
      *
      * @param Model|null $model

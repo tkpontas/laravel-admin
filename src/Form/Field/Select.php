@@ -225,7 +225,7 @@ class Select extends Field
     public function buttons(array $buttons)
     {
         $this->buttons = collect($buttons)->map(function($button){
-            $attributes = array_get($button, 'attributes', []);
+            $attributes = Arr::get($button, 'attributes', []);
             $html = [];
             
             foreach ($attributes as $name => $value) {

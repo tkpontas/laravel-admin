@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\DB;
  * Class Menu.
  *
  * @property int $id
- *
  * @method where($parent_id, $id)
+ * @phpstan-consistent-constructor
  */
 class Menu extends Model
 {

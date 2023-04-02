@@ -51,6 +51,7 @@ class Pjax
             return $response;
         };
 
+        /** @phpstan-ignore-next-line https://phpstan.org/blog/solving-phpstan-error-unsafe-usage-of-new-static */
         (new static())->handle(Request::capture(), $next)->send();
 
         exit;

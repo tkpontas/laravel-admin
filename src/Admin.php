@@ -266,7 +266,7 @@ class Admin
      *
      * @param Closure|null $builder
      *
-     * @return Navbar
+     * @return Navbar|void
      */
     public function navbar(Closure $builder = null)
     {

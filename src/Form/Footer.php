@@ -4,6 +4,7 @@ namespace Encore\Admin\Form;
 
 use Encore\Admin\Admin;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Support\Arr;
 use Encore\Admin\Form\Builder;
 
 class Footer implements Renderable
@@ -201,7 +202,7 @@ class Footer implements Renderable
     protected function disableCheck($key)
     {
         $this->submitRedirects = array_filter($this->submitRedirects, function($submitRedirect) use($key){
-            return array_get($submitRedirect, 'key') == $key;
+            return Arr::get($submitRedirect, 'key') == $key;
         });
 
         return $this;
@@ -215,7 +216,7 @@ class Footer implements Renderable
     public function defaultCheck($key)
     {
         foreach($this->submitRedirects as &$submitRedirect){
-            if(array_get($submitRedirect, 'key') == $key){
+            if(Arr::get($submitRedirect, 'key') == $key){
                 $submitRedirect['default'] = true;
             }
         }
@@ -255,8 +256,8 @@ class Footer implements Renderable
     public function getRedirect($resourcesPath, $key, $afterSaveValue){
         // set submitRedirects
         foreach($this->submitRedirects as $submitRedirect){
-            if(array_get($submitRedirect, 'value') == $afterSaveValue){
-                $url = array_get($submitRedirect, 'redirect');
+            if(Arr::get($submitRedirect, 'value') == $afterSaveValue){
+                $url = Arr::get($submitRedirect, 'redirect');
                 break;
             }
         }
@@ -337,8 +338,8 @@ EOT;
         }
 
         foreach ($this->submitRedirects as $submitRedirect) {
-            if(boolval(array_get($submitRedirect, 'default'))){
-                return array_get($submitRedirect, 'value');
+            if(boolval(Arr::get($submitRedirect, 'default'))){
+                return Arr::get($submitRedirect, 'value');
             }
         }
 

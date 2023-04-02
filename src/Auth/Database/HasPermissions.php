@@ -4,6 +4,9 @@ namespace Encore\Admin\Auth\Database;
 
 use Illuminate\Support\Collection;
 
+/**
+ * @property mixed $permissions
+ */
 trait HasPermissions
 {
     /**

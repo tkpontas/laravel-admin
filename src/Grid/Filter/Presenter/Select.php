@@ -147,8 +147,6 @@ SCRIPT;
      * @param string $url
      * @param array  $parameters
      * @param array  $options
-     *
-     * @return $this
      */
     protected function loadRemoteOptions($url, $parameters = [], $options = [])
     {

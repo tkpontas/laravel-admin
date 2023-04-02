@@ -1450,11 +1450,11 @@ class Form implements Renderable
                 if(is_null($v)){
                     continue;
                 }
-                if (array_get($v, Form::REMOVE_FLAG_NAME) == 1) {
+                if (Arr::get($v, Form::REMOVE_FLAG_NAME) == 1) {
                     continue;
                 }
 
-                $prepared = $this->prepareConfirm([$column => $value], false);
+                $prepared = $this->prepareConfirm([$column => $value]);
 
                 $model = clone $relation->getRelated();
                 $model->fill($v);
@@ -1743,7 +1743,7 @@ class Form implements Renderable
     /**
      * @param Closure|null $callback
      *
-     * @return Form\Tools
+     * @return Form\Tools|void
      */
     public function header(Closure $callback = null)
     {

@@ -632,7 +632,7 @@ class Field implements Renderable
 
         if ($this instanceof Form\Field\MultipleFile
             || $this instanceof Form\Field\File
-            || get_class($this) == Form\Field\Checbox::class) {
+            || get_class($this) == Form\Field\Checkbox::class) {
             return;
         }
 
@@ -1339,10 +1339,10 @@ class Field implements Renderable
             $olds = [];
             foreach($this->column as $key => $c){
                 $elementNames = $this->getElementName();
-                $elementName = is_array($elementNames) ? array_get($elementNames, $key) : $elementNames;
+                $elementName = is_array($elementNames) ? Arr::get($elementNames, $key) : $elementNames;
 
                 $keyname = static::getDotName($elementName);
-                $v = array_get((is_null($value) ? [] : (array)$value), $key);
+                $v = Arr::get((is_null($value) ? [] : (array)$value), $key);
 
                 if(!is_null($old = old($c, $v))){
                     $olds[$key] = $old;

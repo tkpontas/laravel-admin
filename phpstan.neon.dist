@@ -1,0 +1,8 @@
+parameters:
+    paths:
+        - src
+    level: 1
+    ignoreErrors:
+        - '#Call to static method transaction\(\) on an unknown class ExmentDB.#'
+includes:
+    - vendor/nunomaduro/larastan/extension.neon

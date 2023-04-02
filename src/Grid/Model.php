@@ -624,7 +624,7 @@ class Model
         }
 
         $relationSort = false;
-        if(boolval(array_get($this->sort, 'direct'))){
+        if(boolval(Arr::get($this->sort, 'direct'))){
         }
         elseif (Str::contains($this->sort['column'], '.')) {
             $relationSort = true;

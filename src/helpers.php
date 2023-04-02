@@ -57,7 +57,7 @@ if (!function_exists('admin_base_path')) {
     /**
      * Get admin url.
      *
-     * @param string $path
+     * @param string|null $path
      *
      * @return string
      */
