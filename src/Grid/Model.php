@@ -16,15 +16,16 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 
 /**
- * @method mixed orderBy()
- * @method mixed where()
+ * @method orderBy($column, $direction = 'asc');
+ * @method where()
+ * @method whereIn($column, $values, $boolean = 'and', $not = false)
  */
 class Model
 {
     /**
      * Eloquent model instance of the grid model.
      *
-     * @var EloquentModel
+     * @var EloquentModel|LengthAwarePaginator
      */
     protected $model;
 
@@ -229,9 +230,7 @@ class Model
 
     /**
      * Set per-page arguments.
-     *
-     * @param array $arg arguments
-     *
+     * @param array $arguments
      * @return $this
      */
     public function setPerPageArguments($arguments)
@@ -714,10 +713,7 @@ class Model
 
     /**
      * Set callback sort.
-     *
-     * @param string $column
-     *
-     * @return void
+     * @return false|void
      */
     protected function setCallbackSort()
     {

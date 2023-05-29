@@ -65,6 +65,7 @@ abstract class AbstractExporter implements ExporterInterface
     {
         //ToDo: If support filter, set getfilter.
         //return $this->grid->getFilter()->execute($toArray);
+        /** @phpstan-ignore-next-line use magic method */
         return $this->grid->execute($toArray);
     }
 

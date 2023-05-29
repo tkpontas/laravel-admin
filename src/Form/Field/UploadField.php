@@ -3,6 +3,7 @@
 namespace Encore\Admin\Form\Field;
 
 use Encore\Admin\Form;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -33,7 +34,7 @@ trait UploadField
     /**
      * Storage instance.
      *
-     * @var \Illuminate\Filesystem\Filesystem
+     * @var FilesystemAdapter
      */
     protected $storage = '';
 
@@ -375,8 +376,7 @@ trait UploadField
     /**
      * Set callable name.
      *
-     * @param callable $name
-     *
+     * @param callable $callableName
      * @return $this
      */
     public function callableName($callableName)

@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class Form.
  *
+ * @property string $password
  * @method Field\Text           text($column, $label = '')
  * @method Field\Checkbox       checkbox($column, $label = '')
  * @method Field\Radio          radio($column, $label = '')
@@ -189,14 +190,14 @@ class Form implements Renderable
     /**
      * redirect callback to list.
      *
-     * @var []Closure
+     * @var Closure[]
      */
     protected $redirectList = true;
 
     /**
      * Initialization closure array.
      *
-     * @var []Closure
+     * @var Closure[]
      */
     protected static $initCallbacks;
 
@@ -211,7 +212,7 @@ class Form implements Renderable
     /**
      * Set relation models
      *
-     * @var arrar|null
+     * @var array|null
      */
     protected $relationModels;
 
@@ -377,6 +378,7 @@ class Form implements Renderable
             }
 
             collect(explode(',', $id))->filter()->each(function ($id) {
+                /** @var SoftDeletableModel $builder */
                 $builder = $this->model()->newQuery();
 
                 if ($this->isSoftDeletes) {
@@ -601,7 +603,7 @@ class Form implements Renderable
             return $data;
         }
 
-        /* @var Model $this->model */
+        /** @var SoftDeletableModel $builder */
         $builder = $this->model();
 
         if ($this->isSoftDeletes) {
@@ -703,7 +705,7 @@ class Form implements Renderable
             return $data;
         }
 
-        /* @var Model $this->model */
+        /** @var SoftDeletableModel $builder */
         $builder = $this->model();
 
         if ($this->isSoftDeletes) {
@@ -778,7 +780,7 @@ class Form implements Renderable
             return $data;
         }
 
-        /* @var Model $this->model */
+        /** @var SoftDeletableModel $builder */
         $builder = $this->model();
 
         if ($this->isSoftDeletes) {
@@ -970,6 +972,7 @@ class Form implements Renderable
     protected function handleOrderable($id, array $input = [])
     {
         if (array_key_exists('_orderable', $input)) {
+            /** @var SortableModel $model */
             $model = $this->model->find($id);
 
             if ($model instanceof Sortable) {
@@ -1072,7 +1075,7 @@ class Form implements Renderable
                 case $relation instanceof Relations\MorphMany:
 
                     foreach ($prepared[$name] as $related) {
-                        /** @var Relations\Relation $relation */
+                        /** @var Relations\Relation|\Illuminate\Database\Eloquent\Builder $relation */
                         $relation = $this->model()->$name();
 
                         $keyName = $relation->getRelated()->getKeyName();
@@ -1348,6 +1351,7 @@ class Form implements Renderable
     {
         $relations = $this->getRelations();
 
+        /** @var SoftDeletableModel $builder */
         $builder = $this->model();
 
         if ($this->isSoftDeletes) {
@@ -1409,12 +1413,11 @@ class Form implements Renderable
         return $this->model;
     }
 
-    
     /**
      * Get relation models
      *
-     * @param array $relationInputs
-     * @return voidarray
+     * @param array|null $inputs
+     * @return array|null
      */
     public function getRelationModelByInputs(array $inputs = null)
     {

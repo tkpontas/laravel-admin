@@ -16,14 +16,14 @@ class Row
     /**
      * Row number.
      *
-     * @var
+     * @var mixed
      */
     public $number;
 
     /**
      * Row data.
      *
-     * @var
+     * @var mixed
      */
     protected $data;
 

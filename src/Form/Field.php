@@ -751,8 +751,6 @@ class Field implements Renderable
      * Remove validation rule
      *
      * @param array|callable|string $rules
-     * @param array                 $messages
-     *
      * @return $this
      */
     public function removeRules($rules)
@@ -1026,10 +1024,7 @@ class Field implements Renderable
     /**
      * Get help Text
      *
-     * @param string $text
-     * @param string $icon
-     *
-     * @return $this
+     * @return string
      */
     public function getHelpText()
     {
@@ -1234,14 +1229,11 @@ class Field implements Renderable
         return $this->attribute('required', true);
     }
 
-
     /**
      * set the input filed required rule.
      * Set asterisk, set validation browser, and set rule
      *
-     * @param bool $isLabelAsterisked
-     *
-     * @return Field
+     * @return $this
      */
     public function requiredRule()
     {

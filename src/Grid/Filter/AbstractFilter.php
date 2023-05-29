@@ -268,8 +268,6 @@ abstract class AbstractFilter
     /**
      * Get query where null condition from filter.
      *
-     * @param array $inputs
-     *
      * @return array|mixed|null
      */
     public function whereNullCondition()

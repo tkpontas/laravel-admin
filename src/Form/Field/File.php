@@ -207,9 +207,8 @@ class File extends Field
     /**
      * Initialize the index.
      *
-     * @param array $caption
-     *
-     * @return string
+     * @param $file
+     * @return int|mixed
      */
     protected function initialFileIndex($file)
     {

@@ -53,17 +53,17 @@ class Admin
     public static $extensions = [];
 
     /**
-     * @var []Closure
+     * @var Closure[]
      */
     protected static $bootingCallbacks = [];
 
     /**
-     * @var []Closure
+     * @var Closure[]
      */
     protected static $registeredCallbacks = [];
 
     /**
-     * @var []Closure
+     * @var Closure[]
      */
     protected static $bootedCallbacks = [];
 

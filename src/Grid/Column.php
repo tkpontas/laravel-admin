@@ -145,7 +145,7 @@ class Column
     protected static $originalGridModels;
 
     /**
-     * @var []Closure
+     * @var Closure[]
      */
     protected $displayCallbacks = [];
 
@@ -408,7 +408,8 @@ class Column
     /**
      * Set header classes.
      *
-     * @param array $classes
+     * @param array $style
+     * @return $this
      */
     public function setHeaderStyle(array $style)
     {
@@ -507,11 +508,9 @@ class Column
     }
 
     /**
-     * Get sort coolumn name.
+     * Get sort column name.
      *
-     * @param string $sortName
-     *
-     * @return $this
+     * @return string
      */
     public function getSortName()
     {

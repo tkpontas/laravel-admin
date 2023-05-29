@@ -302,10 +302,8 @@ EOT;
 
     /**
      * Get form element class.
-     *
      * @param string $target
-     *
-     * @return mixed
+     * @return string
      */
     protected function getClass($target) : string
     {

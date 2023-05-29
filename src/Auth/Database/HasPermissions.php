@@ -9,10 +9,11 @@ use Illuminate\Support\Collection;
  */
 trait HasPermissions
 {
+
     /**
      * Get all permissions of user.
      *
-     * @return mixed
+     * @return Collection
      */
     public function allPermissions() : Collection
     {
@@ -55,7 +56,7 @@ trait HasPermissions
     /**
      * Check if user is administrator.
      *
-     * @return mixed
+     * @return bool
      */
     public function isAdministrator() : bool
     {
@@ -67,7 +68,7 @@ trait HasPermissions
      *
      * @param string $role
      *
-     * @return mixed
+     * @return bool
      */
     public function isRole(string $role) : bool
     {
@@ -79,7 +80,7 @@ trait HasPermissions
      *
      * @param array $roles
      *
-     * @return mixed
+     * @return bool
      */
     public function inRoles(array $roles = []) : bool
     {

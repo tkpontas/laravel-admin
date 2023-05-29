@@ -33,7 +33,7 @@ class Builder
     protected $form;
 
     /**
-     * @var
+     * @var mixed
      */
     protected $action;
 
@@ -107,7 +107,7 @@ class Builder
     /**
      * Whether disable pjax
      *
-     * @var disable pjax
+     * @var bool
      */
     protected $disablePjax = false;
 
@@ -217,8 +217,7 @@ class Builder
      * Set resource Id.
      *
      * @param $id
-     *
-     * @return void
+     * @return $this
      */
     public function setResourceId($id)
     {

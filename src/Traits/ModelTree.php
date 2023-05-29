@@ -133,9 +133,7 @@ trait ModelTree
 
     /**
      * Set get callback to model.
-     *
-     * @param \Closure|null $query
-     *
+     * @param \Closure|null $get
      * @return $this
      */
     public function getCallback(\Closure $get = null)

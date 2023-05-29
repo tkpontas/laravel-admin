@@ -255,9 +255,9 @@ class MultipleFile extends Field
     /**
      * Initialize the index.
      *
-     * @param array $caption
-     *
-     * @return string
+     * @param $index
+     * @param $file
+     * @return mixed
      */
     protected function initialFileIndex($index, $file)
     {

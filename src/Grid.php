@@ -94,7 +94,7 @@ class Grid
     /**
      * Resource path of the grid.
      *
-     * @var
+     * @var mixed
      */
     protected $resourcePath;
 
@@ -178,21 +178,21 @@ class Grid
     /**
      * Initialization closure array.
      *
-     * @var []Closure
+     * @var Closure[]
      */
     protected static $initCallbacks = [];
 
     /**
      * Get data closure array.
      *
-     * @var []Closure
+     * @var Closure[]
      */
     protected static $getDataCallbacks = [];
 
     /**
      * Value after getting from database.
      *
-     * @var
+     * @var mixed
      */
     protected $originalCollection;
 

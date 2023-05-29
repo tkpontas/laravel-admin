@@ -16,6 +16,8 @@ use Illuminate\Support\Fluent;
  * @property mixed $variables
  * @property mixed $originalCollection
  * @property mixed $paginator
+ * @method width(mixed $width)
+ * @method height(mixed $height)
  */
 abstract class Widget extends Fluent
 {

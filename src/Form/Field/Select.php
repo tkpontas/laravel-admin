@@ -217,9 +217,8 @@ class Select extends Field
      *        ],
      *        ...
      *     ]
-     *
-     * @param array $groups
-     *
+
+     * @param array $buttons
      * @return $this
      */
     public function buttons(array $buttons)

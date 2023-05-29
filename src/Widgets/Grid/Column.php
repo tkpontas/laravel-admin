@@ -138,7 +138,7 @@ class Column
     protected static $originalGridModels;
 
     /**
-     * @var []Closure
+     * @var Closure[]
      */
     protected $displayCallbacks = [];
 
@@ -447,11 +447,8 @@ class Column
     }
 
     /**
-     * Get sort coolumn name.
-     *
-     * @param string $sortName
-     *
-     * @return $this
+     * Get sort column name.
+     * @return string
      */
     public function getSortName()
     {
@@ -626,6 +623,7 @@ class Column
      */
     public function totalRow($display = null)
     {
+        /** @phpstan-ignore-next-line use magic method */
         $this->grid->addTotalRow($this->name, $display);
 
         return $this;

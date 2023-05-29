@@ -220,7 +220,10 @@ class ResourceGenerator
         }
 
         $table = $this->model->getConnection()->getTablePrefix().$this->model->getTable();
-        /** @var \Doctrine\DBAL\Schema\MySqlSchemaManager $schema */
+        /**
+         * @var \Doctrine\DBAL\Schema\MySqlSchemaManager $schema
+         * @phpstan-ignore-next-line Maybe not use $table argument
+         */
         $schema = $this->model->getConnection()->getDoctrineSchemaManager($table);
 
         // custom mapping the types that doctrine/dbal does not support
