@@ -23,8 +23,8 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * @method $this addRelationColumn(string $name, string $label)
- * @method $this addJsonColumn(string $name, string $label)
+ * @method $this|\Encore\Admin\Grid\Column addRelationColumn(string $name, string $label)
+ * @method $this|\Encore\Admin\Grid\Column addJsonColumn(string $name, string $label)
  * @property mixed $paginator
  * @property mixed $variables
  * @property mixed $originalCollection
@@ -526,8 +526,6 @@ class Grid
      *
      * @param string $name
      * @param string $label
-     *
-     * @return Column
      */
     public function column($name, $label = '')
     {
@@ -551,7 +549,7 @@ class Grid
      *
      * @param array $columns
      *
-     * @return Collection|null
+     * @return Collection|void
      */
     public function columns($columns = [])
     {
@@ -693,9 +691,7 @@ class Grid
     /**
      * *ToDo: Moved from filter. If support filter, move to filter class.*
      * @param callable $callback
-     * @param int      $count
-     *
-     * @return bool
+     * @param int|null $count
      */
     public function chunk(callable $callback, ?int $count = null)
     {

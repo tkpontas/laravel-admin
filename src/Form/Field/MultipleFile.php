@@ -394,8 +394,6 @@ EOT;
 
     /**
      * Render file upload field.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function render()
     {

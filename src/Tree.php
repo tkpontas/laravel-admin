@@ -25,9 +25,6 @@ class Tree implements Renderable
      */
     protected $elementId = 'tree-';
 
-    /**
-     * @var Menu
-     */
     protected $model;
 
     /**
@@ -43,7 +40,7 @@ class Tree implements Renderable
     /**
      * View of tree to render.
      *
-     * @var string
+     * @var array
      */
     protected $view = [
         'tree'   => 'admin::tree',
@@ -56,7 +53,7 @@ class Tree implements Renderable
     protected $callback;
 
     /**
-     * @var null
+     * @var \Closure|null
      */
     protected $branchCallback = null;
 
@@ -169,8 +166,6 @@ class Tree implements Renderable
 
     /**
      * Set query callback this tree.
-     *
-     * @return Model
      */
     public function query(\Closure $callback)
     {
@@ -396,7 +391,7 @@ SCRIPT;
     /**
      * Set view of tree.
      *
-     * @param string $view
+     * @param array $view
      */
     public function setView($view)
     {

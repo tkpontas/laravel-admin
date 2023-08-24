@@ -69,9 +69,6 @@ class Field implements Renderable
      */
     protected $value;
 
-    /**
-     * @var Collection
-     */
     protected $showAs = [];
 
     /**
@@ -181,9 +178,6 @@ class Field implements Renderable
         return $this->label;
     }
 
-    /**
-     * @return $this
-     */
     public function getHorizontal()
     {
         return $this->horizontal;
@@ -236,10 +230,9 @@ class Field implements Renderable
      * Show field as a image.
      *
      * @param string $server
-     * @param int    $width
-     * @param int    $height
-     *
-     * @return $this
+     * @param int $width
+     * @param int $height
+     * @return Field
      */
     public function image($server = '', $width = 200, $height = 200)
     {
@@ -615,8 +608,6 @@ HTML;
     /**
      * @param string $method
      * @param array  $arguments
-     *
-     * @return $this
      */
     public function __call($method, $arguments = [])
     {

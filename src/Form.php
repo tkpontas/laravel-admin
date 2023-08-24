@@ -189,8 +189,6 @@ class Form implements Renderable
 
     /**
      * redirect callback to list.
-     *
-     * @var Closure[]
      */
     protected $redirectList = true;
 
@@ -283,9 +281,6 @@ class Form implements Renderable
         return $this->model;
     }
 
-    /**
-     * @return Model
-     */
     public function setModel($model)
     {
         $this->model = $model;
@@ -443,8 +438,6 @@ class Form implements Renderable
 
     /**
      * Store a new record.
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Http\JsonResponse
      */
     public function store($data = null)
     {
@@ -1385,7 +1378,6 @@ class Form implements Renderable
      * Get model by inputs
      * 
      * @param Model|null $model if set base model, set args
-     * @return Model
      */
     public function getModelByInputs(array $data = null, ?Model $model = null)
     {
@@ -2154,11 +2146,10 @@ class Form implements Renderable
      *
      * @param string $name
      * @param mixed  $value
-     *
-     * @return array
      */
     public function __set($name, $value)
     {
+        /** @phpstan-ignore-next-line should delete return */
         return Arr::set($this->inputs, $name, $value);
     }
 

@@ -448,8 +448,6 @@ class Form implements Renderable
 
     /**
      * Get form's script
-     *
-     * @return void
      */
     public function getScript()
     {

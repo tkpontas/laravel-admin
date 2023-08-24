@@ -11,8 +11,6 @@ class Select extends Presenter
 {
     /**
      * Options of select.
-     *
-     * @var array
      */
     protected $options = [];
 

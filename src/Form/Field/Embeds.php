@@ -279,8 +279,6 @@ class Embeds extends Field
 
     /**
      * Render the form.
-     *
-     * @return \Illuminate\View\View
      */
     public function render()
     {

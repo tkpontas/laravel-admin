@@ -22,8 +22,6 @@ class Image extends File
 
     /**
      * @param array|UploadedFile|null $image
-     *
-     * @return string|void
      */
     public function prepare($image)
     {
@@ -54,8 +52,6 @@ class Image extends File
     
     /**
      * Render file upload field.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function render()
     {

@@ -66,7 +66,7 @@ class MultipleSteps implements Renderable
     }
 
     /**
-     * @return string|null
+     * @return string|null|void
      */
     public function render()
     {

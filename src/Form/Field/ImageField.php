@@ -87,8 +87,6 @@ trait ImageField
 
     /**
      * Render a image form field.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function render()
     {

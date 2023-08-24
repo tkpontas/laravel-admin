@@ -2,6 +2,7 @@
 
 namespace Encore\Admin\Traits;
 
+use Encore\Admin\Auth\Database\Menu;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -322,7 +323,9 @@ trait ModelTree
         parent::boot();
 
         static::saving(function (Model $branch) {
-            $parentColumn = $branch->getParentColumn();
+            /** @var Menu $menu */
+            $menu = $branch;
+            $parentColumn = $menu->getParentColumn();
 
             if (Request::has($parentColumn) && Request::input($parentColumn) == $branch->getKey()) {
                 throw new \Exception(trans('admin.parent_select_error'));

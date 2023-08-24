@@ -384,7 +384,7 @@ class Grid
      *
      * @param array $columns
      *
-     * @return Collection|null
+     * @return Collection|null|void
      */
     public function columns($columns = [])
     {
@@ -428,8 +428,7 @@ class Grid
      *
      * @param string $name
      * @param string $label
-     *
-     * @return $this|bool|Column
+     * @return $this|Column
      */
     protected function addRelationColumn($name, $label = '')
     {
@@ -850,8 +849,6 @@ class Grid
      * Get current resource uri.
      *
      * @param string $path
-     *
-     * @return string
      */
     public function resource($path = null)
     {

@@ -24,8 +24,6 @@ class Model
 {
     /**
      * Eloquent model instance of the grid model.
-     *
-     * @var EloquentModel|LengthAwarePaginator
      */
     protected $model;
 
@@ -433,8 +431,6 @@ class Model
 
     /**
      * @throws \Exception
-     *
-     * @return Collection
      */
     protected function get()
     {

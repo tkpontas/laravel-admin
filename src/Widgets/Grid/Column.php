@@ -118,8 +118,6 @@ class Column
 
     /**
      * Relation name.
-     *
-     * @var bool
      */
     protected $relation = false;
 
@@ -397,8 +395,6 @@ class Column
      *
      * @param string $relation
      * @param string $relationColumn
-     *
-     * @return $this
      */
     public function setRelation($relation, $relationColumn = null)
     {
@@ -491,8 +487,6 @@ class Column
 
     /**
      * Get sort callback.
-     *
-     * @return $this
      */
     public function getSortCallback()
     {

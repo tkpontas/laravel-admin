@@ -142,8 +142,6 @@ abstract class AbstractFilter
      * Format name.
      *
      * @param string $column
-     *
-     * @return string
      */
     protected function formatName($column)
     {
@@ -323,8 +321,6 @@ abstract class AbstractFilter
      * Datetime filter.
      *
      * @param array|\Illuminate\Support\Collection $options
-     *
-     * @return DateTime
      */
     public function datetime($options = [])
     {
@@ -383,8 +379,6 @@ abstract class AbstractFilter
 
     /**
      * show isnull condition.
-     *
-     * @return bool
      */
     public function showNullCheck()
     {

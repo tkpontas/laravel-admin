@@ -94,8 +94,6 @@ class Field implements Renderable
 
     /**
      * Form element name.
-     *
-     * @var string
      */
     protected $elementName = [];
 
@@ -115,8 +113,6 @@ class Field implements Renderable
 
     /**
      * Options for specify elements.
-     *
-     * @var array
      */
     protected $options = [];
 
@@ -130,7 +126,7 @@ class Field implements Renderable
     /**
      * Validation rules.
      *
-     * @var array|\Closure
+     * @var string|array|\Closure
      */
     protected $rules = [];
 
@@ -204,15 +200,11 @@ class Field implements Renderable
 
     /**
      * Help Icon.
-     *
-     * @var string
      */
     protected $helpIcon;
 
     /**
      * Help Text.
-     *
-     * @var string
      */
     protected $helpText;
 
@@ -825,8 +817,6 @@ class Field implements Renderable
 
     /**
      * Get field validation rules.
-     *
-     * @return string
      */
     protected function getRules()
     {
@@ -1190,8 +1180,6 @@ class Field implements Renderable
 
     /**
      * Get field attributes.
-     *
-     * @return string
      */
     public function getAttributes()
     {
@@ -1202,8 +1190,6 @@ class Field implements Renderable
      * Specifies a regular expression against which to validate the value of the input.
      *
      * @param string $regexp
-     *
-     * @return Field
      */
     public function pattern($regexp)
     {
@@ -1320,8 +1306,6 @@ class Field implements Renderable
 
     /**
      * Get old function result. Contains value.
-     *
-     * @return string
      */
     public function getOld()
     {
@@ -1888,8 +1872,6 @@ class Field implements Renderable
 
     /**
      * Render this filed.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
      */
     public function render()
     {
@@ -1912,9 +1894,6 @@ class Field implements Renderable
         return view($this->getView(), $this->variables());
     }
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return $this->render()->render();

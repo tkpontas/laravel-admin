@@ -16,8 +16,6 @@ class Pjax
      *
      * @param Request $request
      * @param Closure $next
-     *
-     * @return Response
      */
     public function handle($request, Closure $next)
     {

@@ -19,22 +19,16 @@ trait UploadField
 
     /**
      * File name.
-     *
-     * @var null
      */
     protected $name = null;
 
     /**
      * callable name.
-     *
-     * @var null
      */
     protected $callableName = null;
 
     /**
      * Storage instance.
-     *
-     * @var FilesystemAdapter
      */
     protected $storage = '';
 
@@ -122,8 +116,6 @@ trait UploadField
 
     /**
      * Set filetype
-     *
-     * @return void.
      */
     public function filetype($filetype)
     {
@@ -415,9 +407,9 @@ trait UploadField
     /**
      * Get store name of upload file.
      *
-     * @param UploadedFile $file
+     * @param UploadedFile|null $file
      *
-     * @return string
+     * @return string|null
      */
     protected function getStoreName(?UploadedFile $file)
     {

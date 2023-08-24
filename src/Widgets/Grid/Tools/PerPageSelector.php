@@ -8,9 +8,6 @@ use Illuminate\Support\Collection;
 
 class PerPageSelector extends AbstractTool
 {
-    /**
-     * @var string
-     */
     protected $perPage;
 
     /**

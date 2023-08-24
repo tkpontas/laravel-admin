@@ -132,8 +132,6 @@ class Tools implements Renderable
 
     /**
      * Set request path for resource list Expressly.
-     *
-     * @return string
      */
     public function setListPath($listPath)
     {

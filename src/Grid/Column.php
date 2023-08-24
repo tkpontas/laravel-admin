@@ -125,8 +125,6 @@ class Column
 
     /**
      * Relation name.
-     *
-     * @var bool
      */
     protected $relation = false;
 
@@ -392,8 +390,6 @@ class Column
 
     /**
      * Get header classes of this column.
-     *
-     * @return mixed
      */
     public function getHeaderAttributes()
     {
@@ -563,8 +559,6 @@ class Column
 
     /**
      * Get sort callback.
-     *
-     * @return $this
      */
     public function getSortCallback()
     {

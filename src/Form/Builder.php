@@ -28,7 +28,7 @@ class Builder
     protected $id;
 
     /**
-     * @var Form
+     * @var Form|null
      */
     protected $form;
 
@@ -38,7 +38,7 @@ class Builder
     protected $action;
 
     /**
-     * @var Collection
+     * @var Collection|null
      */
     protected $fields;
 
