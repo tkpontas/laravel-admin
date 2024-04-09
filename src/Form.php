@@ -593,6 +593,7 @@ class Form implements Renderable
      */
     public function update($id, $data = null)
     {
+        $formId = request()->get('formid');
         $data = ($data) ?: request()->all();
 
         $isEditable = $this->isEditable($data);
@@ -646,7 +647,9 @@ class Form implements Renderable
                 throw $ex;
             }
         });
-
+        if ($formId) {
+            return $this->redirectAfterUpdate($id);
+        }
         if (($result = $this->callSaved()) instanceof Response) {
             return $result;
         }
