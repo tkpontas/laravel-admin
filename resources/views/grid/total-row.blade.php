@@ -1,7 +1,7 @@
 <tfoot>
     <tr>
         @foreach($columns as $column)
-            <td>{!! $column !!}</td>
+            <td><span>{!! $column !!}</span></td>
         @endforeach
     </tr>
 </tfoot>
