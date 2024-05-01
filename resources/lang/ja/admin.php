@@ -76,7 +76,7 @@ return [
     ],
     'role'                  => '役割',
     'permission'            => '権限',
-    'route'                 => 'Route',
+    'route'                 => '承認経路',
     'confirm'               => '確認',
     'cancel'                => '取消',
     'http'                  => [
