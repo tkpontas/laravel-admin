@@ -1,7 +1,7 @@
 <div class="box">
     @if(isset($title))
     <div class="box-header with-border">
-        <h3 class="box-title"> {{ $title }}</h3>
+        <h3 class="box-title"> {{ $title }} </h3>
     </div>
     @endif
 
@@ -25,20 +25,20 @@
     <!-- /.box-header -->
     <div class="box-body table-responsive no-padding">
         <table class="table table-hover" id="{{ $grid->tableID }}">
-            <thead>
+            <thead class="thead-item">
                 <tr {!! $grid->getHeaderAttributes() !!}>
                     @foreach($grid->visibleColumns() as $column)
-                    <th class="column-{!! $column->getName() !!}" {!! $column->getHeaderAttributes() !!}>{{$column->getLabel()}}{!! $column->sorter() !!}{!! $column->help() !!}</th>
+                    <th class="column-{!! $column->getName() !!}" {!! $column->getHeaderAttributes() !!} id="{{$column->getLabel()}}"><span>{{$column->getLabel()}}</span>{!! $column->sorter() !!}{!! $column->help() !!}</th>
                     @endforeach
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody class="tbody-item">
                 @foreach($grid->rows() as $row)
                 <tr {!! $row->getRowAttributes() !!}>
                     @foreach($grid->visibleColumnNames() as $name)
-                    <td {!! $row->getColumnAttributes($name) !!} class="{!! $row->getColumnClasses($name) !!}">
-                        {!! $row->column($name) !!}
+                    <td {!! $row->getColumnAttributes($name) !!} class="{!! $row->getColumnClasses($name) !!}" id="{!! $row->column($name) !!}">
+                        <span>{!! $row->column($name) !!}</span>
                     </td>
                     @endforeach
                 </tr>
