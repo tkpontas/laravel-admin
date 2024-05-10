@@ -453,6 +453,7 @@ class NestedForm
             $html .= $field->render();
 
             $field_scripts = $field->getScript();
+            // @phpstan-ignore-next-line Function is_nullorempty not found.
             if (!is_nullorempty($field_scripts)) {
                 if (!is_array($field_scripts)) {
                     $field_scripts = [$field_scripts];

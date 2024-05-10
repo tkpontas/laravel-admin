@@ -12,14 +12,13 @@ use Encore\Admin\Grid\Exporters\AbstractExporter;
 use Encore\Admin\Grid\Model;
 use Encore\Admin\Grid\Row;
 use Encore\Admin\Grid\Tools;
-use Encore\Admin\Traits;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Relations;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Macroable;
-use Jenssegers\Mongodb\Eloquent\Model as MongodbModel;
+//use MongoDB\Laravel\Eloquent\Model as MongodbModel;
 
 class Grid
 {
@@ -940,9 +939,9 @@ class Grid
 
         $label = $arguments[0] ?? null;
 
-        if ($this->model()->eloquent() instanceof MongodbModel) {
-            return $this->addColumn($method, $label);
-        }
+//        if ($this->model()->eloquent() instanceof MongodbModel) {
+//            return $this->addColumn($method, $label);
+//        }
 
         if ($column = $this->handleGetMutatorColumn($method, $label)) {
             return $column;

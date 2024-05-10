@@ -16,7 +16,8 @@
         "symfony/dom-crawler": "^6.3",
         "laravel/framework": "^10.10",
         "intervention/image": "^2.7",
-        "doctrine/dbal": "^3.6"
+        "doctrine/dbal": "^3.6",
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "laravel/laravel": "^10.0",

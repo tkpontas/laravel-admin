@@ -46,6 +46,7 @@ class Permission
             return true;
         }
 
+        // @phpstan-ignore-next-line inRoles undefined
         if (!Auth::guard('admin')->user()->inRoles($roles)) {
             static::error();
         }
@@ -73,6 +74,7 @@ class Permission
             return true;
         }
 
+        // @phpstan-ignore-next-line inRoles undefined
         if (Auth::guard('admin')->user()->inRoles($roles)) {
             static::error();
         }
@@ -106,6 +108,7 @@ class Permission
      */
     public static function isAdministrator()
     {
+        // @phpstan-ignore-next-line isRole undefined
         return Auth::guard('admin')->user()->isRole('administrator');
     }
 }

@@ -4,8 +4,6 @@ parameters:
     level: 3
     ignoreErrors:
         - '#Call to static method transaction\(\) on an unknown class ExmentDB.#'
-        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::isRole\(\).#'
-        - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::inRoles\(\).#'
         - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$id.#'
         - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$password.#'
         - '#Call to an undefined method Encore\\Admin\\Grid\\Column::pluck\(\).#'
