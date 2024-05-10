@@ -19,6 +19,7 @@
         "doctrine/dbal": "^3.6"
     },
     "require-dev": {
+        "laravel/laravel": "^10.0",
         "phpunit/phpunit": "^9.0",
         "symfony/css-selector": "~5.2",
         "fakerphp/faker": "^1.9",
