@@ -5,7 +5,6 @@ namespace Encore\Admin\Form;
 use Encore\Admin\Admin;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
-use Encore\Admin\Form\Builder;
 
 class Footer implements Renderable
 {

@@ -91,8 +91,8 @@ class MultipleFile extends Field
         }
 
         $attributes[$this->column] = $this->label;
-
-        list($rules, $input) = $this->hydrateFiles(Arr::get($input, $this->column) ?? []);
+        $fileNames = Arr::get($input, $this->column);
+        list($rules, $input) = $this->hydrateFiles($fileNames ? (is_array($fileNames) ? $fileNames : $fileNames->toArray()) : []);
 
         return \validator($input, $rules, $this->getValidationMessages(), $attributes);
     }

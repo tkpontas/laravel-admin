@@ -325,7 +325,7 @@ class NestedForm
 
             $value = $this->fetchColumnValue($record, $columns);
 
-            if($field->getInternal()){
+            if ($field->getInternal()) {
                 $value = $field->prepare(null);
             }
 
@@ -333,14 +333,13 @@ class NestedForm
                 continue;
             }
 
-            if($asConfirm && method_exists($field, 'prepareConfirm')){
+            if ($asConfirm && method_exists($field, 'prepareConfirm')) {
                 $value = $field->prepareConfirm($value);
-            }
-            else{
+            } else {
                 if (method_exists($field, 'prepare')) {
                     $value = $field->prepare($value);
                 }
-    
+
                 if (method_exists($field, 'prepareRecord')) {
                     $value = $field->prepareRecord($value, $record);
                 }
@@ -351,7 +350,7 @@ class NestedForm
                 $isSet = true;
             }
             // 0($value) != null($field->original()) is false, so if value is 0, especially check.
-            elseif($value === 0 && $value !== $field->original()){
+            elseif ($value === 0 && $value !== $field->original()) {
                 $isSet = true;
             }
 
@@ -450,16 +449,24 @@ class NestedForm
 
         /* @var Field $field */
         foreach ($this->fields() as $field) {
-
             //when field render, will push $script to Admin
             $html .= $field->render();
 
+            $field_scripts = $field->getScript();
+            if (!is_nullorempty($field_scripts)) {
+                if (!is_array($field_scripts)) {
+                    $field_scripts = [$field_scripts];
+                }
+                foreach ($field_scripts as $script) {
+                    $scripts[] = array_pop(Admin::$script);
+                }
+            }
             /*
              * Get and remove the last script of Admin::$script stack.
              */
-            if ($field->getScript()) {
-                $scripts[] = array_pop(Admin::$script);
-            }
+            // if ($field->getScript()) {
+            //     $scripts[] = array_pop(Admin::$script);
+            // }
         }
 
         return [$html, implode("\r\n", $scripts)];

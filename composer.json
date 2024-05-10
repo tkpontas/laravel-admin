@@ -13,23 +13,20 @@
     ],
     "require": {
         "php": "^8.0.0",
-        "symfony/dom-crawler": "~5.0",
-        "laravel/framework": "^9.0",
-        "intervention/image": "~2.3",
-        "doctrine/dbal": "2.*",
-        "maatwebsite/excel": "^3.1",
-        "jenssegers/mongodb": "^3.9"
+        "symfony/dom-crawler": "^6.3",
+        "laravel/framework": "^10.10",
+        "intervention/image": "^2.7",
+        "doctrine/dbal": "^3.6"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
-        "laravel/laravel": "^9.0",
         "symfony/css-selector": "~5.2",
         "fakerphp/faker": "^1.9",
         "laravel/browser-kit-testing": "~6.2",
         "phpstan/phpstan": "^1.10",
         "matthiasmullie/minify": "^1.3",
         "nunomaduro/larastan": "^2.5",
-        "orchestra/testbench": "^7.23",
+        "orchestra/testbench": "^8.0",
         "spatie/eloquent-sortable": "^4.0"
     },
     "autoload": {
@@ -43,7 +40,8 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\Models\\": "tests/models",
-            "Tests\\Controllers\\": "tests/controllers"
+            "Tests\\Controllers\\": "tests/controllers",
+            "Tests\\Factories\\": "tests/factories"
         },
         "classmap": [
             "tests/TestCase.php"
