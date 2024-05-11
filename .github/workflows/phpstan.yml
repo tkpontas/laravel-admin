@@ -7,12 +7,12 @@ on:
       - 'tests/**'
 
 jobs:
-  php-cs-fixer:
+  phpstan:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        php: [ "8.0", "8.1" ]
+        php: [ "8.1", "8.2" ]
     steps:
       - uses: actions/checkout@v3
 
@@ -31,6 +31,6 @@ jobs:
           cat /etc/os-release
           php -v
           ./vendor/bin/phpstan --version
-      - name: Execute php-cs-fixer
+      - name: Execute phpstan
         run: |
           ./vendor/bin/phpstan analyse

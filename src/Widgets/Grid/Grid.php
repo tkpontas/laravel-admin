@@ -29,6 +29,7 @@ use Illuminate\Contracts\Support\Renderable;
  * @property mixed $variables
  * @property mixed $originalCollection
  */
+#[\AllowDynamicProperties]
 class Grid
 {
     use Concerns\HasElementNames,

@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 /**
  * @property mixed $http_method
  */
+#[\AllowDynamicProperties]
 class PermissionController extends AdminController
 {
     /**
