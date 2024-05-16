@@ -255,9 +255,9 @@ class MultipleFile extends Field
     /**
      * Initialize the index.
      *
-     * @param array $caption
-     *
-     * @return string
+     * @param $index
+     * @param $file
+     * @return mixed
      */
     protected function initialFileIndex($index, $file)
     {
@@ -394,8 +394,6 @@ EOT;
 
     /**
      * Render file upload field.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function render()
     {

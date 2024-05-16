@@ -1,4 +1,4 @@
-name: php-cs-fixer
+name: phpstan
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - 'tests/**'
 
 jobs:
-  php-cs-fixer:
+  phpstan:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -20,17 +20,17 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          extensions: mongodb, sodium
+          tools: composer:v2
 
       - name: Prepare
-        run: |
-          wget https://cs.symfony.com/download/php-cs-fixer-v3.phar -O php-cs-fixer
-          chmod a+x php-cs-fixer
+        run: composer install
+
       - name: Versions
         run: |
           cat /etc/os-release
           php -v
-          php php-cs-fixer --version
-      - name: Execute php-cs-fixer
+          ./vendor/bin/phpstan --version
+      - name: Execute phpstan
         run: |
-          php php-cs-fixer fix --dry-run -v --diff ./src
-          php php-cs-fixer fix --dry-run -v --diff ./tests
+          ./vendor/bin/phpstan analyse
