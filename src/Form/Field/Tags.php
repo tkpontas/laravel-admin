@@ -30,7 +30,7 @@ class Tags extends Field
     protected $key = null;
 
     /**
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $saveAction = null;
 
