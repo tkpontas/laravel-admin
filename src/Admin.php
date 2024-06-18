@@ -28,7 +28,7 @@ class Admin
     const VERSION = '1.7.0';
 
     /**
-     * @var Navbar
+     * @var Navbar|null
      */
     protected $navbar;
 

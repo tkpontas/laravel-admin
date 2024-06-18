@@ -85,7 +85,7 @@ trait UploadField
     /**
      * Get file from tmp. Almost use preview.
      *
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $getTmp = null;
 

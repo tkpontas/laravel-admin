@@ -33,14 +33,14 @@ class HasMany extends Field
     /**
      * relatedValue.
      *
-     * @var array
+     * @var array|null
      */
     protected $relatedValue = null;
 
     /**
      * Form data.
      *
-     * @var array
+     * @var array|null
      */
     protected $value = [];
 
@@ -174,7 +174,7 @@ class HasMany extends Field
      *
      * @param array  $input
      * @param string $label
-     * @param string $column
+     * @param string|array $column
      *
      * @return array
      */
