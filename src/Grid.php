@@ -58,7 +58,7 @@ class Grid
     /**
      * Rows callable fucntion.
      *
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $rowsCallback;
 
@@ -72,7 +72,7 @@ class Grid
     /**
      * Grid builder.
      *
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $builder;
 

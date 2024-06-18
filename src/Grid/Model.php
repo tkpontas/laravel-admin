@@ -96,7 +96,7 @@ class Model
     /**
      * Collection callback.
      *
-     * @var \Closure
+     * @var \Closure|null
      */
     protected $collectionCallback;
 
@@ -106,7 +106,7 @@ class Model
     protected $grid;
 
     /**
-     * @var Relation
+     * @var Relation|null
      */
     protected $relation;
 
@@ -352,8 +352,8 @@ class Model
      * Build.
      *
      * @param bool $toArray
-     *
-     * @return array|Collection|mixed
+     * @return array|\Illuminate\Database\Eloquent\Builder|EloquentModel|LengthAwarePaginator|Collection|mixed|mixed[]
+     * @throws \Exception
      */
     public function buildData($toArray = true)
     {

@@ -66,10 +66,6 @@ class Exporter
 
     /**
      * Resolve export driver.
-     *
-     * @param string $driver
-     *
-     * @return CsvExporter
      */
     public function resolve($driver)
     {
