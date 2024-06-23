@@ -1435,7 +1435,7 @@ class Form implements Renderable
             }
             
             $value = array_filter($value);
-            if ($relation instanceof Relations\BelongsToMany) {
+            if ($relation instanceof Relations\BelongsToMany || $relation instanceof Relations\MorphToMany) {
                 $relations[$column] = (clone $relation->getRelated())->query()->findMany($value);
                 continue;
             }
