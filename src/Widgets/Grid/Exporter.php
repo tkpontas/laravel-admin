@@ -105,7 +105,7 @@ class Exporter
     /**
      * Format query for export url.
      *
-     * @param string $scope
+     * @param string|int $scope
      * @param string|null $args
      * @return string[]
      */

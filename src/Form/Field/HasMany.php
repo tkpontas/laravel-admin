@@ -6,6 +6,7 @@ use Encore\Admin\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Form\Field;
 use Encore\Admin\Form\NestedForm;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany as Relation;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
@@ -338,7 +339,7 @@ class HasMany extends Field
      *
      * @param string   $column
      * @param \Closure $builder
-     * @param null     $model
+     * @param null|Model     $model
      *
      * @return NestedForm
      */

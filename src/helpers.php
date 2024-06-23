@@ -571,6 +571,7 @@ if (!function_exists('json_encode_options')) {
         {
             $subject = $subject?? '';
 
+            /** @phpstan-ignore-next-line Parameter #4 $flags of function preg_match expects TFlags of 0|256|512|768, int given. */
             return preg_match($pattern, $subject, $matches, $flags, $offset);
         }
     }

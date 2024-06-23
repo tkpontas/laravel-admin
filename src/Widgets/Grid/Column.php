@@ -775,7 +775,7 @@ class Column
     /**
      * Get row model
      *
-     * @param string $key
+     * @param string|int $key
      * @return ?Model
      */
     protected function getRowModel($key){

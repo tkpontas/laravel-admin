@@ -174,7 +174,7 @@ class EmbeddedForm
      * Do prepare work for each field.
      *
      * @param string $key
-     * @param string $record
+     * @param string|null $record
      *
      * @return mixed
      */

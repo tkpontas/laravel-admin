@@ -512,6 +512,7 @@ class Model
                 $paginator->getPageName() => $paginator->lastPage(),
             ]);
 
+            /** @phpstan-ignore-next-line Parameter #1 $response of static method Encore\Admin\Middleware\Pjax::respond() expects Illuminate\Http\Response, Illuminate\Http\RedirectResponse given.   */
             Pjax::respond(redirect($lastPageUrl));
         }
     }
@@ -547,7 +548,7 @@ class Model
     /**
      * Resolve perPage for pagination.
      *
-     * @param array|null $paginate
+     * @param array|null|Model $paginate
      *
      * @return array
      */
