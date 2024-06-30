@@ -4,6 +4,11 @@ namespace Encore\Admin\Widgets;
 
 use Illuminate\Contracts\Support\Renderable;
 
+/**
+ * @template TKey of array-key
+ * @template TValue
+ * @extends  <TKey, TValue>
+ */
 class InfoBox extends Widget implements Renderable
 {
     /**
@@ -12,7 +17,7 @@ class InfoBox extends Widget implements Renderable
     protected $view = 'admin::widgets.info-box';
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $data = [];
 
