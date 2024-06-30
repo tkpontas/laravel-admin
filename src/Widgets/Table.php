@@ -5,6 +5,11 @@ namespace Encore\Admin\Widgets;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 
+/**
+ * @template TKey of array-key
+ * @template TValue
+ * @extends Widget <TKey, TValue>
+ */
 class Table extends Widget implements Renderable
 {
     /**
@@ -13,36 +18,36 @@ class Table extends Widget implements Renderable
     protected $view = 'admin::widgets.table';
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $headers = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $rows = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $style = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $columnStyle = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $columnClasses = [];
 
     /**
      * Table constructor.
      *
-     * @param array $headers
-     * @param array $rows
-     * @param array $style
+     * @param array<mixed> $headers
+     * @param array<mixed> $rows
+     * @param array<mixed> $style
      */
     public function __construct($headers = [], $rows = [], $style = [])
     {
@@ -56,7 +61,7 @@ class Table extends Widget implements Renderable
     /**
      * Set table headers.
      *
-     * @param array $headers
+     * @param array<mixed> $headers
      *
      * @return $this
      */
@@ -70,7 +75,7 @@ class Table extends Widget implements Renderable
     /**
      * Set table rows.
      *
-     * @param array $rows
+     * @param array<mixed> $rows
      *
      * @return $this
      */
@@ -92,7 +97,7 @@ class Table extends Widget implements Renderable
     /**
      * Set table style.
      *
-     * @param array $style
+     * @param array<mixed> $style
      *
      * @return $this
      */
@@ -106,7 +111,7 @@ class Table extends Widget implements Renderable
     /**
      * Set table column style.
      *
-     * @param array $style
+     * @param array<mixed> $style
      *
      * @return $this
      */
@@ -119,7 +124,7 @@ class Table extends Widget implements Renderable
 
     /**
      * Set table column classes.
-     * @param array $classes
+     * @param array<mixed> $classes
      * @return $this
      */
     public function setColumnClasses($classes = [])
