@@ -6,6 +6,10 @@ use Illuminate\Contracts\Support\Renderable;
 
 /**
  * @phpstan-consistent-constructor
+ *
+ * @template TKey of array-key
+ * @template TValue
+ * @extends Widget <TKey, TValue>
  */
 class Tab extends Widget implements Renderable
 {
@@ -20,7 +24,7 @@ class Tab extends Widget implements Renderable
     protected $view = 'admin::widgets.tab';
 
     /**
-     * @var array
+     * @var array<string|int|array<mixed>>
      */
     protected $data = [
         'id'       => '',
@@ -89,6 +93,8 @@ class Tab extends Widget implements Renderable
      * Set title.
      *
      * @param string $title
+     *
+     * @return void
      */
     public function title($title = '')
     {
@@ -98,7 +104,7 @@ class Tab extends Widget implements Renderable
     /**
      * Set drop-down items.
      *
-     * @param array $links
+     * @param array<mixed> $links
      *
      * @return $this
      */
