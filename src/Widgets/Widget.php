@@ -19,9 +19,7 @@ use Illuminate\Support\Fluent;
  * @method width(mixed $width)
  * @method height(mixed $height)
  *
- * @template TKey of array-key
- * @template TValue
- * @extends Fluent <TKey, TValue>
+ * @extends Fluent <int|string, mixed>
  */
 abstract class Widget extends Fluent
 {
