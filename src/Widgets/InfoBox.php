@@ -4,11 +4,7 @@ namespace Encore\Admin\Widgets;
 
 use Illuminate\Contracts\Support\Renderable;
 
-/**
- * @template TKey of array-key
- * @template TValue
- * @extends  Widget <TKey, TValue>
- */
+
 class InfoBox extends Widget implements Renderable
 {
     /**

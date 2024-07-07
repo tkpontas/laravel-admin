@@ -5,11 +5,7 @@ namespace Encore\Admin\Widgets;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Arr;
 
-/**
- * @template TKey of array-key
- * @template TValue
- * @extends Widget <TKey, TValue>
- */
+
 class Table extends Widget implements Renderable
 {
     /**

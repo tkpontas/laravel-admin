@@ -46,28 +46,28 @@ class Grid
     /**
      * Collection of all data rows.
      *
-     * @var \Illuminate\Support\Collection
+     * @var \Illuminate\Support\Collection<int|string, mixed>
      */
     protected $rows;
 
     /**
      * Collection of all grid columns.
      *
-     * @var \Illuminate\Support\Collection
+     * @var \Illuminate\Support\Collection<int|string, mixed>
      */
     protected $columns;
 
     /**
      * All column names of the grid.
      *
-     * @var array
+     * @var array<string>
      */
     public $columnNames = [];
 
     /**
      * Per-page options.
      *
-     * @var array
+     * @var array<int>
      */
     public $perPages = [10, 20, 30, 50, 100];
 
@@ -93,7 +93,7 @@ class Grid
     /**
      * Options for grid.
      *
-     * @var array
+     * @var array<string, bool>
      */
     protected $options = [
         'show_pagination'        => true,
@@ -115,6 +115,8 @@ class Grid
 
     /**
      * Called paginator
+     *
+     * @var LengthAwarePaginator<array<string, mixed>>
      */
     protected $_paginator;
 
@@ -189,6 +191,8 @@ class Grid
 
     /**
      * Initialize.
+     *
+     * @return void
      */
     protected function initialize()
     {
@@ -204,6 +208,8 @@ class Grid
      * Handle export request.
      *
      * @param bool $forceExport
+     *
+     * @return void
      */
     protected function handleExportRequest($forceExport = false)
     {
