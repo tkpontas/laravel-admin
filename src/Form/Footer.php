@@ -313,7 +313,7 @@ $('.after-submit').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChecke
 EOT;
         if ($redirectCamera) {
             $script .= <<<'EOT'
-            $('#admin-submit').click(function(){setTimeout(function() {waitForElm(".hidden-xs").then(async (elm) => {$('[role="readQRDashboard"]').click();})},2000);});
+            $('#admin-submit').click(function(){setTimeout(function() {waitForElm(".hidden-xs").then(async (elm) => {$('[role="scanButtonDashboard"]').click();})},2000);});
             EOT;
         }
         
