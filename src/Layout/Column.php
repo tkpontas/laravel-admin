@@ -13,12 +13,12 @@ class Column implements Buildable
     /**
      * grid system prefix width.
      *
-     * @var array
+     * @var array<string, int>|int
      */
     protected $width = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $contents = [];
 

@@ -20,7 +20,7 @@ class StepForm extends Form
     protected $url;
 
     /**
-     * @var array<mixed>
+     * @var array<string>
      */
     protected $buttons = [];
 
