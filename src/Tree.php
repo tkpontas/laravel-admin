@@ -27,7 +27,7 @@ class Tree implements Renderable
     protected $elementId = 'tree-';
 
     /**
-     * @var Model|ModelTree|null
+     * @var Model|null
      */
     protected $model;
 
@@ -149,6 +149,7 @@ class Tree implements Renderable
         if (is_null($this->branchCallback)) {
             $this->branchCallback = function ($branch) {
                 $key = $branch[$this->model->getKeyName()];
+                /** @phpstan-ignore-next-line Call to an undefined method Illuminate\Database\Eloquent\Model::getTitleColumn(). */
                 $title = $branch[$this->model->getTitleColumn()];
 
                 return "$key - $title";
@@ -294,6 +295,7 @@ class Tree implements Renderable
             throw new \InvalidArgumentException(json_last_error_msg());
         }
 
+        /** @phpstan-ignore-next-line Call to an undefined method Illuminate\Database\Eloquent\Model::saveOrder(). */
         $this->model->saveOrder($tree);
 
         return true;

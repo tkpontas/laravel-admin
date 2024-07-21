@@ -14,7 +14,7 @@ class TotalRow extends AbstractTool
     protected $query;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $columns;
 
@@ -22,7 +22,7 @@ class TotalRow extends AbstractTool
      * TotalRow constructor.
      *
      * @param Builder|\Illuminate\Database\Eloquent\Builder $query
-     * @param array   $columns
+     * @param array<mixed>   $columns
      */
     public function __construct($query, array $columns)
     {
