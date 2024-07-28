@@ -48,7 +48,7 @@ class PerPageSelector extends AbstractTool
     /**
      * Get options for selector.
      *
-     * @return Collection<int|string, mixed>
+     * @return Collection<int, int>
      */
     public function getOptions()
     {

@@ -24,6 +24,7 @@ class Model
 {
     /**
      * Eloquent model instance of the grid model.
+     * @var mixed
      */
     protected $model;
 
@@ -35,37 +36,37 @@ class Model
     /**
      * Array of queries of the eloquent model.
      *
-     * @var \Illuminate\Support\Collection
+     * @var \Illuminate\Support\Collection<int|string, mixed>
      */
     protected $queries;
 
     /**
      * Sort parameters of the model.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $sort;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $data = [];
 
-    /*
+    /**
      * 20 items per page as default.
      *
      * @var int
      */
     protected $perPage = 20;
 
-    /*
+    /**
      * per page arguments.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $perPageArguments = [];
 
-    /*
+    /**
      * handleInvalidPage. if false, disable call handleInvalidPage.
      *
      * @var boolean
@@ -106,12 +107,12 @@ class Model
     protected $grid;
 
     /**
-     * @var Relation|null
+     * @var Relation<\Illuminate\Database\Eloquent\Model>|null
      */
     protected $relation;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $eagerLoads = [];
 
@@ -170,6 +171,8 @@ class Model
      * Enable or disable pagination.
      *
      * @param bool $use
+     *
+     * @return void
      */
     public function usePaginate($use = true)
     {
@@ -228,7 +231,7 @@ class Model
 
     /**
      * Set per-page arguments.
-     * @param array $arguments
+     * @param array<mixed> $arguments
      * @return $this
      */
     public function setPerPageArguments($arguments)
@@ -299,7 +302,7 @@ class Model
     }
 
     /**
-     * @param Relation $relation
+     * @param Relation<\Illuminate\Database\Eloquent\Model> $relation
      *
      * @return $this
      */
@@ -311,7 +314,7 @@ class Model
     }
 
     /**
-     * @return Relation
+     * @return Relation<\Illuminate\Database\Eloquent\Model> | null
      */
     public function getRelation()
     {
@@ -321,7 +324,7 @@ class Model
     /**
      * Get constraints.
      *
-     * @return array|bool
+     * @return array<mixed> | bool
      */
     public function getConstraints()
     {
@@ -406,7 +409,7 @@ class Model
     /**
      * Add conditions to grid model.
      *
-     * @param array $conditions
+     * @param array<mixed> $conditions
      *
      * @return $this
      */
@@ -431,6 +434,8 @@ class Model
 
     /**
      * @throws \Exception
+     *
+     * @return Collection<int|string, mixed>|LengthAwarePaginator<array<string, mixed>>
      */
     protected function get()
     {
@@ -501,7 +506,7 @@ class Model
     /**
      * If current page is greater than last page, then redirect to last page.
      *
-     * @param LengthAwarePaginator $paginator
+     * @param LengthAwarePaginator<array<string, mixed>> $paginator
      *
      * @return void
      */
@@ -548,9 +553,9 @@ class Model
     /**
      * Resolve perPage for pagination.
      *
-     * @param array|null|Model $paginate
+     * @param array<mixed>|null|Model $paginate
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function resolvePerPage($paginate)
     {
@@ -585,7 +590,7 @@ class Model
     /**
      * Find query by method name.
      *
-     * @param $method
+     * @param mixed $method
      *
      * @return static
      */
@@ -654,6 +659,11 @@ class Model
         }
     }
 
+    /**
+     * Get sort column.
+     *
+     * @return Column|null
+     */
     protected function getSortColumn(){
         $column_name = $this->sort['column'] ?? null;
         if(!$column_name){
@@ -748,11 +758,11 @@ class Model
      *
      * `HasOne` and `BelongsTo` relation has different join parameters.
      *
-     * @param Relation $relation
+     * @param Relation<\Illuminate\Database\Eloquent\Model> $relation
      *
      * @throws \Exception
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function joinParameters(Relation $relation)
     {
@@ -783,7 +793,7 @@ class Model
 
     /**
      * @param string $method
-     * @param array  $arguments
+     * @param array<mixed>  $arguments
      *
      * @return $this
      */
@@ -851,7 +861,7 @@ class Model
     }
 
     /**
-     * @param $key
+     * @param mixed $key
      *
      * @return mixed
      */

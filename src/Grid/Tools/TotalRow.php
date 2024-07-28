@@ -3,6 +3,7 @@
 namespace Encore\Admin\Grid\Tools;
 
 use Encore\Admin\Grid\Column;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 
@@ -21,7 +22,7 @@ class TotalRow extends AbstractTool
     /**
      * TotalRow constructor.
      *
-     * @param Builder|\Illuminate\Database\Eloquent\Builder $query
+     * @param Builder|\Illuminate\Database\Eloquent\Builder<Model> $query
      * @param array<mixed>   $columns
      */
     public function __construct($query, array $columns)
