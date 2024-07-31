@@ -25,7 +25,7 @@ class Carousel extends Widget implements Renderable
     /**
      * Carousel constructor.
      *
-     * @param array<mixed>|Collection<int|string, mixed> $items
+     * @param array<mixed>|Collection<int|string, mixed>|mixed $items
      */
     public function __construct($items = [])
     {
