@@ -81,7 +81,7 @@ class Field implements Renderable
     /**
      * Column name.
      *
-     * @var string|array
+     * @var string|array<mixed>
      */
     protected $column = '';
 
@@ -94,53 +94,55 @@ class Field implements Renderable
 
     /**
      * Form element name.
+     * @var array<string, mixed>
      */
     protected $elementName = [];
 
     /**
      * Form element classes.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $elementClass = [];
 
     /**
      * Variables of elements.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $variables = [];
 
     /**
      * Options for specify elements.
+     * @var array<string, mixed>|\Closure
      */
     protected $options = [];
 
     /**
      * Checked for specify elements.
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $checked = [];
 
     /**
      * Validation rules.
      *
-     * @var string|array|\Closure
+     * @var string|array<mixed>|\Closure
      */
     protected $rules = [];
 
     /**
      * The validation rules for creation.
      *
-     * @var array|\Closure
+     * @var array<mixed>|\Closure
      */
     public $creationRules = [];
 
     /**
      * The validation rules for updates.
      *
-     * @var array|\Closure
+     * @var array<mixed>|\Closure
      */
     public $updateRules = [];
 
@@ -152,7 +154,7 @@ class Field implements Renderable
     /**
      * Validation messages.
      *
-     * @var array
+     * @var array<string,mixed>
      */
     protected $validationMessages = [];
 
@@ -166,7 +168,7 @@ class Field implements Renderable
     /**
      * Js required by this field.
      *
-     * @var array
+     * @var array<string>
      */
     protected static $js = [];
 
@@ -180,7 +182,7 @@ class Field implements Renderable
     /**
      * Element attributes.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected $attributes = [];
 
@@ -225,7 +227,7 @@ class Field implements Renderable
     /**
      * Width for label and field.
      *
-     * @var array
+     * @var array<string, int>
      */
     protected $width = [
         'label' => 2,
@@ -253,17 +255,17 @@ class Field implements Renderable
     protected $display = true;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $labelClass = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $fieldClass = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $groupClass = [];
 
@@ -310,7 +312,7 @@ class Field implements Renderable
     /**
      * Get assets required by this field.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public static function getAssets()
     {
@@ -356,7 +358,7 @@ class Field implements Renderable
     /**
      * Format the field element id.
      *
-     * @param string|array $column
+     * @param string|array<mixed> $column
      *
      * @return string|array
      */
@@ -392,7 +394,7 @@ class Field implements Renderable
     /**
      * Format the label value.
      *
-     * @param array $arguments
+     * @param array<mixed> $arguments
      *
      * @return string
      */
@@ -408,9 +410,9 @@ class Field implements Renderable
     /**
      * Format the name of the field.
      *
-     * @param string|array $column
+     * @param string|array<mixed> $column
      *
-     * @return array|mixed|string
+     * @return array<mixed>|mixed|string
      */
     public function formatName($column)
     {
@@ -464,7 +466,7 @@ class Field implements Renderable
     /**
      * Get form element name.
      *
-     * @return string|array
+     * @return string|array<mixed>
      *
      */
     public function getElementName()
@@ -475,7 +477,7 @@ class Field implements Renderable
     /**
      * Fill data to the field.
      *
-     * @param array $data
+     * @param array<mixed> $data
      *
      * @return void
      */
@@ -498,6 +500,7 @@ class Field implements Renderable
 
     /**
      * Format value by passing custom formater.
+     * @return void
      */
     protected function formatValue()
     {
@@ -523,7 +526,7 @@ class Field implements Renderable
     /**
      * Set original value to the field.
      *
-     * @param array $data
+     * @param array<mixed> $data
      *
      * @return void
      */
@@ -573,7 +576,7 @@ class Field implements Renderable
     /**
      * Set the field options.
      *
-     * @param array|Arrayable $options
+     * @param array<mixed>|Arrayable $options
      *
      * @return $this
      */
@@ -591,7 +594,7 @@ class Field implements Renderable
     /**
      * Set the field option checked.
      *
-     * @param array|Arrayable $checked
+     * @param array<mixed>|Arrayable<int|string, mixed> $checked
      *
      * @return $this
      */
@@ -610,7 +613,7 @@ class Field implements Renderable
      * Add `required` attribute to current field if has required rule,
      * except file and image fields.
      *
-     * @param array $rules
+     * @param array<mixed> $rules
      */
     protected function addRequiredAttribute($rules)
     {
@@ -637,6 +640,7 @@ class Field implements Renderable
 
     /**
      * If has `required` rule, add required attribute to this field.
+     * @return void
      */
     protected function addRequiredAttributeFromRules()
     {
@@ -654,9 +658,9 @@ class Field implements Renderable
     /**
      * Format validation rules.
      *
-     * @param array|string $rules
+     * @param array<mixed>|string $rules
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function formatRules($rules)
     {
@@ -668,8 +672,8 @@ class Field implements Renderable
     }
 
     /**
-     * @param string|array|Closure $input
-     * @param string|array         $original
+     * @param string|array<mixed>|Closure $input
+     * @param string|array<mixed>         $original
      *
      * @return array|Closure
      */
@@ -691,8 +695,8 @@ class Field implements Renderable
     /**
      * Set the validation rules for the field.
      *
-     * @param array|callable|string $rules
-     * @param array                 $messages
+     * @param array<mixed>|callable|string $rules
+     * @param array<mixed>                 $messages
      *
      * @return $this
      */
@@ -708,8 +712,8 @@ class Field implements Renderable
     /**
      * Set the update validation rules for the field.
      *
-     * @param array|callable|string $rules
-     * @param array                 $messages
+     * @param array<mixed>|callable|string $rules
+     * @param array<mixed>                 $messages
      *
      * @return $this
      */
@@ -725,8 +729,8 @@ class Field implements Renderable
     /**
      * Set the creation validation rules for the field.
      *
-     * @param array|callable|string $rules
-     * @param array                 $messages
+     * @param array<mixed>|callable|string $rules
+     * @param array<mixed>                 $messages
      *
      * @return $this
      */
@@ -742,7 +746,7 @@ class Field implements Renderable
     /**
      * Remove validation rule
      *
-     * @param array|callable|string $rules
+     * @param array<mixed>|callable|string $rules
      * @return $this
      */
     public function removeRules($rules)
@@ -785,7 +789,7 @@ class Field implements Renderable
      * Set validation messages for column.
      *
      * @param string $key
-     * @param array  $messages
+     * @param array<mixed>  $messages
      *
      * @return $this
      */
@@ -799,7 +803,7 @@ class Field implements Renderable
     /**
      * Get validation messages for the field.
      *
-     * @return array|mixed
+     * @return array<mixed?|mixed
      */
     public function getValidationMessages()
     {
@@ -817,6 +821,7 @@ class Field implements Renderable
 
     /**
      * Get field validation rules.
+     * @return array<mixed>|Closure|string
      */
     protected function getRules()
     {
@@ -935,7 +940,7 @@ class Field implements Renderable
     /**
      * Set or get data.
      *
-     * @param array $data
+     * @param array<mixed>|null $data
      *
      * @return $this
      */
@@ -953,7 +958,7 @@ class Field implements Renderable
     /**
      * Set default value for field.
      *
-     * @param $default
+     * @param mixed $default
      *
      * @return $this
      */
@@ -1037,7 +1042,7 @@ class Field implements Renderable
     /**
      * forget help
      *
-     * @return array
+     * @return array<string, mixed>
      */
     protected function getHelpArray() : array
     {
@@ -1058,7 +1063,7 @@ class Field implements Renderable
     /**
      * Get column of the field.
      *
-     * @return string|array
+     * @return string|array<mixed>
      */
     public function column()
     {
@@ -1088,7 +1093,7 @@ class Field implements Renderable
     /**
      * Get validator for this field.
      *
-     * @param array $input
+     * @param array<mixed> $input
      *
      * @return bool|\Illuminate\Contracts\Validation\Validator|mixed
      */
@@ -1132,7 +1137,7 @@ class Field implements Renderable
     /**
      * Sanitize input data.
      *
-     * @param array  $input
+     * @param array<mixed>  $input
      * @param string $column
      *
      * @return array
@@ -1162,7 +1167,7 @@ class Field implements Renderable
     /**
      * Add html attributes to elements.
      *
-     * @param array|string $attribute
+     * @param array<mixed>|string $attribute
      * @param mixed        $value
      *
      * @return $this
@@ -1180,6 +1185,7 @@ class Field implements Renderable
 
     /**
      * Get field attributes.
+     * @return  array<string, mixed>
      */
     public function getAttributes()
     {
@@ -1306,6 +1312,7 @@ class Field implements Renderable
 
     /**
      * Get old function result. Contains value.
+     * @return mixed
      */
     public function getOld()
     {
@@ -1345,7 +1352,7 @@ class Field implements Renderable
     /**
      * Prepare for a field value before update or insert.
      *
-     * @param $value
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -1357,7 +1364,7 @@ class Field implements Renderable
     /**
      * Prepare for confirm(preview). Almost is same prepare($value), but file is not saving
      *
-     * @param $value
+     * @param  mixed  $value
      *
      * @return mixed
      */
@@ -1373,7 +1380,7 @@ class Field implements Renderable
     /**
      * Set Prepare for confirm(preview). Almost is same prepare($value), but file is not saving
      *
-     * @param $value
+     * @param \Closure $callback
      *
      * @return mixed
      */
@@ -1434,7 +1441,7 @@ class Field implements Renderable
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public function getViewElementClasses()
     {
@@ -1452,7 +1459,7 @@ class Field implements Renderable
     /**
      * Set form element class.
      *
-     * @param string|array $class
+     * @param string|array<mixed> $class
      *
      * @return $this
      */
@@ -1468,7 +1475,7 @@ class Field implements Renderable
     /**
      * Get element class.
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function getElementClass()
     {
@@ -1507,7 +1514,7 @@ class Field implements Renderable
      * Get element class selector.
      *
      * @param boolean $appendFormName if true, set form unique name
-     * @return string|array
+     * @return string|array<mixed>
      */
     protected function getElementClassSelector($appendFormName = true)
     {
@@ -1534,7 +1541,7 @@ class Field implements Renderable
     /**
      * Add the element class.
      *
-     * @param $class
+     * @param array<mixed>|string|mixed $class
      *
      * @return $this
      */
@@ -1552,7 +1559,7 @@ class Field implements Renderable
     /**
      * Remove element class.
      *
-     * @param $class
+     * @param array<mixed>|string|mixed $class
      *
      * @return $this
      */
@@ -1576,7 +1583,7 @@ class Field implements Renderable
     /**
      * Set form group class.
      *
-     * @param string|array $class
+     * @param string|array<mixed> $class
      *
      * @return $this
      */
@@ -1625,7 +1632,7 @@ class Field implements Renderable
     /**
      * Add variables to field view.
      *
-     * @param array $variables
+     * @param array<mixed> $variables
      *
      * @return $this
      */
@@ -1650,7 +1657,7 @@ class Field implements Renderable
     }
 
     /**
-     * @param array $labelClass
+     * @param array<string, mixed> $labelClass
      *
      * @return self
      */
@@ -1672,7 +1679,7 @@ class Field implements Renderable
     }
 
     /**
-     * @param array $fieldClass
+     * @param array<mixed> $fieldClass
      *
      * @return self
      */
@@ -1745,7 +1752,7 @@ class Field implements Renderable
     /**
      * Get the view variables of this field.
      *
-     * @return array
+     * @return array<string. mixed>
      */
     public function variables()
     {
@@ -1873,6 +1880,7 @@ class Field implements Renderable
 
     /**
      * Render this filed.
+     * @return string
      */
     public function render()
     {
@@ -1895,6 +1903,9 @@ class Field implements Renderable
         return view($this->getView(), $this->variables());
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->render()->render();

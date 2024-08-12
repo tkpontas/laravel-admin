@@ -619,6 +619,7 @@ class Model
 
         $column = $this->getSortColumn();
         // if sort as callback, Execute callback
+        /** @phpstan-ignore-next-line Call to function is_null() with Closure will always evaluate to false.  */
         if($column && !is_null($column->getSortCallback())){
             $this->setCallbackSort();
             return;
@@ -725,6 +726,7 @@ class Model
     protected function setCallbackSort()
     {
         $column = $this->getSortColumn();
+        /** @phpstan-ignore-next-line Call to function is_null() with Closure will always evaluate to false. */
         if($column && !is_null($func = $column->getSortCallback())){
             $this->resetOrderBy();   
 
