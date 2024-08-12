@@ -25,7 +25,7 @@ class Field implements Renderable
     /**
      * Element id.
      *
-     * @var array|string
+     * @var array<mixed>|string
      */
     protected $id;
 
@@ -161,7 +161,7 @@ class Field implements Renderable
     /**
      * Css required by this field.
      *
-     * @var array
+     * @var array<string>
      */
     protected static $css = [];
 
@@ -202,11 +202,13 @@ class Field implements Renderable
 
     /**
      * Help Icon.
+     * @var string
      */
     protected $helpIcon;
 
     /**
      * Help Text.
+     * @var string
      */
     protected $helpText;
 
@@ -220,7 +222,7 @@ class Field implements Renderable
     /**
      * Placeholder for this field.
      *
-     * @var string|array
+     * @var string|array<mixed>
      */
     protected $placeholder;
 
@@ -299,8 +301,10 @@ class Field implements Renderable
     /**
      * Field constructor.
      *
-     * @param       $column
-     * @param array $arguments
+     * @param string $column
+     * @param array<mixed> $arguments
+     *
+     * @return void
      */
     public function __construct($column = '', $arguments = [])
     {
@@ -324,6 +328,7 @@ class Field implements Renderable
 
     /**
      * Get form dotted name.
+     * @param string $keyname
      *
      * @return string
      *
@@ -360,7 +365,7 @@ class Field implements Renderable
      *
      * @param string|array<mixed> $column
      *
-     * @return string|array
+     * @return string|array<mixed>
      */
     public function formatId($column)
     {
