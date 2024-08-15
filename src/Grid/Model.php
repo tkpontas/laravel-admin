@@ -570,12 +570,12 @@ class Model
             return $this->perPageArguments;
         }
 
-        if (isset($paginate['arguments'][0])) {
-            return $paginate['arguments'];
-        }
-
         if ($name = $this->grid->getName()) {
             return [$this->perPage, ['*'], "{$name}_page"];
+        }
+
+        if (isset($paginate['arguments'][0])) {
+            return $paginate['arguments'];
         }
 
         return [$this->perPage];
