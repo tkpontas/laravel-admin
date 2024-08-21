@@ -688,11 +688,11 @@ function parseHTML(html) {
 //
 // Returns an Object with url, title, and contents keys.
 function extractContainer(data, xhr, options) {
-  var obj = {}, fullDocument = /<html/i.test(data)
+  var obj = {}, fullDocument = /^<html/i.test(data);
 
   // Prefer X-PJAX-URL header if it was set, otherwise fallback to
   // using the original requested url.
-  var serverUrl = xhr.getResponseHeader('X-PJAX-URL')
+  var serverUrl = xhr.getResponseHeader('X-PJAX-URL');
   obj.url = serverUrl ? stripInternalParams(parseURL(serverUrl)) : options.requestUrl
 
   // Attempt to parse response html into elements
