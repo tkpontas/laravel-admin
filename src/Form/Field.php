@@ -94,7 +94,7 @@ class Field implements Renderable
 
     /**
      * Form element name.
-     * @var array<string, mixed> | string
+     * @var array<string, mixed>|string
      */
     protected $elementName = [];
 

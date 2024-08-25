@@ -314,7 +314,7 @@ class Model
     }
 
     /**
-     * @return Relation<\Illuminate\Database\Eloquent\Model> | null
+     * @return Relation<\Illuminate\Database\Eloquent\Model>|null
      */
     public function getRelation()
     {
@@ -324,7 +324,7 @@ class Model
     /**
      * Get constraints.
      *
-     * @return array<mixed> | bool
+     * @return array<mixed>|bool
      */
     public function getConstraints()
     {

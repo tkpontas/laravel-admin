@@ -18,7 +18,7 @@ class Between extends AbstractFilter
      *
      * @param string $column
      *
-     * @return array<mixed> |string
+     * @return array<mixed>|string
      */
     public function formatId($column)
     {

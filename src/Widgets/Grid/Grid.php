@@ -744,7 +744,7 @@ class Grid
      * Dynamically add columns to the grid view.
      *
      * @param string $method
-     * @param array<int, string> | null $arguments
+     * @param array<int, string>|null $arguments
      *
      * @return Column
      */

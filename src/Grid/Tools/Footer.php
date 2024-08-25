@@ -11,7 +11,7 @@ use Illuminate\Database\Query\Builder;
 class Footer extends AbstractTool
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Builder<Model> | null
+     * @var \Illuminate\Database\Eloquent\Builder<Model>|null
      */
     protected $queryBuilder;
 

@@ -74,7 +74,7 @@ class ListField extends Field
     /**
      * {@inheritdoc}
      * @param array<mixed> $input
-     * @return bool| \Illuminate\Contracts\Validation\Validator
+     * @return bool|\Illuminate\Contracts\Validation\Validator
      */
     public function getValidator(array $input)
     {

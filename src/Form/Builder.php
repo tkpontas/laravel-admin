@@ -222,7 +222,7 @@ class Builder
     /**
      * Set resource Id.
      *
-     * @param \Illuminate\Database\Eloquent\Model | mixed $id
+     * @param \Illuminate\Database\Eloquent\Model|mixed $id
      * @return $this
      */
     public function setResourceId($id)
