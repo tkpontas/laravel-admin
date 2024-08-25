@@ -94,7 +94,7 @@ class Field implements Renderable
 
     /**
      * Form element name.
-     * @var array<string, mixed>
+     * @var array<string, mixed> | string
      */
     protected $elementName = [];
 
@@ -202,13 +202,13 @@ class Field implements Renderable
 
     /**
      * Help Icon.
-     * @var string
+     * @var string|null
      */
     protected $helpIcon;
 
     /**
      * Help Text.
-     * @var string
+     * @var string|null
      */
     protected $helpText;
 
@@ -257,7 +257,7 @@ class Field implements Renderable
     protected $display = true;
 
     /**
-     * @var array<string, mixed>
+     * @var array<string>
      */
     protected $labelClass = [];
 
@@ -581,7 +581,7 @@ class Field implements Renderable
     /**
      * Set the field options.
      *
-     * @param array<mixed>|Arrayable $options
+     * @param array<mixed>|Arrayable<int|string, mixed> $options
      *
      * @return $this
      */
@@ -619,6 +619,8 @@ class Field implements Renderable
      * except file and image fields.
      *
      * @param array<mixed> $rules
+     *
+     * @return void
      */
     protected function addRequiredAttribute($rules)
     {
@@ -680,7 +682,7 @@ class Field implements Renderable
      * @param string|array<mixed>|Closure $input
      * @param string|array<mixed>         $original
      *
-     * @return array|Closure
+     * @return array<mixed>|Closure
      */
     protected function mergeRules($input, $original)
     {
@@ -808,7 +810,7 @@ class Field implements Renderable
     /**
      * Get validation messages for the field.
      *
-     * @return array<mixed?|mixed
+     * @return array<mixed>|mixed
      */
     public function getValidationMessages()
     {
@@ -1145,7 +1147,7 @@ class Field implements Renderable
      * @param array<mixed>  $input
      * @param string $column
      *
-     * @return array
+     * @return array<mixed>
      */
     protected function sanitizeInput($input, $column)
     {
@@ -1201,6 +1203,8 @@ class Field implements Renderable
      * Specifies a regular expression against which to validate the value of the input.
      *
      * @param string $regexp
+     *
+     * @return Field
      */
     public function pattern($regexp)
     {
@@ -1252,6 +1256,7 @@ class Field implements Renderable
 
     /**
      * Set the field as readonly mode.
+     * @param bool $readonly
      *
      * @return Field
      */
@@ -1278,6 +1283,7 @@ class Field implements Renderable
 
     /**
      * Set field as disabled.
+     * @param bool $disable
      *
      * @return Field
      */
@@ -1662,7 +1668,7 @@ class Field implements Renderable
     }
 
     /**
-     * @param array<string, mixed> $labelClass
+     * @param array<string> $labelClass
      *
      * @return self
      */
@@ -1757,7 +1763,7 @@ class Field implements Renderable
     /**
      * Get the view variables of this field.
      *
-     * @return array<string. mixed>
+     * @return array<string, mixed>
      */
     public function variables()
     {
