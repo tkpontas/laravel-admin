@@ -5,6 +5,7 @@ namespace Encore\Admin\Form;
 use Encore\Admin\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Form\Field\Hidden;
+use Encore\Admin\Grid\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\URL;
@@ -15,6 +16,9 @@ use Illuminate\Support\Str;
  */
 class Builder
 {
+    /**
+     * @var string
+     */
     public static $footerClassName = \Encore\Admin\Form\Footer::class;
 
     /**
@@ -41,12 +45,12 @@ class Builder
     protected $action;
 
     /**
-     * @var Collection|null
+     * @var Collection<int|string, mixed>|null
      */
     protected $fields;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $options = [];
 
@@ -64,12 +68,12 @@ class Builder
     protected $mode = 'create';
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $attributes = [];
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     protected $hiddenFields = [];
 
@@ -86,7 +90,7 @@ class Builder
     /**
      * Width for label and field.
      *
-     * @var array
+     * @var array<string, int>
      */
     protected $width = [
         'label' => 2,
@@ -137,6 +141,8 @@ class Builder
 
     /**
      * Do initialize.
+     *
+     * @return void
      */
     public function init()
     {
@@ -187,7 +193,7 @@ class Builder
     /**
      * Returns builder is $mode.
      *
-     * @param $mode
+     * @param string $mode
      *
      * @return bool
      */
@@ -219,7 +225,7 @@ class Builder
     /**
      * Set resource Id.
      *
-     * @param $id
+     * @param \Illuminate\Database\Eloquent\Model|mixed $id
      * @return $this
      */
     public function setResourceId($id)
@@ -244,6 +250,7 @@ class Builder
     }
 
     /**
+     * @param int|null $slice
      * @return string
      */
     public function getResource($slice = null)
@@ -302,7 +309,7 @@ class Builder
     /**
      * Get label and field width.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getWidth()
     {
@@ -313,6 +320,8 @@ class Builder
      * Set form action.
      *
      * @param string $action
+     *
+     * @return void
      */
     public function setAction($action)
     {
@@ -372,7 +381,7 @@ class Builder
     /**
      * Get fields of this builder.
      *
-     * @return Collection
+     * @return Collection<int|string, mixed>
      */
     public function fields()
     {
@@ -406,7 +415,7 @@ class Builder
     /**
      * Get field rows of form.
      *
-     * @return array
+     * @return array<mixed>
      */
     public function getRows()
     {
@@ -414,7 +423,7 @@ class Builder
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function getHiddenFields()
     {
@@ -434,9 +443,9 @@ class Builder
     /**
      * Add or get options.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *
-     * @return array|null
+     * @return array<mixed>|null
      */
     public function options($options = [])
     {
@@ -540,7 +549,7 @@ class Builder
     /**
      * Open up a new HTML form.
      *
-     * @param array $options
+     * @param array<mixed> $options
      *
      * @return string
      */
