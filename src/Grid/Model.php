@@ -563,6 +563,13 @@ class Model
             if (is_array($paginate)) {
                 $paginate['arguments'][0] = (int) $perPage;
 
+                if ($name = $this->grid->getName()) {
+                    if (!array_key_exists(1, $paginate['arguments'])) {
+                        $paginate['arguments'][1] = '*';
+                    }
+                    $paginate['arguments'][2] = "{$name}_page";
+                }
+        
                 return $paginate['arguments'];
             }
 
@@ -576,12 +583,12 @@ class Model
             return $this->perPageArguments;
         }
 
-        if (isset($paginate['arguments'][0])) {
-            return $paginate['arguments'];
-        }
-
         if ($name = $this->grid->getName()) {
             return [$this->perPage, ['*'], "{$name}_page"];
+        }
+
+        if (isset($paginate['arguments'][0])) {
+            return $paginate['arguments'];
         }
 
         return [$this->perPage];
