@@ -488,6 +488,13 @@ class Form implements Renderable
         return $this->redirectAfterStore();
     }
 
+    /**
+     * Save Jancode
+     *
+     * @param mixed $model
+     *
+     * @return void
+     */
     protected function storeJancode($model)
     {
         $jan_code = request()->get('jan_code');
