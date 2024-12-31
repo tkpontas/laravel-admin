@@ -63,7 +63,7 @@ class Pjax
     /**
      * Handle Response with exceptions.
      *
-     * @param Response $response
+     * @param \Illuminate\Http\Response $response
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -151,7 +151,7 @@ class Pjax
     /**
      * Set the PJAX-URL header to the current uri.
      *
-     * @param Response $response
+     * @param \Illuminate\Http\Response $response
      * @param Request  $request
      *
      * @return void
