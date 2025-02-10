@@ -326,6 +326,26 @@ $('.after-submit').iCheck({checkboxClass:'icheckbox_minimal-blue'}).on('ifChecke
 EOT;
         if ($redirectCamera) {
             $script .= <<<'EOT'
+            function waitForElm(selector) {
+                return new Promise((resolve) => {
+                    if (document.querySelector(selector)) {
+                        return resolve(document.querySelector(selector));
+                    }
+
+                    const observer = new MutationObserver((mutations) => {
+                        if (document.querySelector(selector)) {
+                            resolve(document.querySelector(selector));
+                            observer.disconnect();
+                        }
+                    });
+
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true,
+                    });
+                });
+            }
+
             $('#admin-submit').click(function(){setTimeout(function() {waitForElm(".hidden-xs").then(async (elm) => {$('[role="scanButtonDashboard"]').click();})},2000);});
             EOT;
         }
