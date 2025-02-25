@@ -194,7 +194,6 @@ html {
 .btn-sm,
 .btn-group-sm > .btn, .btn.btn-sm.btn-success, .btn-group, .btn {
   font-size: 14px !important;
-  height: 30px;
   width: auto;
   margin-bottom: 5px;
 }
