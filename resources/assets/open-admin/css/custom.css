@@ -191,6 +191,22 @@ html {
   font-size: 13px !important;
 }
 
+.btn-sm,
+.btn-group-sm > .btn, .btn.btn-sm.btn-success, .btn-group, .btn {
+  font-size: 14px !important;
+  height: 30px;
+  width: auto;
+  margin-bottom: 5px;
+}
+
+.select2-container.select2-container--default.select2-container--open {
+  z-index: 5000;
+}
+
+.card.custom-border-success {
+  border-top: 3px solid #00a65a;
+}
+
 .custom-menu a:active,
 .custom-menu a:focus,
 .custom-menu li > ul > li.active a {
@@ -312,6 +328,10 @@ div#main {
 
 .box-footer {
   justify-content: center;
+}
+
+.box-footer.border-top.border-1.border-gray-500 {
+  text-align: -webkit-right;
 }
 
 .skin-blue-light.sidebar-mini.side-menu-closed .sidebar .user-panel > .image > img {
