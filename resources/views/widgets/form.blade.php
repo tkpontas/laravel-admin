@@ -1,5 +1,5 @@
 <form {!! $attributes !!}>
-    <div class="box-body fields-group">
+    <div class="box-body fields-group ps-5">
 
         @include('admin::widgets.fields')
 
@@ -22,7 +22,7 @@
             @endif
 
             @if(in_array('submit', $buttons))
-            <div class="btn-group pt-3 pe-2">
+            <div class="btn-group pt-3 pe-2 m-0">
                 <button type="submit" class="btn btn-primary">{{ $submitLabel ?? trans('admin.submit') }}</button>
             </div>
                 
