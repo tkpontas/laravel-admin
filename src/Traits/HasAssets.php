@@ -102,7 +102,7 @@ trait HasAssets
      */
     public static $baseJs = [
         // 'vendor/open-admin/AdminLTE/bootstrap/js/bootstrap.min.js',
-        "https://code.jquery.com/jquery-3.7.1.min.js",
+        // "https://code.jquery.com/jquery-3.7.1.min.js",
         'vendor/open-admin/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js',
         'vendor/open-admin/AdminLTE/dist/js/app.min.js',
         'vendor/open-admin/jquery-pjax/jquery.pjax.js',
@@ -142,6 +142,7 @@ trait HasAssets
         // 'vendor/open-admin/AdminLTE4/js/adminlte.min.js',
 
         "https://cdn.jsdelivr.net/npm/bootstrap-fileinput/js/fileinput.min.js",
+        "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/locales/ja.min.js",
         "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
         "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
 
