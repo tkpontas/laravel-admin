@@ -1,6 +1,6 @@
 <div class="{{$viewClass['form-group']}}">
 
-    <label class="{{$viewClass['label']}} control-label">{{$label}}</label>
+    <label class="{{$viewClass['label']}} control-label text-lg-end text-nowrap">{{$label}}</label>
 
     <div class="{{$viewClass['field']}}">
         <table class="table table-hover">
@@ -26,7 +26,7 @@
 
                                 @if($errors->has($keysErrorKey))
                                     @foreach($errors->get($keysErrorKey) as $message)
-                                        <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
+                                        <label class="control-label text-lg-end text-nowrap" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
                                     @endforeach
                                 @endif
                             </div>
@@ -38,7 +38,7 @@
                                 <input name="{{ $column }}[values][]" value="{{ old("{$column}.values.{$k}", $v) }}" class="form-control" />
                                 @if($errors->has($valsErrorKey))
                                     @foreach($errors->get($valsErrorKey) as $message)
-                                        <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
+                                        <label class="control-label text-lg-end text-nowrap" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
                                     @endforeach
                                 @endif
                             </div>

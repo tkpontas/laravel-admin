@@ -1,12 +1,12 @@
 <div class="{{$viewClass['form-group']}} {!! !$errors->has($errorKey) ? '' : 'has-error' !!}">
 
-    <label for="{{$id}}" class="{{$viewClass['label']}} control-label">{{$label}}</label>
+    <label for="{{$id}}" class="{{$viewClass['label']}} control-label text-lg-end text-nowrap">{{$label}}</label>
 
     <div class="{{$viewClass['field']}}">
 
         @include('admin::form.error')
 
-        <div class="input-group">
+        <div class="input-group flex-nowrap ">
 
             @if ($prepend)
             <span class="input-group-addon d-flex align-items-center justify-content-center" style="border: 1px solid #ced4da;">{!! $prepend !!}</span>

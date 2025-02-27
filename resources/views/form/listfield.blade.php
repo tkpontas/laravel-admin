@@ -3,13 +3,13 @@
 
 <div class="{{$viewClass['form-group']}} {{ $errors->has($listErrorKey) ? 'has-error' : '' }}">
 
-    <label class="{{$viewClass['label']}} control-label">{{$label}}</label>
+    <label class="{{$viewClass['label']}} control-label text-lg-end text-nowrap">{{$label}}</label>
 
     <div class="{{$viewClass['field']}}">
 
         @if($errors->has($listErrorKey))
             @foreach($errors->get($listErrorKey) as $message)
-                <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
+                <label class="control-label text-lg-end text-nowrap" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
             @endforeach
         @endif
 
@@ -28,7 +28,7 @@
                                 <input name="{{ $column }}[values][]" value="{{ old("{$column}.values.{$k}", $v) }}" class="form-control" />
                                 @if($errors->has($itemErrorKey))
                                     @foreach($errors->get($itemErrorKey) as $message)
-                                        <label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
+                                        <label class="control-label text-lg-end text-nowrap" for="inputError"><i class="fa fa-times-circle-o"></i> {{$message}}</label><br/>
                                     @endforeach
                                 @endif
                             </div>
