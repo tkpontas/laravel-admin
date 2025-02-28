@@ -1620,7 +1620,7 @@ class Field implements Renderable
     protected function getGroupClass($default = false)
     : string
     {
-        return ($default ? 'row mb-3 justify-content-center ' : '').implode(' ', array_filter($this->groupClass));
+        return ($default ? 'row mb-3 justify-content-center  p-3' : '').implode(' ', array_filter($this->groupClass));
     }
 
     /**
