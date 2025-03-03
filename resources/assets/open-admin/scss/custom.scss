@@ -404,13 +404,19 @@ div#main {
     background-color: #dd4b39 !important;
 }
 
-a:hover, a:active, a:focus{
+a.fa.fa-fw.fa-sort:hover,
+a.fa.fa-fw.fa-sort:active,
+a.fa.fa-fw.fa-sort:focus {
     outline: none;
     text-decoration: none !important;
     color: #72afd2 !important;
 }
+
 body > div.wrapper > header > div > ul > li.navbar-notify.dropdown.notifications-menu > ul{
     width: 400px;
+}
+.row.align-items-center .pull-right{
+    width: unset;
 }
 @media (min-width: 768px) {
     .col-md-6 {
