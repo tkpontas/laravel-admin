@@ -411,7 +411,15 @@ a.fa.fa-fw.fa-sort:focus {
     text-decoration: none !important;
     color: #72afd2 !important;
 }
-
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    background-color: #337ab7;
+    border: 1px solid #337ab7;
+    color: #fff;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
+    margin-right: 5px;
+    color: rgba(255, 255, 255, 0.7);
+}
 body > div.wrapper > header > div > ul > li.navbar-notify.dropdown.notifications-menu > ul{
     width: 400px;
 }

@@ -23,7 +23,7 @@
 
                 @if($options['allowDelete'])
                 <div class="form-group">
-                    <label class="{{$viewClass['label']}} control-label text-lg-end text-nowrap"></label>
+                    <label class="{{$viewClass['label']}} control-label text-lg-end pt-2"></label>
                     <div class="{{$viewClass['field']}}">
                         <div class="remove btn btn-warning btn-sm pull-right"><i class="fa fa-trash">&nbsp;</i>{{ trans('admin.remove') }}</div>
                     </div>
@@ -42,7 +42,7 @@
             {!! $template !!}
 
             <div class="form-group">
-                <label class="{{$viewClass['label']}} control-label text-lg-end text-nowrap"></label>
+                <label class="{{$viewClass['label']}} control-label text-lg-end pt-2"></label>
                 <div class="{{$viewClass['field']}}">
                     <div class="remove btn btn-warning btn-sm pull-right"><i class="fa fa-trash"></i>&nbsp;{{ trans('admin.remove') }}</div>
                 </div>
@@ -53,7 +53,7 @@
 
     @if($options['allowCreate'])
     <div class="form-group">
-        <label class="{{$viewClass['label']}} control-label text-lg-end text-nowrap"></label>
+        <label class="{{$viewClass['label']}} control-label text-lg-end pt-2"></label>
         <div class="{{$viewClass['field']}}">
             <div class="add btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;{{ trans('admin.new') }}</div>
         </div>
