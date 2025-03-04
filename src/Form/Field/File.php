@@ -255,6 +255,7 @@ class File extends Field
      */
     protected function setupScripts($options)
     {
+        $locale = config('app.locale');
         $this->script = <<<EOT
             $("{$this->getElementClassSelector()}").each(function(index, element){
             var initialPreview = $(element).data('initial-preview');
@@ -263,6 +264,7 @@ class File extends Field
             var deleteExtraData = $options.deleteExtraData;
 
             var options = {
+                language: '$locale',
                 allowedFileTypes: ['image', 'video'], 
                 allowedFileExtensions: ['jpg', 'png', 'mp4'], 
                 showPreview: true, 
