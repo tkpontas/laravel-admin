@@ -73,7 +73,7 @@ trait HasAssets
         // 'vendor/open-admin/nprogress/nprogress.css',
         'vendor/open-admin/sweetalert2/dist/sweetalert2.css',
         // 'vendor/open-admin/nestable/nestable.css',
-        // 'vendor/open-admin/bootstrap3-editable/css/bootstrap-editable.css',
+        'vendor/open-admin/bootstrap5-editable/css/bootstrap-editable.css',
         // 'vendor/open-admin/google-fonts/fonts.css',
         // 'vendor/open-admin/AdminLTE/dist/css/AdminLTE.min.css',
         'vendor/open-admin/nprogress/nprogress.css',
@@ -107,14 +107,14 @@ trait HasAssets
         "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
         "https://cdn.jsdelivr.net/npm/bootstrap-fileinput/js/fileinput.min.js",
         "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/locales/ja.min.js",
-
         'vendor/open-admin/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js',
-        'vendor/open-admin/AdminLTE/dist/js/app.min.js',
+        // 'vendor/open-admin/AdminLTE/dist/js/app.min.js',
+        'vendor/open-admin/AdminLTE4/js/adminlte.min.js',
         'vendor/open-admin/jquery-pjax/jquery.pjax.js',
         'vendor/open-admin/nprogress/nprogress.js',
         'vendor/open-admin/nestable/jquery.nestable.js',
         'vendor/open-admin/toastr/build/toastr.min.js',
-        'vendor/open-admin/bootstrap3-editable/js/bootstrap-editable.min.js',
+        'vendor/open-admin/bootstrap5-editable/js/bootstrap-editable.min.js',
         'vendor/open-admin/sweetalert2/dist/sweetalert2.min.js',
         // 'vendor/open-admin/open-admin/open-admin.js',
 
@@ -144,7 +144,8 @@ trait HasAssets
         // 'vendor/open-admin/bootstrap3-editable/js/bootstrap-editable.min.js',
         'vendor/laravel-admin/laravel-admin/laravel-admin.js',
         // 'vendor/open-admin/AdminLTE/bootstrap/js/bootstrap.min.js',
-        // 'vendor/open-admin/AdminLTE4/js/adminlte.min.js',
+
+
     ];
 
     /**
