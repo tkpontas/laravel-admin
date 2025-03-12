@@ -968,7 +968,7 @@
                 this.getSearchInput().val("");
                 this.filter("");
                 this._trigger("iconpickerHidden");
-            }, this), this.options.animation ? 300 : 1);
+            }, this), this.options.animation ? 100 : 1);
         },
         toggle: function() {
             if (this.popover.is(":visible")) {
