@@ -459,6 +459,9 @@ ul.menu.p-3.border-bottom:hover{
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
   color: #000;
 }
+.collapse.in {
+  display: block;
+}
 @media (min-width: 768px) {
     .col-md-6 {
         padding: 12px;

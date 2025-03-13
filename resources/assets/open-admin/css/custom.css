@@ -435,7 +435,7 @@ ul.menu.p-3.border-bottom:hover {
   opacity: 1;
 }
 
-/*padding datetimepicker*/
+/* datetimepicker*/
 .table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
   padding: 5px;
 }
@@ -457,6 +457,10 @@ ul.menu.p-3.border-bottom:hover {
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
   color: #000;
+}
+
+.collapse.in {
+  display: block;
 }
 
 @media (min-width: 768px) {
