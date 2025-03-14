@@ -265,8 +265,6 @@ class File extends Field
 
             var options = {
                 language: '$locale',
-                allowedFileTypes: ['image', 'video'], 
-                allowedFileExtensions: ['jpg', 'png', 'mp4'], 
                 showPreview: true, 
                 showUpload: false,
                 showRemove: false,
