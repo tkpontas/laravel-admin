@@ -1,7 +1,7 @@
 <div {!! $attributes !!}>
-    <div class="box box-info card p-3 custom-border-info">
+    <div class="box box-info card p-1 custom-border-info">
         @if($title || $tools)
-            <div class="box-header with-border d-flex justify-content-between border-bottom p-1 mb-3">
+            <div class="box-header with-border d-flex justify-content-between fixed-border-color p-1 mb-3">
                 <h3 class="box-title">{{ $title }}</h3>
                 <div class="box-tools pull-right">
                     @foreach($tools as $tool)
