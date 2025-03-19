@@ -27,7 +27,7 @@
 }
 
 .fixed-contents-color {
-  background-color: #3c8dbc;
+  background-color: #0d6efd;
 }
 
 .form-select {
@@ -417,8 +417,8 @@ a.fa.fa-fw.fa-sort:focus {
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: #3c8dbc;
-  border: 1px solid #3c8dbc;
+  background-color: #0d6efd;
+  border: 1px solid #0d6efd;
   color: #fff;
 }
 
