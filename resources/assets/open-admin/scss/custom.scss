@@ -72,8 +72,8 @@
     border-color: #fff !important;
 }
 
-ul.fillter-btn {
-    transform: translate(0, 29px) !important;
+ul.dropdown-menu {
+    transform: translate(0, 33px) !important;
 }
 
 .show {
@@ -304,8 +304,6 @@ button.close {
 
 .table-responsive th.column-__actions__,
 .column-__actions__ {
-    display: flex;
-    gap: 0.5rem;
     min-width: 0;
 }
 
