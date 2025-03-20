@@ -14,7 +14,7 @@ class Datetime extends Date
      */
     public function render()
     {
-        $this->defaultAttribute('style', 'width: 160px');
+        $this->defaultAttribute('style', 'width: 160px !important; flex: 0 0 auto !important;');
 
         return parent::render();
     }

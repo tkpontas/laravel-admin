@@ -17,8 +17,17 @@
 }
 
 .input-group-addon {
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
+  border: var(--bs-gray- #ced4da);
+}
+
+.fixed-border-color {
+  border-bottom: 1px solid var(--bs-gray- #ced4da);
+}
+
+.fixed-contents-color {
+  background-color: #0d6efd;
 }
 
 .form-select {
@@ -201,8 +210,14 @@ html {
   margin: 0px;
 }
 
+/*select2*/
 .select2-container.select2-container--default.select2-container--open {
   z-index: 5000;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background-color: #0d6efd;
+  color: white;
 }
 
 .card.custom-border-success {
@@ -380,6 +395,7 @@ div#main {
 .input-group.flex-nowrap .input-group .form-control {
   width: 100px !important;
   flex-grow: 0 !important;
+  border: 1px solid var(--bs-gray- #e9ecef);
 }
 
 .main-header .navbar .nav > li > a > .label {
@@ -426,6 +442,39 @@ body > div.wrapper > header > div > ul > li.navbar-notify.dropdown.notifications
 ul.menu.p-3.border-bottom:hover {
   background: #f4f4f4;
   text-decoration: none;
+}
+
+/*show fontawesome-iconpicker*/
+.fade.in {
+  opacity: 1;
+}
+
+/* datetimepicker*/
+.table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
+  padding: 5px;
+}
+
+.datepicker table tr td.today,
+.datepicker table tr td.today:hover,
+.datepicker table tr td.today.disabled,
+.datepicker table tr td.today.disabled:hover {
+  background-color: #fde19a;
+  background-image: -moz-linear-gradient(top, #fdd49a, #fdf59a);
+  background-image: -ms-linear-gradient(top, #fdd49a, #fdf59a);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fdd49a), to(#fdf59a));
+  background-image: -webkit-linear-gradient(top, #fdd49a, #fdf59a);
+  background-image: -o-linear-gradient(top, #fdd49a, #fdf59a);
+  background-image: linear-gradient(top, #fdd49a, #fdf59a);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fdd49a", endColorstr="#fdf59a", GradientType=0);
+  border-color: #fdf59a #fdf59a #fbed50;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  color: #000;
+}
+
+.collapse.in {
+  display: block;
 }
 
 @media (min-width: 768px) {

@@ -22,7 +22,7 @@
             @endif
 
             @if(in_array('submit', $buttons))
-            <div class="btn-group pt-3 pe-2 m-0">
+            <div class="btn-group pt-3 pe-2 m-0 pb-2">
                 <button type="submit" class="btn btn-primary">{{ $submitLabel ?? trans('admin.submit') }}</button>
             </div>
                 
