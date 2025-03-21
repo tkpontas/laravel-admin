@@ -10,6 +10,7 @@
     min-height: 87.5vh !important;
     background-color: #ecf0f5;
     overflow: auto;
+    overflow-x: hidden;
 }
 
 .fixed-bottom {
@@ -24,7 +25,7 @@
 
 
 .fixed-border-color{
-    border-bottom:1px solid var(--bs-gray-#ced4da);
+    border-bottom:0.5px solid #ced4da;
 }
 
 
