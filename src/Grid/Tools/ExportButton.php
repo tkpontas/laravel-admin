@@ -74,7 +74,7 @@ SCRIPT;
         return <<<EOT
 
 <div class="btn-group pull-right" style="margin-right: 10px">
-    <a class="btn btn-sm btn-info" title="{$trans['export']}"><i class="fa fa-download"></i><span class="hidden-xs"> {$trans['export']}</span></a>
+    <a class="btn btn-sm btn-info" title="{$trans['export']}"><i class="fa fa-download"></i><span class="d-none d-md-inline"> {$trans['export']}</span></a>
     <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>

@@ -18,13 +18,13 @@
 
         @if($useSave)
         <div class="btn-group">
-            <a class="btn btn-info btn-sm {{ $id }}-save" title="{{ trans('admin.save') }}"><i class="fa fa-save"></i><span class="hidden-xs">&nbsp;{{ trans('admin.save') }}</span></a>
+            <a class="btn btn-info btn-sm {{ $id }}-save" title="{{ trans('admin.save') }}"><i class="fa fa-save"></i><span class="d-none d-md-inline">&nbsp;{{ trans('admin.save') }}</span></a>
         </div>
         @endif
 
         @if($useRefresh)
         <div class="btn-group">
-            <a class="btn btn-warning btn-sm {{ $id }}-refresh" title="{{ trans('admin.refresh') }}"><i class="fa fa-refresh"></i><span class="hidden-xs">&nbsp;{{ trans('admin.refresh') }}</span></a>
+            <a class="btn btn-warning btn-sm {{ $id }}-refresh" title="{{ trans('admin.refresh') }}"><i class="fa fa-refresh"></i><span class="d-none d-md-inline">&nbsp;{{ trans('admin.refresh') }}</span></a>
         </div>
         @endif
 
@@ -34,7 +34,7 @@
 
         @if($useCreate)
         <div class="btn-group pull-right">
-            <a class="btn btn-success btn-sm" href="{{ $path }}/create"><i class="fa fa-save"></i><span class="hidden-xs">&nbsp;{{ trans('admin.new') }}</span></a>
+            <a class="btn btn-success btn-sm" href="{{ $path }}/create"><i class="fa fa-save"></i><span class="d-none d-md-inline">&nbsp;{{ trans('admin.new') }}</span></a>
         </div>
         @endif
 

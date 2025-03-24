@@ -9,8 +9,8 @@
         <div class="row" style="width: 525px; max-width:100%;">
             <div class="col-lg-5">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" name="{{$name['start']}}" value="{{ $old['start'] }}" class="form-control {{$class['start']}}" style="width: 100%" {!! $attributes !!} />
+                    <span class="input-group-text d-flex align-items-center"><i class="fa fa-calendar"></i></span>
+                    <input type="text" name="{{$name['start']}}" value="{{ $old['start'] }}" class="form-control {{$class['start']}}" {!! $attributes !!} />
                 </div>
             </div>
 
@@ -20,8 +20,8 @@
 
             <div class="col-lg-5">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="text" name="{{$name['end']}}" value="{{ $old['end'] }}" class="form-control {{$class['end']}}" style="width: 100%" {!! $attributes !!} />
+                    <span class="input-group-text d-flex align-items-center"><i class="fa fa-calendar"></i></span>
+                    <input type="text" name="{{$name['end']}}" value="{{ $old['end'] }}" class="form-control {{$class['end']}}" {!! $attributes !!} />
                 </div>
             </div>
         </div>
@@ -29,4 +29,6 @@
         @include('admin::form.help-block')
 
     </div>
+
+
 </div>
