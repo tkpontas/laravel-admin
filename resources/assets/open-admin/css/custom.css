@@ -24,35 +24,32 @@
   padding-left: 15px;
 }
 
-/* Tab không active */
 .nav-tabs-custom > .nav-tabs > .nav-item > .nav-link {
   background: transparent;
   color: #444;
-  border: 1px solid transparent; /* Đặt mặc định border */
+  border: 1px solid transparent;
   border-radius: 0;
   margin: 0;
   padding: 10px 15px;
 }
 
-/* Tab đang hoạt động */
 .nav-tabs-custom > .nav-tabs > .nav-item > .nav-link.active {
   background-color: #fff;
   color: #555;
   border: 1px solid #ddd;
-  border-top: 3px solid #3c8dbc; /* Viền trên ngay lập tức */
-  border-bottom-color: transparent; /* Để khớp với tab-content */
+  border-top: 3px solid #3c8dbc;
+  border-bottom-color: transparent;
   border-left-color: #f4f4f4;
   border-right-color: #f4f4f4;
   cursor: default;
 }
 
-/* Hover và focus cho tab active */
 .nav-tabs-custom > .nav-tabs > .nav-item > .nav-link.active:hover,
 .nav-tabs-custom > .nav-tabs > .nav-item > .nav-link.active:focus {
   background-color: #fff;
   color: #555;
   border: 1px solid #ddd;
-  border-top: 3px solid #3c8dbc; /* Giữ viền trên */
+  border-top: 3px solid #3c8dbc;
   border-bottom-color: transparent;
 }
 
@@ -279,6 +276,11 @@ span.bootstrap-switch-handle-on.bootstrap-switch-primary {
 
 .card.custom-border-success {
   border-top: 3px solid #00a65a;
+}
+
+.box {
+  border-radius: 6px;
+  border-top: 3px solid #d2d6de;
 }
 
 .custom-menu a:active,
