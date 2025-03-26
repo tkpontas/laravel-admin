@@ -6,7 +6,7 @@
     @endif
 
     @if ($grid->showTools() || $grid->showExportBtn() || $grid->showCreateBtn())
-        <div class="container-fluid card-header no-border">
+        <div class="container-fluid card-header no-border custom-border-info card">
             <div class="row align-items-center">
                 <div class="pull-right order-3 p-0">
                     {!! $grid->renderColumnSelector() !!}

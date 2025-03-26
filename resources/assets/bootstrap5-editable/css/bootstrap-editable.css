@@ -47,6 +47,7 @@
 
 .editable-buttons .editable-cancel {
    margin-left: 7px; 
+   padding-left: 12px !important;
 }
 
 /*for jquery-ui buttons need set height to look more pretty*/
