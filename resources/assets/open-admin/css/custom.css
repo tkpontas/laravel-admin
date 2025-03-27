@@ -240,6 +240,10 @@ span.select2-selection__clear {
   transform: translateY(-48%);
 }
 
+.editable-buttons .editable-cancel {
+  padding-left: 12px !important;
+}
+
 .custom-menu a:active,
 .custom-menu a:focus,
 .custom-menu li > ul > li.active a {
