@@ -32,7 +32,7 @@
                         <!-- The user image in the navbar-->
                         <img src="{{ Admin::user()->avatar }}" class="user-image" alt="User Image">
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{ Admin::user()->name }}</span>
+                        <span class="d-none d-md-inline">{{ Admin::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
