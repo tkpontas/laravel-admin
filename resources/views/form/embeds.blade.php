@@ -16,9 +16,10 @@
             @foreach($form->fields() as $field)
                 {!! $field->render() !!}
             @endforeach
-
+            
         </div>
     </div>
+    
 </div>
 
 <hr style="margin-top: 0px;">
