@@ -9,7 +9,6 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
-    padding: 10px;
 }
 
 .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7,
@@ -264,12 +263,13 @@ html {
 .btn-group-sm>.btn, .btn.btn-sm.btn-success, .btn-group, .btn{
     font-size: 14px !important;
     width: auto;
+    height: fit-content;
 }
 
 .btn-ssm{
     font-size: 14px !important;
     width: auto;
-    padding: 0.25px 2px 0.25px 5px;
+    padding: 0.25px 5px 0.25px 5px;
 }
 .btn.btn-primary.btn-file{
     margin: 0px;

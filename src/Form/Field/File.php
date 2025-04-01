@@ -265,7 +265,7 @@ class File extends Field
 
             var options = {
                 language: '$locale',
-                showPreview: true, 
+                showPreview: false, 
                 showUpload: false,
                 showRemove: false,
                 fileActionSettings: {
