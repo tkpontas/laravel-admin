@@ -11,18 +11,18 @@
     
     <!-- /.box-body -->
     @if(count($buttons) > 0)
-    <div class="box-footer border-top border-1 border-gray-500" style="background-color: inherit;">
+    <div class="row box-footer border-top border-1 border-gray-500" style="background-color: inherit;">
         <div class="col-md-{{$width['label']}}"></div>
 
         <div class="col-md-{{$width['field']}}">
             @if(in_array('reset', $buttons))
             <div class="btn-group pt-3 pe-2">
-                <button type="reset" class="btn btn-warning">{{ trans('admin.reset') }}</button>
+                <button type="reset" class="btn btn-warning text-white">{{ trans('admin.reset') }}</button>
             </div>
             @endif
 
             @if(in_array('submit', $buttons))
-            <div class="btn-group pt-3 pe-2 m-0 pb-2">
+            <div class="btn-group pt-3 pe-2">
                 <button type="submit" class="btn btn-primary">{{ $submitLabel ?? trans('admin.submit') }}</button>
             </div>
                 

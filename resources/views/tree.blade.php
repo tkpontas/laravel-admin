@@ -1,6 +1,6 @@
-<div class="box">
+<div class="box card">
 
-    <div class="box-header">
+    <div class="box-header px-3 pt-3">
         @if($title)
         <h3 class="box-title">{{$title}}</h3>
         @endif
@@ -24,7 +24,7 @@
 
         @if($useRefresh)
         <div class="btn-group">
-            <a class="btn btn-warning btn-sm {{ $id }}-refresh" title="{{ trans('admin.refresh') }}"><i class="fa fa-refresh"></i><span class="d-none d-md-inline">&nbsp;{{ trans('admin.refresh') }}</span></a>
+            <a class="btn btn-warning btn-sm {{ $id }}-refresh text-white" title="{{ trans('admin.refresh') }}"><i class="fa fa-refresh"></i><span class="d-none d-md-inline">&nbsp;{{ trans('admin.refresh') }}</span></a>
         </div>
         @endif
 
@@ -40,7 +40,7 @@
 
     </div>
     <!-- /.box-header -->
-    <div class="box-body table-responsive no-padding">
+    <div class="box-body table-responsive no-padding p-1">
         <div class="dd" id="{{ $id }}">
             <ol class="dd-list">
                 @each($branchView, $items, 'branch')

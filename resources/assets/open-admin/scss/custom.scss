@@ -314,7 +314,24 @@ span.select2-selection.select2-selection--multiple{
     border-radius: 6px;
     border-top: 3px solid #d2d6de;
 }
-
+.box.box-success {
+    border-top-color: #00a65a;
+}
+.content-header>h1>small {
+    font-size: 15px;
+    display: inline-block;
+    padding-left: 4px;
+    font-weight: 300;
+}
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #e0a800;
+}
+.btn-info:hover {
+    background-color: #00a8cc; 
+    border-color: #00a8cc; 
+    color: #fff; 
+}
 
 .custom-menu a:active,
 .custom-menu a:focus,
@@ -483,7 +500,7 @@ div#main {
 span.select2.select2-container.select2-container--default {
     display: block;
     width: 100%;
-    height: calc(1.5em + 0.75rem + 2px);
+    height: 34px;
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
