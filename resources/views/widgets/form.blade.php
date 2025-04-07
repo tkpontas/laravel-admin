@@ -1,5 +1,5 @@
 <form {!! $attributes !!}>
-    <div class="box-body fields-group ps-3">
+    <div class="box-body fields-group ps-3 pt-3">
 
         @include('admin::widgets.fields')
 
@@ -14,7 +14,7 @@
     <div class="box-footer border-top border-1 border-gray-500" style="background-color: inherit;">
         <div class="col-md-{{$width['label']}}"></div>
 
-        <div class="col-md-{{$width['field']}}">
+        <div class="col-md-{{$width['field']}} d-flex align-items-center justify-content-center">
             @if(in_array('reset', $buttons))
             <div class="btn-group pt-3 pe-2">
                 <button type="reset" class="btn btn-warning">{{ trans('admin.reset') }}</button>
@@ -22,7 +22,7 @@
             @endif
 
             @if(in_array('submit', $buttons))
-            <div class="btn-group pt-3 pe-2 m-0 pb-2">
+            <div class="btn-group pt-3 pe-2 m-0 pb-2 order-last">
                 <button type="submit" class="btn btn-primary">{{ $submitLabel ?? trans('admin.submit') }}</button>
             </div>
                 

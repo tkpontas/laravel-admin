@@ -265,7 +265,7 @@ class File extends Field
 
             var options = {
                 language: '$locale',
-                showPreview: false, 
+                showPreview: true, 
                 showUpload: false,
                 showRemove: false,
                 fileActionSettings: {
@@ -285,7 +285,7 @@ class File extends Field
 
             }
             options['browseIcon'] = '<i class="fas fa-folder-open"></i>';
-            $(element).fileinput(options);
+            $(element).fileinput($options);
 });
 
 
