@@ -342,6 +342,12 @@ select#bootstrap-duallistbox-selected-list_role_group_item\[\]:hover {
   box-shadow: none;
 }
 
+select#bootstrap-duallistbox-nonselected-list_role_group_item\[\]:focus-visible,
+select#bootstrap-duallistbox-selected-list_role_group_item\[\]:focus-visible {
+  outline: 0;
+  -webkit-appearance: none;
+}
+
 .editable-buttons .editable-cancel {
   padding-left: 12px !important;
 }
