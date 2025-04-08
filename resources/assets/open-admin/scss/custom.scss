@@ -194,6 +194,14 @@ a#menu-toggle {
     border-color: #ffffff;
 }
 
+.row{
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+}
+h4{
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
 
 .dropdown-menu>li>a {
     display: block;
@@ -450,9 +458,9 @@ div#main {
     outline: none;
 }
 
-.box-footer {
-    justify-content: center;
-}
+// .box-footer {
+//     justify-content: center;
+// }
 
 .box-footer.border-top.border-1.border-gray-500 {
     text-align: -webkit-right;
@@ -544,6 +552,9 @@ span.select2-dropdown.select2-dropdown--below{
     width: 100px !important;
     flex-grow: 0 !important;
     border:1px solid var(--bs-gray-#e9ecef);
+}
+.form-control{
+    box-shadow: none !important;
 }
 .main-header .navbar .nav>li>a>.label{
     position: absolute;
