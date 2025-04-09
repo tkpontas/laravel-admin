@@ -55,7 +55,7 @@ return [
     'refresh_succeeded'     => '更新しました！',
     'login_successful'      => 'ログインしました！',
     'choose'                => '選択',
-    'choose_file'           => 'ファイルを選択',
+    'choose_file'           => 'ファイル選択',
     'choose_image'          => '画像を選択',
     'more'                  => '続き',
     'deny'                  => '権限がありません。',

@@ -89,6 +89,8 @@ trait HasAssets
         'vendor/open-admin/AdminLTE4/css/adminlte.min.css',
         'vendor/open-admin/open-admin/css/custom.css',
         'vendor/open-admin/toastr/build/toastr.min.css',
+        // "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css",
+        "/vendor/open-admin/bootstrap-duallistbox/dist/bootstrap-duallistbox.min.css?v=4.0.2",
 
         // "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css",
         // "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
@@ -102,12 +104,13 @@ trait HasAssets
      */
     public static $baseJs = [
         // 'vendor/open-admin/AdminLTE/bootstrap/js/bootstrap.min.js',
-        // "https://code.jquery.com/jquery-3.7.1.min.js",
+        "https://code.jquery.com/jquery-3.7.1.min.js",
         "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
         "https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js",
         "https://cdn.jsdelivr.net/npm/bootstrap-fileinput/js/fileinput.min.js",
         "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/locales/ja.min.js",
         'vendor/open-admin/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js',
+        '/vendor/open-admin/bootstrap-duallistbox/dist/jquery.bootstrap-duallistbox.min.js?v=4.0.2',
         // 'vendor/open-admin/AdminLTE/dist/js/app.min.js',
         'vendor/open-admin/AdminLTE4/js/adminlte.min.js',
         'vendor/open-admin/jquery-pjax/jquery.pjax.js',
