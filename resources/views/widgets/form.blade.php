@@ -14,7 +14,7 @@
     <div class="row box-footer border-top border-1 border-gray-500" style="background-color: inherit;">
         <div class="col-md-{{$width['label']}}"></div>
 
-        <div class="col-md-{{$width['field']}} d-flex align-items-center justify-content-center">
+        <div class="col-md-{{$width['field']}}">
             @if(in_array('reset', $buttons))
             <div class="btn-group pt-3 pe-2">
                 <button type="reset" class="btn btn-warning text-white">{{ trans('admin.reset') }}</button>
@@ -22,12 +22,12 @@
             @endif
 
             @if(in_array('submit', $buttons))
-            <div class="btn-group pt-3 pe-2 order-last">
+            <div class="btn-group pt-3 pe-2 float-end">
                 <button type="submit" class="btn btn-primary">{{ $submitLabel ?? trans('admin.submit') }}</button>
             </div>
                 
             @foreach($submitRedirects as $redirect)
-                <label class="pull-right" style="margin: 5px 10px 0 0;">
+                <label class="float-end" style="margin: 20px 10px 0 0;">
                     <input type="checkbox" class="after-submit" name="after-save" value="{{ array_get($redirect, 'value') }}" {{ $default_check == array_get($redirect, 'value') ? 'checked' : '' }}> {{ array_get($redirect, 'label') }}
                 </label>
             @endforeach
