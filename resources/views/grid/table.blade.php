@@ -7,7 +7,7 @@
 
     @if ($grid->showTools() || $grid->showExportBtn() || $grid->showCreateBtn())
         <div class="container-fluid card-header no-border custom-border-info card">
-            <div class="row align-items-center">
+            <div class="row align-items-center pe-3">
                 <div class="pull-right order-3 p-0">
                     {!! $grid->renderColumnSelector() !!}
                     {!! $grid->renderExportButton() !!}
