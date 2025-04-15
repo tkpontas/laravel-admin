@@ -14,7 +14,8 @@
     <div class="row box-footer border-top border-1 border-gray-500" style="background-color: inherit;">
         <div class="col-md-{{$width['label']}}"></div>
 
-        <div class="col-md-{{$width['field']}}">
+
+        <div class="col-md-{{$width['field']}} d-flex align-items-center justify-content-end">
             @if(in_array('reset', $buttons))
             <div class="btn-group pt-3 pe-2">
                 <button type="reset" class="btn btn-warning text-white">{{ trans('admin.reset') }}</button>

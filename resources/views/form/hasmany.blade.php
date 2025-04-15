@@ -13,7 +13,7 @@
 
         @foreach($forms as $pk => $form)
 
-            <div class="has-many-{{$column}}-form has-many-form fields-group fixed-border-color">
+            <div class="has-many-{{$column}}-form has-many-form fields-group box-header with-border">
 
                 @foreach($form->fields() as $field)
                     {!! $field->render() !!}
@@ -34,7 +34,7 @@
     
 
     <template class="{{$column}}-tpl">
-        <div class="has-many-{{$column}}-form has-many-form fields-group fixed-border-color">
+        <div class="has-many-{{$column}}-form has-many-form fields-group box-header with-border">
 
             {!! $template !!}
 
