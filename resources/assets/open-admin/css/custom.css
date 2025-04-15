@@ -172,7 +172,7 @@
 }
 
 ul.dropdown-menu {
-  transform: translate(0, 33px) !important;
+  transform: translate(0, 36px) !important;
 }
 
 ul.dropdown-menu-end {
@@ -616,7 +616,7 @@ div#main {
 .select2-container .select2-selection--single,
 .input-group,
 .input-group .input-group-btn .btn {
-  height: 34px;
+  height: 36px;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {

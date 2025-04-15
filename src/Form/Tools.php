@@ -209,7 +209,7 @@ class Tools implements Renderable
 
         return <<<EOT
 <div class="btn-group pull-right" style="margin-right: 5px">
-    <a href="{$url}" class="btn btn-sm btn-default d-flex align-items-center" title="$text"><i class="fa fa-list"></i><span class="d-none d-md-inline">&nbsp;$text</span></a>
+    <a href="{$url}" class="btn btn-sm btn-default d-flex align-items-center p-1" title="$text"><i class="fa fa-list p-1"></i><span class="d-none d-md-inline p-1">&nbsp;$text</span></a>
 </div>
 EOT;
     }
@@ -226,8 +226,8 @@ EOT;
 
         return <<<HTML
 <div class="btn-group pull-right" style="margin-right: 5px">
-    <a href="{$url}" class="btn btn-sm btn-primary d-flex align-items-center" title="{$view}">
-        <i class="fa fa-eye"></i><span class="d-none d-md-inline"> {$view}</span>
+    <a href="{$url}" class="btn btn-sm btn-primary d-flex align-items-center p-1" title="{$view}">
+        <i class="fa fa-eye p-1"></i><span class="d-none d-md-inline p-1"> {$view}</span>
     </a>
 </div>
 HTML;
@@ -300,8 +300,8 @@ SCRIPT;
 
         return <<<HTML
 <div class="btn-group pull-right" style="margin-right: 5px">
-    <a href="javascript:void(0);" class="btn btn-sm btn-danger d-flex align-items-center {$class}-delete" title="{$trans['delete']}">
-        <i class="fa fa-trash"></i><span class="d-none d-md-inline">  {$trans['delete']}</span>
+    <a href="javascript:void(0);" class="btn p-1 btn-sm btn-danger d-flex align-items-center {$class}-delete" title="{$trans['delete']}">
+        <i class="fa fa-trash p-1"></i><span class="d-none d-md-inline p-1">  {$trans['delete']}</span>
     </a>
 </div>
 HTML;
