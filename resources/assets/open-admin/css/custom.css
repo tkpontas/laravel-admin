@@ -113,6 +113,10 @@
   border: 1px solid #ced4da;
 }
 
+.fixed-border-color {
+  border-bottom: 0.5px solid #ced4da;
+}
+
 .hr.border-bottom {
   border: none;
   border-bottom: 1px solid #ced4da !important;
@@ -131,10 +135,6 @@ ul.jstree-container-ul.jstree-children {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
   padding: 10px;
-}
-
-.btn-group.float-end {
-  padding: 0px !important;
 }
 
 .btn-group.float-end.edit-file {
@@ -551,7 +551,9 @@ button.close {
 }
 
 .skin-blue-light .main-header .navbar,
-.skin-blue-light .main-header .logo {
+.skin-blue-light .main-header .logo,
+.skin-blue .main-header .navbar,
+.skin-blue .main-header .logo {
   background-color: #3A96FF !important;
 }
 

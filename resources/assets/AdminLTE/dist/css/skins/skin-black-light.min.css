@@ -27,7 +27,7 @@
 .skin-black-light .main-header>.navbar .nav .open>a:hover,
 .skin-black-light .main-header>.navbar .nav .open>a:focus,
 .skin-black-light .main-header>.navbar .nav>.active>a {
-    background: #fff;
+    /* background: #fff; */
     color: #999
 }
 
@@ -65,6 +65,29 @@
 .skin-black-light .main-header>.logo:hover {
     background-color: #fcfcfc
 }
+.skin-black-light .main-header>.header-items>.valign-header {
+    background-color: #fff;
+    color: #333 !important;
+    border-bottom: 0 solid transparent;
+    border-right: 1px solid #eee;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+#search-btn{
+    box-shadow: none !important;
+}
+#main-nav-menu > li > a {
+    border-left: 1px solid #eee;
+}
+.user-menu{
+    padding-top: 12.5px !important;
+    padding-bottom: 12.5px !important;
+    border-left: 1px solid #eee;
+}
+.user-menu > span{
+    color: black !important;
+}
+
 
 @media (max-width:767px) {
     .skin-black-light .main-header>.logo {

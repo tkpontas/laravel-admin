@@ -138,9 +138,6 @@ ul.jstree-container-ul.jstree-children {
     padding: 10px;
 }
  
-.btn-group.float-end {
-    padding: 0px !important;
-}
  
 .btn-group.float-end.edit-file{
     padding: 15px 15px 5px !important
@@ -565,7 +562,9 @@ button.close {
 }
 
 .skin-blue-light .main-header .navbar,
-.skin-blue-light .main-header .logo {
+.skin-blue-light .main-header .logo,
+.skin-blue .main-header .navbar,
+.skin-blue .main-header .logo {
     background-color: #3A96FF !important;
 }
 
