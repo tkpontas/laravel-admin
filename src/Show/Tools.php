@@ -216,8 +216,8 @@ class Tools implements Renderable
 
         return <<<HTML
 <div class="btn-group pull-right" style="margin-right: 5px">
-    <a href="{$url}" class="btn btn-sm btn-default d-flex justify-content-center align-items-center" title="{$list}">
-        <i class="fa fa-list"></i><span class="d-none d-md-inline"> {$list}</span>
+    <a href="{$url}" class="btn btn-sm btn-default d-flex justify-content-center align-items-center p-2" title="{$list}">
+        <i class="fa fa-list p-1"></i><span class="d-none d-md-inline"> {$list}</span>
     </a>
 </div>
 HTML;
@@ -235,8 +235,8 @@ HTML;
 
         return <<<HTML
 <div class="btn-group pull-right" style="margin-right: 5px">
-    <a href="{$url}" class="btn btn-sm btn-primary d-flex justify-content-center align-items-center" title="{$edit}">
-        <i class="fa fa-edit"></i><span class="d-none d-md-inline"> {$edit}</span>
+    <a href="{$url}" class="btn btn-sm btn-primary d-flex justify-content-center align-items-center p-2" title="{$edit}">
+        <i class="fa fa-edit p-1"></i><span class="d-none d-md-inline"> {$edit}</span>
     </a>
 </div>
 HTML;
@@ -308,8 +308,8 @@ SCRIPT;
 
         return <<<HTML
 <div class="btn-group pull-right" style="margin-right: 5px">
-    <a href="javascript:void(0);" class="btn btn-sm btn-danger {$class}-delete d-flex justify-content-center align-items-center" title="{$trans['delete']}">
-        <i class="fa fa-trash"></i><span class="d-none d-md-inline">  {$trans['delete']}</span>
+    <a href="javascript:void(0);" class="btn btn-sm btn-danger {$class}-delete d-flex justify-content-center align-items-center p-2" title="{$trans['delete']}">
+        <i class="fa fa-trash p-1"></i><span class="d-none d-md-inline">  {$trans['delete']}</span>
     </a>
 </div>
 HTML;
