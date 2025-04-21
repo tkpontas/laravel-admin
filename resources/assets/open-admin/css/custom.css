@@ -398,7 +398,7 @@ span.bootstrap-switch-handle-on.bootstrap-switch-primary {
 }
 
 .card.custom-border-secondary {
-  border-top: 3px solid #d2d6de;
+  border-top: 3px solid #00a65a;
 }
 
 span.select2-selection__clear {
@@ -439,20 +439,42 @@ button.btn.btn-sm.clear1:hover {
 }
 
 select#bootstrap-duallistbox-nonselected-list_role_group_item\[\],
-select#bootstrap-duallistbox-selected-list_role_group_item\[\] {
+select#bootstrap-duallistbox-selected-list_role_group_item\[\],
+select#bootstrap-duallistbox-nonselected-list_role_groups\[\],
+select#bootstrap-duallistbox-selected-list_role_groups\[\],
+select#bootstrap-duallistbox-nonselected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\],
+select#bootstrap-duallistbox-selected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\],
+select#bootstrap-duallistbox-nonselected-list_belong_organizations\[\],
+select#bootstrap-duallistbox-selected-list_belong_organizations\[\] {
   border-color: #ddd;
 }
 
 select#bootstrap-duallistbox-nonselected-list_role_group_item\[\]:hover,
-select#bootstrap-duallistbox-selected-list_role_group_item\[\]:hover {
+select#bootstrap-duallistbox-selected-list_role_group_item\[\]:hover,
+select#bootstrap-duallistbox-nonselected-list_role_groups\[\]:hover,
+select#bootstrap-duallistbox-selected-list_role_groups\[\]:hover,
+select#bootstrap-duallistbox-nonselected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:hover,
+select#bootstrap-duallistbox-selected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:hover,
+select#bootstrap-duallistbox-nonselected-list_belong_organizations\[\]:hover,
+select#bootstrap-duallistbox-selected-list_belong_organizations\[\]:hover {
   border-color: #3c8dbc;
   box-shadow: none;
 }
 
 select#bootstrap-duallistbox-nonselected-list_role_group_item\[\]:focus-visible,
-select#bootstrap-duallistbox-selected-list_role_group_item\[\]:focus-visible {
+select#bootstrap-duallistbox-selected-list_role_group_item\[\]:focus-visible,
+select#bootstrap-duallistbox-nonselected-list_role_groups\[\]:focus-visible,
+select#bootstrap-duallistbox-selected-list_role_groups\[\]:focus-visible,
+select#bootstrap-duallistbox-nonselected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:focus-visible,
+select#bootstrap-duallistbox-selected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:focus-visible,
+select#bootstrap-duallistbox-nonselected-list_belong_organizations\[\]:focus-visible,
+select#bootstrap-duallistbox-selected-list_belong_organizations\[\]:focus-visible {
   outline: 0;
   -webkit-appearance: none;
+}
+
+.alert.alert-info.alert-dismissable.pt-0 {
+  background: #00c0ef !important;
 }
 
 .editable-buttons .editable-cancel {
