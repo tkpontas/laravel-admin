@@ -175,7 +175,7 @@ ul.jstree-container-ul.jstree-children {
 }
 
 .custom-menu > ul > li.active {
-  background: transparent !important;
+  background: transparent;
 }
 
 .btn-outline-secondary:hover,
@@ -262,7 +262,7 @@ a#menu-toggle {
   border-color: #ffffff;
 }
 
-h4 {
+.row h4 {
   margin-top: 15px !important;
   margin-bottom: 15px !important;
 }
@@ -826,6 +826,18 @@ hr {
   border-radius: 0 3px 3px 0 !important;
 }
 
+.row-eq-height > [class^=col-] {
+  margin-bottom: 0 !important;
+}
+
+.box.box-info:where([class="box box-info"]) {
+  border-top: 3px solid #00c0ef !important;
+}
+
+.modal-lg, .modal-xl {
+  --bs-modal-width: 900px;
+}
+
 @media (min-width: 768px) {
   .col-md-6 {
     padding: 12px;
@@ -836,9 +848,14 @@ hr {
   padding: 0px 15px !important;
 }
 
+#main.content-wrapper {
+  transition: margin-left 0.3s ease;
+}
+
 @media (max-width: 576px) {
   #main.content-wrapper {
     margin-left: 0;
+    transition: margin-left 0.3s ease;
   }
   .fixed-bottom {
     margin-left: 0;

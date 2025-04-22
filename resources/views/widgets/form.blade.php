@@ -1,5 +1,5 @@
 <form {!! $attributes !!}>
-    <div class="box-body fields-group ps-3 pt-3">
+    <div class="box-body fields-group px-3 pt-3">
 
         @include('admin::widgets.fields')
 

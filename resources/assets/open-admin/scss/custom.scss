@@ -184,7 +184,7 @@ ul.jstree-container-ul.jstree-children {
 
 
 .custom-menu>ul>li.active {
-    background: transparent !important;
+    background: transparent;
 }
 
 .btn-outline-secondary:hover,
@@ -274,7 +274,7 @@ a#menu-toggle {
 
 
 
-h4 {
+.row h4 {
     margin-top: 15px !important;
     margin-bottom: 15px !important;
 }
@@ -503,6 +503,28 @@ select#bootstrap-duallistbox-selected-list_role_group_item\[\]:focus-visible {
 .custom-menu li>ul>li.active a {
     color: #444;
 }
+// .custom-menu .submenu > li:hover,
+// .custom-menu .submenu > li.active {
+//     color: #333;
+//     font-weight: 700;
+// }
+// .custom-menu .submenu > li.active a,
+// .custom-menu .submenu > li.active a span {
+//     color: #333;
+//     font-weight: 700;
+// }
+// .custom-menu > ul > li:hover {
+//     color: #333;
+// }
+// .custom-menu > ul > li.active {
+//     color: #333;
+//     font-weight: 700;
+// }
+// .custom-menu > ul > li.active a,
+// .custom-menu > ul > li.active a span {
+//     color: #333;
+//     font-weight: 700;
+// }
 
 main#main {
     height: 91vh;
@@ -840,7 +862,16 @@ hr {
 .input-group-btn > button.btn {
     border-radius: 0 3px 3px 0 !important;
 }
+.row-eq-height > [class^=col-]{
+    margin-bottom: 0 !important;
+}
 
+.box.box-info:where([class="box box-info"]) {
+    border-top: 3px solid #00c0ef !important;  
+  }
+.modal-lg, .modal-xl{
+    --bs-modal-width: 900px;
+}
 @media (min-width: 768px) {
     .col-md-6 {
         padding: 12px;
