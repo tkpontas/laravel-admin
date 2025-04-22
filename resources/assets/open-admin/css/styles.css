@@ -10721,6 +10721,9 @@ main#main footer.fixed-bottom {
     width: 100%;
     margin-left: 0;
   }
+  #sidebar.hidden-mb {
+    display: none;
+  }
   aside#sidebar {
     width: var(--menu-width);
     transform: translateX(var(--negative-menu-width));
