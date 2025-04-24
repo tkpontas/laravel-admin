@@ -127,6 +127,7 @@ button.btn.btn-box-tool {
   font-size: 12px !important;
   background: transparent;
   color: #97a0b3;
+  box-shadow: none;
 }
 
 ul.jstree-container-ul.jstree-children {
@@ -174,7 +175,7 @@ ul.jstree-container-ul.jstree-children {
 }
 
 .custom-menu > ul > li.active {
-  background: transparent !important;
+  background: transparent;
 }
 
 .btn-outline-secondary:hover,
@@ -261,7 +262,7 @@ a#menu-toggle {
   border-color: #ffffff;
 }
 
-h4 {
+.row h4 {
   margin-top: 15px !important;
   margin-bottom: 15px !important;
 }
@@ -460,37 +461,16 @@ button.btn.btn-sm.clear1:hover {
   border-color: #adadad;
 }
 
-select#bootstrap-duallistbox-nonselected-list_role_group_item\[\],
-select#bootstrap-duallistbox-selected-list_role_group_item\[\],
-select#bootstrap-duallistbox-nonselected-list_role_groups\[\],
-select#bootstrap-duallistbox-selected-list_role_groups\[\],
-select#bootstrap-duallistbox-nonselected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\],
-select#bootstrap-duallistbox-selected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\],
-select#bootstrap-duallistbox-nonselected-list_belong_organizations\[\],
-select#bootstrap-duallistbox-selected-list_belong_organizations\[\] {
+select[id^=bootstrap-duallistbox-] {
   border-color: #ddd;
 }
 
-select#bootstrap-duallistbox-nonselected-list_role_group_item\[\]:hover,
-select#bootstrap-duallistbox-selected-list_role_group_item\[\]:hover,
-select#bootstrap-duallistbox-nonselected-list_role_groups\[\]:hover,
-select#bootstrap-duallistbox-selected-list_role_groups\[\]:hover,
-select#bootstrap-duallistbox-nonselected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:hover,
-select#bootstrap-duallistbox-selected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:hover,
-select#bootstrap-duallistbox-nonselected-list_belong_organizations\[\]:hover,
-select#bootstrap-duallistbox-selected-list_belong_organizations\[\]:hover {
+select[id^=bootstrap-duallistbox-]:hover {
   border-color: #3c8dbc;
   box-shadow: none;
 }
 
-select#bootstrap-duallistbox-nonselected-list_role_group_item\[\]:focus-visible,
-select#bootstrap-duallistbox-selected-list_role_group_item\[\]:focus-visible,
-select#bootstrap-duallistbox-nonselected-list_role_groups\[\]:focus-visible,
-select#bootstrap-duallistbox-selected-list_role_groups\[\]:focus-visible,
-select#bootstrap-duallistbox-nonselected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:focus-visible,
-select#bootstrap-duallistbox-selected-list_pivot__e17f33e8a495938aa419_cc77ddd5c404f2080283\[\]:focus-visible,
-select#bootstrap-duallistbox-nonselected-list_belong_organizations\[\]:focus-visible,
-select#bootstrap-duallistbox-selected-list_belong_organizations\[\]:focus-visible {
+select[id^=bootstrap-duallistbox-]:focus-visible {
   outline: 0;
   -webkit-appearance: none;
 }
@@ -869,6 +849,18 @@ hr {
   border-radius: 0 3px 3px 0 !important;
 }
 
+.row-eq-height > [class^=col-] {
+  margin-bottom: 0 !important;
+}
+
+.box.box-info:where([class="box box-info"]) {
+  border-top: 3px solid #00c0ef !important;
+}
+
+.modal-lg, .modal-xl {
+  --bs-modal-width: 900px;
+}
+
 @media (min-width: 768px) {
   .col-md-6 {
     padding: 12px;
@@ -888,6 +880,9 @@ hr {
   }
   .nav {
     margin-bottom: 10px;
+  }
+  form.search-form {
+    margin: 0 !important;
   }
 }
 @media (max-width: 768px) {

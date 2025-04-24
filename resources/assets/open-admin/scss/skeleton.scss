@@ -364,10 +364,21 @@ main#main footer.fixed-bottom {
         width: 100%;
         margin-left: 0;
     }
+    #sidebar.hidden-mb {
+        display: none;
+    }
 
     aside#sidebar {
         width: var(--menu-width);
         transform: translateX(var(--negative-menu-width));
+        transition: margin-left 0.2s ease;
+    }
+    aside#sidebar.show {
+        transform: translateX(0);
+        z-index: 4;
+        background-color: #222d32;
+        padding-top: 105px;
+        transition: margin-left 0.3s ease;
     }
 
     .side-menu-open {

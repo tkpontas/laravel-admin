@@ -200,6 +200,26 @@
 .custom-menu ul a:hover {
     color: black !important;
 }
+.custom-menu a:active,
+.custom-menu a:focus,
+.custom-menu li>ul>li.active,
+.custom-menu li>ul>li.active a,
+.custom-menu li>ul>li.active a span {
+    color: black !important;
+    font-weight: 700;
+}
+
+.custom-menu > ul > li.active,
+.custom-menu > ul > li.active > a {
+    background: #f4f4f5 !important;
+    border-left: none !important;
+    color: black !important;
+}
+.custom-menu .submenu > li:hover,
+.custom-menu > ul > li:hover {
+    color: black;
+    font-weight: 700;
+}
 @media (min-width:768px) {
     .skin-green-light.sidebar-mini.sidebar-collapse .sidebar-menu>li>.treeview-menu {
         border-left: 1px solid #d2d6de

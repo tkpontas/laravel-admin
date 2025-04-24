@@ -33,7 +33,7 @@
 @if($info = session()->get('info'))
     <div class="alert alert-info alert-dismissable pt-0">
         <button type="button" class="btn-close float-end fs-8 pt-5" data-bs-dismiss="alert" aria-label="Close"></button>
-        <h4 class="text-white"><i class="icon fa fa-info pe-2"></i>{{ \Illuminate\Support\Arr::get($info->get('title'), 0) }}</h4>
+        <h4 class="text-white pt-3"><i class="icon fa fa-info pe-2"></i>{{ \Illuminate\Support\Arr::get($info->get('title'), 0) }}</h4>
         <p class="text-white">{!! \Illuminate\Support\Arr::get($info->get('message'), 0) !!}</p>
 
     </div>

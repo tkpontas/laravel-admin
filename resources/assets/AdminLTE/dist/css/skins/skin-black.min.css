@@ -202,3 +202,19 @@
     border-bottom-right-radius: 2px;
     border-bottom-left-radius: 0
 }
+.custom-menu a:active,
+.custom-menu a:focus,
+.custom-menu li>ul>li.active a,
+.custom-menu .submenu > li.active a span {
+    color: #fff !important;
+    font-weight: 700;
+}
+.custom-menu > ul > li.active{
+    border-left: none !important;
+    background: #2c3b41 !important;
+}
+.custom-menu > ul > li.active > a,
+.custom-menu > ul > li:hover > a{
+    border-left:3px solid #fff !important;
+    background: #1e282c;
+}
