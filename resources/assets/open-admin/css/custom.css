@@ -200,8 +200,12 @@ ul.dropdown-menu {
   transform: translate(0, 36px) !important;
 }
 
-ul.dropdown-menu-end {
+ul.dropdown-menu-end.user-menu {
   transform: translate(0, 0) !important;
+}
+
+ul.dropdown-menu-end.notifications-menu-dropdown {
+  transform: translate(0, 14px) !important;
 }
 
 .show {
@@ -839,6 +843,14 @@ hr {
   --bs-modal-width: 900px;
 }
 
+.field-header {
+  margin-left: 70px;
+}
+
+.form-horizontal .row {
+  margin-bottom: 0px;
+}
+
 @media (min-width: 768px) {
   .col-md-6 {
     padding: 12px;
@@ -861,6 +873,9 @@ hr {
   }
   form.search-form {
     margin: 0 !important;
+  }
+  .btn-sm.btn-danger {
+    padding: 0.5rem !important;
   }
 }
 @media (max-width: 768px) {

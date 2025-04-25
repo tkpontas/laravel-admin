@@ -4,6 +4,7 @@
     <div class="col-sm-12">
         <h4 class="field-header">{{ $label }}</h4>
     </div>
+    <hr style="margin-top: 0px;">
 </div>
 @endif
 
@@ -13,7 +14,7 @@
 
         @foreach($forms as $pk => $form)
 
-            <div class="has-many-{{$column}}-form has-many-form fields-group box-header with-border">
+            <div class="has-many-{{$column}}-form has-many-form fields-group box-header with-border mb-3">
 
                 @foreach($form->fields() as $field)
                     {!! $field->render() !!}
@@ -25,16 +26,16 @@
                     <div class="{{$viewClass['field']}} offset-2 pb-5">
                         <div class="remove btn btn-warning btn-sm float-end"><i class="fa fa-trash">&nbsp;</i>{{ trans('admin.remove') }}</div>
                     </div>
+                    
                 </div>
                 @endif
             </div>
-
         @endforeach
     </div>
     
 
     <template class="{{$column}}-tpl">
-        <div class="has-many-{{$column}}-form has-many-form fields-group box-header with-border">
+        <div class="has-many-{{$column}}-form has-many-form fields-group box-header with-border mb-3">
 
             {!! $template !!}
 
