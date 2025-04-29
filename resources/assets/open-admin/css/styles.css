@@ -10662,7 +10662,7 @@ main#main footer.fixed-bottom {
   display: none;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   .menu-width {
     width: var(--menu-width);
     transition: width 0.3s;
