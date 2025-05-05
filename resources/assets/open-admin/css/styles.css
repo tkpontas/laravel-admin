@@ -10553,7 +10553,7 @@ body label {
 }
 
 .wrapper {
-  min-height: 100vh;
+  min-height: 99vh;
   position: relative;
 }
 

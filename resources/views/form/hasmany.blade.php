@@ -51,7 +51,7 @@
     @if($options['allowCreate'])
     <div class="form-group">
         <label class="{{$viewClass['label']}} control-label text-lg-end pt-2"></label>
-        <div class="{{$viewClass['field']}} offset-2 ps-1 pb-3">
+        <div class="{{$viewClass['field']}} offset-md-2 ps-1 pb-3">
             <div class="add btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;{{ trans('admin.new') }}</div>
         </div>
     </div>

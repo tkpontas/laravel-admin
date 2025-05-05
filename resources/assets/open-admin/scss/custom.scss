@@ -919,7 +919,7 @@ hr {
     padding: 0px 15px !important;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
     #main.content-wrapper {
         margin-left: 0;
     }
@@ -944,5 +944,8 @@ hr {
 @media(max-width:768px) {
     .box-footer {
         justify-content: end;
+    }
+    .field-header {
+        margin-left: 0;
     }
 }
