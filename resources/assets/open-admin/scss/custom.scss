@@ -78,7 +78,7 @@
     background-color: #fff;
     color: #555;
     border: 1px solid #ddd;
-    border-top: 3px solid #3c8dbc;
+    border-top: 3px solid #0d6efd;
     border-bottom-color: transparent;
     border-left-color: #f4f4f4;
     border-right-color: #f4f4f4;
@@ -90,7 +90,7 @@
     background-color: #fff;
     color: #555;
     border: 1px solid #ddd;
-    border-top: 3px solid #3c8dbc;
+    border-top: 3px solid #0d6efd;
     border-bottom-color: transparent;
 }
 
@@ -478,13 +478,18 @@ select[id^="bootstrap-duallistbox-"] {
     border-color: #ddd;
 }
 select[id^="bootstrap-duallistbox-"]:hover {
-    border-color: #3c8dbc;
+    border-color: #0d6efd;
     box-shadow: none;
 }
 
 select[id^="bootstrap-duallistbox-"]:focus-visible{
     outline: 0;
     -webkit-appearance: none;
+}
+
+div#calendar {
+    display: inline-block;
+    padding-top: 10px;
 }
 
 .alert.alert-info.alert-dismissable.pt-0 {
