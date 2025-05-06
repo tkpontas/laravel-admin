@@ -907,6 +907,11 @@ hr {
 .form-horizontal .row {
     margin-bottom: 0px;
 }
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
 @media (min-width: 768px) {
     .col-md-6 {
