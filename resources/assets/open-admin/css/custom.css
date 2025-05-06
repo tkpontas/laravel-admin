@@ -479,11 +479,6 @@ select[id^=bootstrap-duallistbox-]:focus-visible {
   -webkit-appearance: none;
 }
 
-div#calendar {
-  display: inline-block;
-  padding-top: 10px;
-}
-
 .alert.alert-info.alert-dismissable.pt-0 {
   background: #00c0ef !important;
 }
