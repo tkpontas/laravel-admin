@@ -445,6 +445,7 @@ button.btn.removeall.btn-outline-secondary{
     background-color: #f4f4f4 !important;
     border-color: #ddd !important;
     color: #444;
+    border: 1px solid #ddd !important;
 }
 
 button.btn.moveall.btn-outline-secondary:hover,
@@ -907,6 +908,11 @@ hr {
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+.text-white a{
+    color: white !important;
+    text-decoration: underline !important;
+}
 
 @media (min-width: 768px) {
     .col-md-6 {

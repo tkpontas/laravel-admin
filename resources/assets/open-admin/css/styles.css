@@ -10732,7 +10732,6 @@ main#main footer.fixed-bottom {
   aside#sidebar.show {
     transform: translateX(0);
     z-index: 4;
-    background-color: #222d32;
     padding-top: 105px;
     transition: margin-left 0.3s ease;
   }
