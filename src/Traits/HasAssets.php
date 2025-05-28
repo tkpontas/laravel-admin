@@ -145,7 +145,7 @@ trait HasAssets
         // 'vendor/open-admin/jquery-pjax/jquery.pjax.js',
         // 'vendor/open-admin/toastr/build/toastr.min.js',
         // 'vendor/open-admin/bootstrap3-editable/js/bootstrap-editable.min.js',
-        'vendor/laravel-admin/laravel-admin/laravel-admin.js',
+        'vendor/open-admin/open-admin/laravel-admin.js',
         // 'vendor/open-admin/AdminLTE/bootstrap/js/bootstrap.min.js',
 
 
