@@ -15,7 +15,7 @@
         <td 
             {!! count($columnStyle) > $loop->index ? 'style="' . $columnStyle[$loop->index] . '"' : '' !!}
             {!! count($columnClasses) > $loop->index ? 'class="' . $columnClasses[$loop->index] . '"' : '' !!}
-        ><span>{!! $item !!}</span>span></td>
+        ><span>{!! $item !!}</span></td>
         @endforeach
     </tr>
     @endforeach
