@@ -885,6 +885,19 @@ hr {
   text-decoration: underline !important;
 }
 
+.treeview .has-subs::after {
+  content: "\f054";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  float: right;
+  transition: transform 0.3s;
+  top: 19px !important;
+}
+
+.treeview .has-subs.active::after {
+  transform: rotate(135deg);
+}
+
 @media (min-width: 768px) {
   .col-md-6 {
     padding: 12px;
