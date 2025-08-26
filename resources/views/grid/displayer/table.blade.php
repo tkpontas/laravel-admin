@@ -10,7 +10,7 @@
     @foreach($data as $datum)
     <tr>
         @foreach($datum as $key => $value)
-            <td>{{ $value }}</td>
+            <td><span>{{ $value }}</span></td>
         @endforeach
     </tr>
     @endforeach
