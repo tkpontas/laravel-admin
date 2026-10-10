@@ -32,6 +32,14 @@
         "spatie/eloquent-sortable": "^4.0",
         "friendsofphp/php-cs-fixer": "^3.64"
     },
+    "config": {
+        "policy": {
+            "advisories": {
+                "block": false,
+                "audit": "report"
+            }
+        }
+    },
     "autoload": {
         "psr-4": {
             "Encore\\Admin\\": "src/"
